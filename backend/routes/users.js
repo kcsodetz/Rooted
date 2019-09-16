@@ -5,18 +5,6 @@ var bcrypt = require('bcrypt')
 var router = express.Router();
 
 
-// const MongoClient = require('mongodb').MongoClient;
-// const uri = "mongodb+srv://rooted:cs4072019@cluster0-60qmv.mongodb.net/test?retryWrites=true&w=majority";
-// const client = new MongoClient(uri, { useNewUrlParser: true });
-// client.connect(err => {
-//   console.log(err);
-//   // const collection = client.db("test").collection("devices");
-//   // perform actions on the collection object
-//   client.close();
-// });
-
-
-
 mongoose.connect(process.env.MONGODB_HOST, { useNewUrlParser: true });
 mongoose.set('useCreateIndex', true);
 
@@ -62,6 +50,7 @@ router.post('/login', (req, res) => {
                 return
             }
             else {
+                console.log("psswd")
                 user.generateAuth().then((token) => {
                     res.status(200).header('token', token).send(user)
                     return
@@ -75,7 +64,57 @@ router.post('/login', (req, res) => {
         res.status(400).send(err)
         return
     })
-})
+});
+
+/*
+ * Register new user 
+ */
+router.post("/register", (req, res) => {
+    if (!req.body.email || !req.body.password || !req.body.username) {
+        console.log(req.body.email);
+        res.status(400).send({ message: "User data is incomplete" });
+        return;
+    }
+
+    // Create a verification code between 1000 and 9999
+    var verificatonCode = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+    console.log(req.body.password)
+    encrypt(req.body.password).then((password) => {
+        // User Data
+        var newUser = new User({
+            username: req.body.username,
+            email: req.body.email,
+            password: password,
+            verified: false,
+            verificationNum: verificatonCode,
+        });
+
+
+        var newMemberEmailBody = "Dear " + req.body.username +
+            ",\n\nWelcome to Rooted! We ask you to please verify your account with us. Your verification code is:\n" +
+            verificatonCode + "\nWe look forward to having you with us!\n\nSincerely, \nThe Rooted Team";
+        var newMemberEmailSubject = "Welcome to Rooted!"
+
+        console.log(password)
+
+        // Add to database with auth
+        newUser.save().then(() => {
+            return newUser.generateAuth().then((token) => {
+
+                res.header('verificationNum', verificatonCode).send(newUser);
+                mailer(req.body.email, newMemberEmailSubject, newMemberEmailBody);
+                return
+            });
+        }).catch((err) => {
+            if (err.code == 11000) {
+                res.status(400).send({ message: "User already exists" })
+                return
+            }
+            res.status(400).send(err)
+            return;
+        })
+    })
+});
 
 
 module.exports = router;

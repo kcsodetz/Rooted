@@ -1,9 +1,9 @@
 var nodemailer = require('nodemailer');
 
-var email_address = "daydreamscs408@gmail.com"
+var email_address = process.env.EMAIL_ADDRESS
 
 /**
- * Sends an email from daydreamscs408@gmail.com to the specified 'to' email, with a subject and body given by the 
+ * Sends an email from the .env address to the specified 'to' email, with a subject and body given by the 
  * function caller.
  * @param {string} to 
  * @param {string} subject 
@@ -27,18 +27,18 @@ function mailer(to, subject, body) {
         text: body
     };
 
-    // console.log(process.env.EMAIL_PASS)
+    console.log(process.env.EMAIL_PASS)
     // verify connection configuration
-    // console.log("Verifying...")
-    // transporter.verify(function(error, success) {
-    //     if (error) {
-    //          console.log(error);
-    //     } else {
-    //         console.log('Server is ready to take our messages');
-    //     }
-    // });
+    console.log("Verifying...")
+    transporter.verify(function(error, success) {
+        if (error) {
+             console.log(error);
+        } else {
+            console.log('Server is ready to take our messages');
+        }
+    });
 
-    // console.log("Sending to: " + to)
+    console.log("Sending to: " + to)
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             console.error(error);

@@ -1,11 +1,11 @@
 var express = require('express');
 var mongoose = require('mongoose')
 var encrypt = require('../middleware/encrypt')
+var mailer = require('../middleware/mailer')
 var bcrypt = require('bcrypt')
 var router = express.Router();
 
 
-console.log(process.env.MONGODB_HOST)
 mongoose.connect(process.env.MONGODB_HOST, { useNewUrlParser: true });
 mongoose.set('useCreateIndex', true);
 
@@ -44,14 +44,12 @@ router.post('/login', (req, res) => {
         bcrypt.compare(req.body.password, user.password, function (err, comp) {
             encrypt(req.body.password).then((p) => {
                 console.log(p)
-                console.log(user.password)
             })
             if (comp == false) {
                 res.status(400).send({ message: "Error: Password is incorrect" })
                 return
             }
             else {
-                console.log("psswd")
                 user.generateAuth().then((token) => {
                     res.status(200).header('token', token).send(user)
                     return
@@ -79,7 +77,6 @@ router.post("/register", (req, res) => {
 
     // Create a verification code between 1000 and 9999
     var verificatonCode = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
-    console.log(req.body.password)
     encrypt(req.body.password).then((password) => {
         // User Data
         var newUser = new User({
@@ -95,8 +92,6 @@ router.post("/register", (req, res) => {
             ",\n\nWelcome to Rooted! We ask you to please verify your account with us. Your verification code is:\n" +
             verificatonCode + "\nWe look forward to having you with us!\n\nSincerely, \nThe Rooted Team";
         var newMemberEmailSubject = "Welcome to Rooted!"
-
-        console.log(password)
 
         // Add to database with auth
         newUser.save().then(() => {

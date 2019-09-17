@@ -57,6 +57,52 @@ userSchema.statics.findByToken = function (token) {
   });
 }
 
+
+userSchema.statics.findVerificationNumByEmail = function(email) {
+  var User = this;
+
+  return User.findOne({email}).then((user) => {
+ //   console.log(user.verificationNum)
+    if (!user.verificationNum) {
+      return Promise.reject();
+    }
+    else {
+      return Promise.resolve(user.verificationNum);
+    }
+  });
+};
+
+userSchema.statics.findByEmail = function(email) {
+  var User = this;
+
+  return User.findOne({email}).then((user) => {
+    // console.log(user)
+    //console.log("email is: " + user.email)
+    if (user == null || !user.email) {
+      return Promise.reject();
+    }
+    else {
+      return Promise.resolve(user);
+    }
+  });
+};
+
+userSchema.statics.findEmailByUsername = function(username) {
+  var User = this;
+
+  return User.findOne({username}).then((user) => {
+    // console.log(user)
+    //console.log("email is: " + user.email)
+    if (user == null || !user.email) {
+      return Promise.reject();
+    }
+    else {
+      return Promise.resolve(user.email);
+    }
+  });
+};
+
+
 /* Creating the user model from the schema and giving it to Mongoose */
 let User = mongoose.model('User', userSchema);
 

@@ -5,6 +5,7 @@ var bcrypt = require('bcrypt')
 var router = express.Router();
 
 
+console.log(process.env.MONGODB_HOST)
 mongoose.connect(process.env.MONGODB_HOST, { useNewUrlParser: true });
 mongoose.set('useCreateIndex', true);
 

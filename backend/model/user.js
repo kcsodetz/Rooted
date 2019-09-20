@@ -223,5 +223,4 @@ userSchema.statics.findEmailByUsername = function(username) {
 /* Creating the user model from the schema and giving it to Mongoose */
 let User = mongoose.model('User', userSchema);
 
->>>>>>> 400c2b7552cd4bede74c48d79ae8204dbd3eb03f
 module.exports = User;

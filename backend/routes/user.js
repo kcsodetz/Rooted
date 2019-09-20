@@ -16,7 +16,6 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 /* Objects */
 var User = require('../model/user');
-var Circle = require('../model/circle')
 
 /**
  * All user related routes
@@ -57,9 +56,9 @@ router.post("/register", (req, res) => {
 
 
         var newMemberEmailBody = "Dear " + req.body.username +
-            ",\n\nWelcome to DayDreams! We ask you to please verify your account with us. Your verification code is:\n" +
-            verificatonCode + "\nWe look forward to having you with us!\n\nSincerely, \nThe DayDreams Team";
-        var newMemberEmailSubject = "Welcome to DayDreams!"
+            ",\n\nWelcome to Rooted! We ask you to please verify your account with us. Your verification code is:\n" +
+            verificatonCode + "\nWe look forward to having you with us!\n\nSincerely, \nThe Rooted Team";
+        var newMemberEmailSubject = "Welcome to Rooted!"
 
         console.log(password)
 
@@ -175,10 +174,10 @@ router.post("/forgot-password", (req, res) => {
     if (req.body.email) {
         User.findByEmail(req.body.email).then((usr) => {
             var tempPassword = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
-            var email_subject = "DayDreams Password Reset";
+            var email_subject = "Rooted Password Reset";
             var email_body = "Dear " + usr.email + ", \n\nOur records indicate that you have requested a password " +
                 "reset. Your new temporary password is:\n\n" +
-                tempPassword + "\n\nSincerely, \n\nThe DayDreams Team";
+                tempPassword + "\n\nSincerely, \n\nThe Rooted Team";
             // find user by email and set temp password
             encrypt(tempPassword).then(encryptedPassword => {
                 User.findOneAndUpdate({ email: usr.email }, { $set: { password: encryptedPassword } }).then(() => {
@@ -227,9 +226,9 @@ router.post("/change-email", authenticate, (req, res) => {
             res.send(err);
         })
 
-    var email_subject = "DayDreams Reset Email";
+    var email_subject = "Rooted Reset Email";
     var email_body = "Dear " + req.user.username + ", \n\nOur records indicate that you have changed your email. If this was the intention, no further action is needed from your part." +
-        "\n\nSincerely, \n\nThe DayDreams Team";
+        "\n\nSincerely, \n\nThe Rooted Team";
 
     mailer(req.body.email, email_subject, email_body);
 })
@@ -260,22 +259,13 @@ router.post("/change-password", authenticate, (req, res) => {
         console.log("err: " + err)
     });
 
-    var email_subject = "DayDreams Changed Password";
+    var email_subject = "Rooted Changed Password";
     var email_body = "Dear " + username + ", \n\nOur records indicate that you have changed your password. If this was the intention, no further action is needed from your part." +
-        "\n\nSincerely, \n\nThe DayDreams Team";
+        "\n\nSincerely, \n\nThe Rooted Team";
 
     mailer(req.user.email, email_subject, email_body);
 })
 
-/**
- * Get all circles
- */
-router.get('/all-circles', authenticate, (req, res) => {
-    Circle.find({ members: req.user.username }).then((circle) => {
-        res.status(200).send(circle)
-    }).catch((err) => {
-        res.status(400).send(err)
-    })
-})
+
 
 module.exports = router;

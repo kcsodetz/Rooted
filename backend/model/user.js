@@ -114,11 +114,7 @@ userSchema.methods.toJSON = function () {
 /* Creating the user model from the schema and giving it to Mongoose */
 let User = mongoose.model('User', userSchema);
 
-=======
-const jwt = require('jsonwebtoken');
-const ld = require('lodash');
-const vdator = require('validator');
-const bcrypt = require('bcrypt');
+module.exports = User;
 
 let userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true, minlength: 6, trim: true },

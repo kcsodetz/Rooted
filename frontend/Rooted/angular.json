@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Rooted": {
+    "DayDream": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/Rooted",
+            "outputPath": "dist/DayDream",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -27,6 +27,12 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss",
+              "node_modules/@fortawesome/fontawesome-free/scss/solid.scss",
+              "node_modules/@fortawesome/fontawesome-free/scss/regular.scss",
+              "node_modules/@fortawesome/fontawesome-free/scss/brands.scss",
+              "node_modules/angular-bootstrap-md/scss/bootstrap/bootstrap.scss",
+              "node_modules/angular-bootstrap-md/scss/mdb-free.scss",
               "src/styles.scss"
             ],
             "scripts": []
@@ -61,18 +67,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "Rooted:build"
+            "browserTarget": "DayDream:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "Rooted:build:production"
+              "browserTarget": "DayDream:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Rooted:build"
+            "browserTarget": "DayDream:build"
           }
         },
         "test": {
@@ -106,7 +112,7 @@
         }
       }
     },
-    "Rooted-e2e": {
+    "DayDream-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -115,11 +121,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "Rooted:serve"
+            "devServerTarget": "DayDream:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "Rooted:serve:production"
+              "devServerTarget": "DayDream:serve:production"
             }
           }
         },
@@ -135,5 +141,5 @@
       }
     }
   },
-  "defaultProject": "Rooted"
+  "defaultProject": "DayDream"
 }

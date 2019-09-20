@@ -115,7 +115,6 @@ userSchema.methods.toJSON = function () {
 let User = mongoose.model('User', userSchema);
 
 =======
-const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const ld = require('lodash');
 const vdator = require('validator');

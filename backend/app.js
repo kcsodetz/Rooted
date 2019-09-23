@@ -7,7 +7,7 @@ const cloudinaryStorage = require("multer-storage-cloudinary");
 require('dotenv').config();
 
 /* Routes */
-let user = require('./backend/routes/user.js');
+let user = require('./routes/users.js');   
 
 const app = express(cors());
 

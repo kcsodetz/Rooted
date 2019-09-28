@@ -40,6 +40,75 @@ userSchema.methods.generateAuth = function () {
   })
 }
 
+userSchema.statics.findByToken = function (token) {
+  var User = this
+  var decodedTokenObj;
+
+  try {
+    decodedTokenObj = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    return Promise.reject();
+  }
+
+  return User.findOne({
+    _id: decodedTokenObj._id,
+    'tokens.token': token,
+    'tokens.access': 'auth'
+  });
+}
+
+userSchema.statics.findVerificationNumByEmail = function(email) {
+  var User = this;
+
+  return User.findOne({email}).then((user) => {
+ //   console.log(user.verificationNum)
+    if (!user.verificationNum) {
+      return Promise.reject();
+    }
+    else {
+      return Promise.resolve(user.verificationNum);
+    }
+  });
+};
+
+userSchema.statics.findByEmail = function(email) {
+  var User = this;
+
+  return User.findOne({email}).then((user) => {
+    // console.log(user)
+    //console.log("email is: " + user.email)
+    if (user == null || !user.email) {
+      return Promise.reject();
+    }
+    else {
+      return Promise.resolve(user);
+    }
+  });
+};
+
+userSchema.statics.findEmailByUsername = function(username) {
+  var User = this;
+
+  return User.findOne({username}).then((user) => {
+    // console.log(user)
+    //console.log("email is: " + user.email)
+    if (user == null || !user.email) {
+      return Promise.reject();
+    }
+    else {
+      return Promise.resolve(user.email);
+    }
+  });
+};
+
+
+
+
+/* Function to prevent too much information from being returned on request when the response is the object */
+userSchema.methods.toJSON = function () {
+  return ld.pick(this.toObject(), ['_id', 'username', 'email', 'verified'])
+}
+
 /* Creating the user model from the schema and giving it to Mongoose */
 let User = mongoose.model('User', userSchema);
 

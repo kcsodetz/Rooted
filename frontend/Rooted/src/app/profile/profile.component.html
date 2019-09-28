@@ -1,3 +1,33 @@
-<p>
-  profile works!
-</p>
+<div>
+  <div class="row">
+      <div class="cropImg">
+          <div class="croppedImg">
+              <img src="img_girl.jpg" alt=""> 
+          </div>
+      </div>
+      <div class="profileInfo">
+          <h1>UserName</h1>
+      </div>
+  </div>
+  <div class="row">
+      <div class="profileInfo col">
+        <h3>Info</h3>
+          <p>Birth year:</p>
+          <p>Email:</p>
+          <p>Phone Number:</p>
+      </div>
+      <div class="profileInfo col">
+        <h3>Social Media</h3>
+        <p>Facebook:</p>
+          <p>Instagram:</p>
+          <p>Twitter:</p>
+          <p>LinkedIn:</p>
+      </div>
+      <div class="profileInfo col" >
+          <h3>Groups</h3>
+          <div *ngFor="let user of user">
+              <p> UserName</p>
+          </div>
+      </div>
+  </div>
+</div>

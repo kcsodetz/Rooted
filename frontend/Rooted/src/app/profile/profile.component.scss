@@ -7,23 +7,42 @@
     margin-left:3%;
     border:solid;
 }
-
 .croppedImg {
     width: 400px;
     height: 300px;
-    margin: -75px 0 0 -100px;
+    margin: -75px 0 0 -75px;
 }
 
 .profileInfo{
     padding: 3%;
-    padding-top: 2%;
+    padding-top: 0;
     padding-bottom:0;
-    text-align: center;
+    text-align: left;
     margin-bottom: 0;
+    align-content: center;
+    font-weight: bold;
+    color: rgb(59, 59, 59);
 }
-.profileInfo{
-    text-align: center;
-    margin-bottom: 0;
+.line{
+    border-right: 3px solid rgb(27, 172, 59);
+}
+.profileInfoRow{
+   padding-top: 3%;
+}
+.imageUpload{
+    border-radius:10px;
+    padding-top:1%;
+    padding-bottom:1%;
+    background-color: rgb(27, 172, 59);
+    color:white;
+}
+h1{
+    color:rgb(27, 172, 59);
+    font-weight: bolder;
+}
+h3{
+    color:rgb(27, 172, 59);
+    font-weight: bolder;
 }
 
 

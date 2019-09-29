@@ -1,32 +1,70 @@
 <div>
   <div class="row">
-      <div class="cropImg">
-          <div class="croppedImg">
-              <img src="img_girl.jpg" alt=""> 
-          </div>
+      <div class="profileInfo col">
+            <div class="row">
+                    <div class="cropImg">
+                        <div class="croppedImg">
+                            <img src="img_girl.jpg" alt=""> 
+                        </div>
+                    </div>
+                    <div class="profileInfo" >
+                            <h1 style="line-height: 150px">UserName</h1>
+                    </div>
+            </div>
       </div>
-      <div class="profileInfo">
-          <h1>UserName</h1>
+      <div class="profileInfo col">
+           
       </div>
   </div>
-  <div class="row">
+
+  <div class="row" style="padding-top:2%">
       <div class="profileInfo col">
-        <h3>Info</h3>
-          <p>Birth year:</p>
-          <p>Email:</p>
-          <p>Phone Number:</p>
+            <label class="profileInfo imageUpload">
+                    Upload Image
+                        <input style="display: none" type="file" name="profilePicture" accept="image/*">
+            </label> 
       </div>
-      <div class="profileInfo col">
+  </div>
+  <div class="row profileInfoRow" style="padding-left:3%; padding-right: 3%;">
+      <div class="profileInfo col line">
+        <h3>Info</h3>
+        <label>Birth Year:</label>
+            <div class="form-group">
+                <input type="text" id="birthYear" formControlName="birthYear" class="form-control" placeholder="BirthYear">
+            </div>
+        <label>Email</label>
+            <div class="form-group">
+                <input type="text" id="email" formControlName="email" class="form-control" placeholder="Email"
+                    [ngClass]="{ 'is-invalid': submitted && form.email.errors }" />
+                <div *ngIf="submitted && form.email.errors" class="invalid-feedback">
+                    <div *ngIf="form.email.errors.required">Email is required</div>
+                    <div *ngIf="form.email.errors.email">Must be a valid email</div>
+                </div>
+            </div>
+        <label>Phone Number</label>
+            <div class="form-group">
+                <input type="text" id="phoneNumber" formControlName="phoneNumber" class="form-control" placeholder="Phone Number"/>
+            </div>
+      </div>
+      <div class="profileInfo col line">
         <h3>Social Media</h3>
-        <p>Facebook:</p>
-          <p>Instagram:</p>
-          <p>Twitter:</p>
-          <p>LinkedIn:</p>
+        <label>Facebook</label>
+            <div class="form-group">
+                <input type="text" id="facebook" formControlName="facebook" class="form-control" placeholder="Facebook"/>
+            </div>
+        <label>Instagram</label>
+            <div class="form-group">
+                <input type="text" id="instagram" formControlName="instagram" class="form-control" placeholder="Instagram"/>
+            </div>
+        <label>Twitter</label>
+            <div class="form-group">
+                <input type="text" id="twitter" formControlName="twitter" class="form-control" placeholder="twitter"/>
+            </div>
       </div>
       <div class="profileInfo col" >
           <h3>Groups</h3>
           <div *ngFor="let user of user">
-              <p> UserName</p>
+              <a href="">Groupname</a>
           </div>
       </div>
   </div>

@@ -6,6 +6,7 @@ import { LoginComponent } from './auth/login/login.component'
 import { HomeComponent } from './home/home.component'
 import { ProfileComponent } from './profile/profile.component'
 import { OtherProfileComponent } from './other-profile/other-profile.component'
+
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ChangePasswordComponent } from './change-password/change-password.component'
 import { ChangeEmailComponent } from './change-email/change-email.component'
@@ -36,6 +37,7 @@ const routes: Routes = [
     component: OtherProfileComponent,
     canActivate: [AuthGuard]
   },
+
   {
     path: 'login',
     component: LoginComponent

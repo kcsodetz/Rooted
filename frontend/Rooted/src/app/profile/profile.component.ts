@@ -40,4 +40,17 @@ export class ProfileComponent implements OnInit {
       //NEEDS finishing
       console.log(this.response)
   }
+
+@Component({
+  selector: 'app-profile',
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.scss']
+})
+export class ProfileComponent implements OnInit {
+
+  constructor(private userService: UserService, private formBuilder: FormBuilder, private _router: Router) {}
+  ngOnInit() {
+  }
+
+
 }

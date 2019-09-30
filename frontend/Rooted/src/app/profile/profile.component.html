@@ -21,7 +21,7 @@
       <div class="profileInfo col" id="fileDropArea" ondragenter="fileDragEnter(event);" ondragover="fileDragOver(event);" ondragleave="fileDragLeave(event);" ondrop="fileDrop(event);">
             <label class="profileInfo imageUpload">
                     Upload Image
-                    <input style="display: none" multiple type="file" id="fileDropInput" type="file" name="profilePicture" accept="image/*">
+                    <input style="display: none" multiple type="file" id="fileDropInput" onchange="doFileStuff(this.files[this.files.length-1])" type="file" name="profilePicture" accept="image/*">
             </label> 
       </div>
   </div>

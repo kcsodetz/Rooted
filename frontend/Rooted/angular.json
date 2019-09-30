@@ -36,7 +36,7 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "node_modules/javascript/dragAndDrop.js"
+              "javascript/dragAndDrop.js"
             ]
           },
           "configurations": {

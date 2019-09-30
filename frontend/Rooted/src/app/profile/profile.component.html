@@ -1,0 +1,163 @@
+<div>
+  <div class="row">
+
+      <div class="profileInfo col-9">
+            <div class="row">
+                    <div class="cropImg">
+                        <div class="croppedImg">
+                            <img src="img_girl.jpg" alt=""> 
+                        </div>
+                    </div>
+                    <div class="profileInfo" >
+                            <h1 style="line-height: 150px">UserName</h1>
+                    </div>
+            </div>
+      </div>
+      <div class="profileInfo col">
+           <button data-toggle="modal" data-target="#photoModal">View Photo Library</button>
+      </div>
+  </div>
+
+  <div class="row" style="padding-top:2%">
+      <div class="profileInfo col" id="fileDropArea" ondragenter="fileDragEnter(event);" ondragover="fileDragOver(event);" ondragleave="fileDragLeave(event);" ondrop="fileDrop(event);">
+            <label class="profileInfo imageUpload">
+                    Upload Image
+                    <input style="display: none" multiple type="file" id="fileDropInput" onchange="doFileStuff(this.files[this.files.length-1])" type="file" name="profilePicture" accept="image/*">
+            </label> 
+      </div>
+  </div>
+  <div class="row">
+    <div class="col" id="fileNameList">
+
+    </div>
+  </div>
+  <div class="row profileInfoRow" style="padding-left:3%; padding-right: 3%;">
+      <div class="profileInfo col line">
+        <h3>Info</h3>
+        <div class="row">
+            <div class="col-9">
+                <label>Birth Year:</label>
+                <div class="form-group">
+                    <input type="text" id="birthYear" formControlName="birthYear" class="form-control" placeholder="BirthYear">
+                </div>
+            </div>
+            <div class="col-1" style="align-content: center">
+                <label>Hide</label>
+                <br>
+                <input type="checkbox" name="hideBirthYear"><br>    
+            </div>
+        </div>
+        <div class="row">
+                <div class="col-9">
+                    <label>Email</label>
+                        <div class="form-group">
+                            <input type="text" id="email" formControlName="email" class="form-control" placeholder="Email"
+                                [ngClass]="{ 'is-invalid': submitted && form.email.errors }" />
+                            <div *ngIf="submitted && form.email.errors" class="invalid-feedback">
+                                <div *ngIf="form.email.errors.required">Email is required</div>
+                                <div *ngIf="form.email.errors.email">Must be a valid email</div>
+                            </div>
+                        </div>
+                </div>
+                <div class="col-1" style="align-content: center">
+                    <label>Hide</label>
+                    <br>
+                    <input type="checkbox" name="hideEmail"><br>    
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-9">
+                    <label>Phone Number</label>
+                        <div class="form-group">
+                            <input type="text" id="phoneNumber" formControlName="phoneNumber" class="form-control" placeholder="Phone Number"/>
+                        </div>
+                </div>
+                <div class="col-1" style="align-content: center">
+                    <label>Hide</label>
+                    <br>
+                    <input type="checkbox" name="hidePhoneNumber"><br>    
+                </div>
+        </div>
+      </div>
+      <div class="profileInfo col line">
+        <h3>Social Media</h3>
+        <div class="row">
+                <div class="col-9">
+                    <label>Facebook</label>
+                        <div class="form-group">
+                            <input type="text" id="facebook" formControlName="facebook" class="form-control" placeholder="Facebook"/>
+                        </div>
+                </div>
+                <div class="col-1" style="align-content: center">
+                    <label>Hide</label>
+                    <br>
+                    <input type="checkbox" name="hideFacebook"><br>    
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-9">
+                    <label>Instagram</label>
+                        <div class="form-group">
+                            <input type="text" id="instagram" formControlName="instagram" class="form-control" placeholder="Instagram"/>
+                        </div>
+                </div>
+                <div class="col-1" style="align-content: center">
+                    <label>Hide</label>
+                    <br>
+                    <input type="checkbox" name="hideInstagram"><br>    
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-9">
+                    <label>Twitter</label>
+                        <div class="form-group">
+                            <input type="text" id="twitter" formControlName="twitter" class="form-control" placeholder="twitter"/>
+                        </div>
+                </div>
+                <div class="col-1" style="align-content: center">
+                    <label>Hide</label>
+                    <br>
+                    <input type="checkbox" name="hideTwitter"><br>    
+                </div>
+        </div>
+
+      <div class="cropImg">
+          <div class="croppedImg">
+              <img src="img_girl.jpg" alt=""> 
+          </div>
+      </div>
+      <div class="profileInfo">
+          <h1>UserName</h1>
+      </div>
+  </div>
+  <div class="row">
+      <div class="profileInfo col">
+        <h3>Info</h3>
+          <p>Birth year:</p>
+          <p>Email:</p>
+          <p>Phone Number:</p>
+      </div>
+      <div class="profileInfo col">
+        <h3>Social Media</h3>
+        <p>Facebook:</p>
+          <p>Instagram:</p>
+          <p>Twitter:</p>
+          <p>LinkedIn:</p>
+
+              <a href="">Groupname</a>
+          </div>
+      </div>
+  </div>
+  <div class="row profileInfo">
+        <button>Submit</button>
+  </div>
+
+  
+
+  
+
+
+
+</div>
+
+

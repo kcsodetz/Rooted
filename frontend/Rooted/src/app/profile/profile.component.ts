@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
-import { NgForm, FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { Router } from '@angular/router'
+import { NgForm, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -28,7 +28,7 @@ export class ProfileComponent implements OnInit {
   });
   }
 
-  get form() { return this.editProfileForm.controls }
+  get form() { return this.editProfileForm.controls; }
 
   get response_msg() { return this.response; }
 
@@ -37,20 +37,7 @@ export class ProfileComponent implements OnInit {
       if (this.editProfileForm.invalid) {
           return;
       }
-      //NEEDS finishing
-      console.log(this.response)
+      // NEEDS finishing
+      console.log(this.response);
   }
-
-@Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
-})
-export class ProfileComponent implements OnInit {
-
-  constructor(private userService: UserService, private formBuilder: FormBuilder, private _router: Router) {}
-  ngOnInit() {
-  }
-
-
 }

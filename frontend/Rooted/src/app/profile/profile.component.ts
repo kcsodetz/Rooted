@@ -3,10 +3,11 @@ import { UserService } from '../services/user.service';
 import { NgForm, FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router } from '@angular/router'
 
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
 
@@ -39,6 +40,4 @@ export class ProfileComponent implements OnInit {
       //NEEDS finishing
       console.log(this.response)
   }
-
-
 }

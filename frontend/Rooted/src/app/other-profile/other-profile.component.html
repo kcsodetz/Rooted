@@ -1,0 +1,74 @@
+<div>
+  <div class="row">
+      <div class="profileInfo col-9">
+            <div class="row">
+                    <div class="cropImg">
+                        <div class="croppedImg">
+                            <img src="img_girl.jpg" alt=""> 
+                        </div>
+                    </div>
+                    <div class="profileInfo" >
+                            <h1 style="line-height: 150px">UserName</h1>
+                    </div>
+            </div>
+      </div>
+      <div class="profileInfo col">
+           <button data-toggle="modal" data-target="#photoModal">View Photo Library</button>
+      </div>
+  </div>
+
+  
+  <div class="row profileInfoRow" style="padding-left:3%; padding-right: 3%;">
+      <div class="profileInfo col line">
+        <h3>Info</h3>
+        <div class="row">
+            <div class="col-9">
+                <label>Birth Year:</label>
+               <label id="birthYearEntry"></label>
+            </div>
+        </div>
+        <div class="row">
+                <div class="col-9">
+                    <label>Email</label>
+                    <label id="emailEntry"></label>
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-9">
+                    <label>Phone Number</label>
+                    <label id="phoneNumberEntry"></label>   
+                </div>
+        </div>
+      </div>
+      <div class="profileInfo col line">
+        <h3>Social Media</h3>
+        <div class="row">
+                <div class="col-9">
+                    <label>Facebook</label>
+                    <label id="facebookEntry"></label>
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-9">
+                    <label>Instagram</label>
+                    <label id="instagramEntry"></label>
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-9">
+                    <label>Twitter</label>
+                    <label id="twitterEntry"></label>  
+                </div>
+        </div>
+      </div>
+      <div class="profileInfo col" >
+          <h3>Groups</h3>
+          <div *ngFor="let user of user">
+              <a href="">Groupname</a>
+          </div>
+      </div>
+  </div>
+</div>
+<div>
+       
+</div>

@@ -21,6 +21,8 @@ import {
   WavesModule
 }
   from 'angular-bootstrap-md';
+
+
 import { RouterModule } from '@angular/router'
 import { HttpModule } from '@angular/http';
 
@@ -39,6 +41,7 @@ import { ChangeEmailComponent } from './change-email/change-email.component';
 import { AboutComponent } from './about/about.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ProfileComponent } from './profile/profile.component';
+import { OtherProfileComponent } from './other-profile/other-profile.component';
 
 
 @NgModule({
@@ -56,6 +59,7 @@ import { ProfileComponent } from './profile/profile.component';
     AboutComponent,
     NotFoundComponent,
     ProfileComponent,
+    OtherProfileComponent,
   ],
   imports: [
     BrowserModule,

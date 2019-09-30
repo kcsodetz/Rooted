@@ -35,7 +35,9 @@
               "node_modules/angular-bootstrap-md/scss/mdb-free.scss",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "javascript/dragAndDrop.js"
+            ]
           },
           "configurations": {
             "production": {

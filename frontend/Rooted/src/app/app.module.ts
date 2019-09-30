@@ -42,6 +42,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { ProfileComponent } from './profile/profile.component';
 
 import { OtherProfileComponent } from './other-profile/other-profile.component';
+import { CreategroupComponent } from './creategroup/creategroup.component';
+import { ReportuserComponent } from './reportuser/reportuser.component';
 
 
 
@@ -62,6 +64,10 @@ import { OtherProfileComponent } from './other-profile/other-profile.component';
     ProfileComponent,
 
     OtherProfileComponent,
+
+    CreategroupComponent,
+
+    ReportuserComponent,
 
   ],
   imports: [

@@ -94,7 +94,6 @@ router.post('/login', (req, res) => {
         //     res.status(401).send({ message: "User is not verified" })
         //     return;
         // }
-        console.log(req.body.password)
         bcrypt.compare(req.body.password, user.password, function (err, comp) {
             encrypt(req.body.password).then((p) => {
             })

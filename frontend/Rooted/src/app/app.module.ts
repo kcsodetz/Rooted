@@ -19,11 +19,10 @@ import {
   PopoverModule,
   TooltipModule,
   WavesModule
-}
-  from 'angular-bootstrap-md';
+} from 'angular-bootstrap-md';
 
 
-import { RouterModule } from '@angular/router'
+import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -52,10 +51,10 @@ import { OtherProfileComponent } from './other-profile/other-profile.component';
     SignUpComponent,
     AuthComponent,
     LoginComponent,
-    
+
     HomeComponent,
     ForgotPasswordComponent,
-    
+
     ChangePasswordComponent,
     ChangeEmailComponent,
     AboutComponent,

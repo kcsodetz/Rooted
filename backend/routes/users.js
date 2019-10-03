@@ -16,6 +16,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 /* Objects */
 var User = require('../model/user');
+var Tree = require('../model/tree');
 
 /**
  * All user related routes
@@ -258,6 +259,15 @@ router.post("/change-password", authenticate, (req, res) => {
     mailer(req.user.email, email_subject, email_body);
 })
 
-
+/**
+ * Get all trees
+ */
+router.get('/all-trees', authenticate, (req, res) => {
+    Tree.find({ members: req.user.username }).then((tree) => {
+        res.status(200).send(tree)
+    }).catch((err) => {
+        res.status(400).send(err)
+    })
+})
 
 module.exports = router;

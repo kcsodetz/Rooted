@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
+import { AuthService } from "../services/auth.service";
+import { BehaviorSubject } from 'rxjs';
 import { NgForm, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Account } from '../models/account.model'
 
 
 @Component({
@@ -10,14 +13,26 @@ import { Router } from '@angular/router';
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
-
+  userAuthed: Boolean;
+  account: Account;
+  username: String = "User";
+  private loggedIn = new BehaviorSubject<boolean>(false); 
   editProfileForm: FormGroup;
   response: string;
   submitted = false;
-  constructor(private userService: UserService, private formBuilder: FormBuilder, private _router: Router) {
+  constructor(private userService: UserService, public authService: AuthService, private formBuilder: FormBuilder, private _router: Router) {
 
   }
   ngOnInit() {
+    if(this.authService.autoAuthUser()){
+      this.userAuthed = true;
+    }
+
+    this.userService.getAccountInfo().then((res) => {
+      this.account = new Account(res);
+      this.username = this.account.username;
+  });
+
     this.editProfileForm = this.formBuilder.group({
       birthYear: [''],
       email: ['', Validators.required],

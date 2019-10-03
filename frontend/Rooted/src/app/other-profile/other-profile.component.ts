@@ -15,9 +15,15 @@ export class OtherProfileComponent implements OnInit {
 
   }
   ngOnInit() {
-
+    this.getUser();
   }
 
+  getUser() {
+    this.userService.getUserProfile('testing_ken').then((usr) => {
+      console.log(usr);
+    })
+
+  }
   get response_msg() { return this.response; }
 
 }

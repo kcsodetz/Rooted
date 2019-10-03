@@ -28,7 +28,17 @@ export class UserService {
     }
 
     getUserPhotos() {
-        return this.http.get<Object[]>('http:/localhost:5000/user/photo-library').toPromise();
+        return this.http.get<Object[]>('http://localhost:5000/user/photo-library').toPromise();
     }
 
+
+    //may not work 
+    getUserProfile(username: string){
+        const user = {
+            headers: new HttpHeaders({
+                'username': username
+            })
+        }
+        return this.http.get<Object>('http://localhost:5000/user/find-user', user).toPromise();
+    }
 }

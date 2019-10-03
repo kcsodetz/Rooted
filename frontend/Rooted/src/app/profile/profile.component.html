@@ -8,7 +8,11 @@
                           </div>
                       </div>
                       <div class="profileInfo" >
+<<<<<<< HEAD
                               <h1 style="line-height: 150px">{{username}}</h1>
+=======
+                              <h1 style="line-height: 150px" id="usernameLabel"></h1>
+>>>>>>> 00a010ba8f8282c11063bae842098457b032814d
                       </div>
               </div>
         </div>
@@ -123,8 +127,8 @@
         </div>
         <div class="profileInfo col" >
             <h3>Groups</h3>
-            <div *ngFor="let user of user">
-                <a href="">Groupname</a>
+            <div *ngFor="let t of myTrees">
+                <h5 style="font-weight:bold" routerLink='/about' (click)="renderTree(t)">{{t.treeName}}</h5>
             </div>
         </div>
     </div>

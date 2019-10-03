@@ -9,15 +9,11 @@
         <!-- Name -->
         <input type="text" id="defaultContactFormName" class="form-control mb-4" placeholder="Name">
 
-        <!-- Email -->
-        <input type="email" id="defaultContactFormEmail" class="form-control mb-4" placeholder="E-mail">
-
-        <!-- Subject -->
-        <label>Subject</label>
         <select class="browser-default custom-select mb-4">
-          <option value="" disabled>Reasoning</option>
-          <option value="1" selected>Harrassment</option>
+          <option value="" selected disabled>Reasoning</option>
+          <option value="1">Harrassment</option>
           <option value="2">Phishing</option>
+          <option value="3">Other</option>
         </select>
 
         <!-- Message -->
@@ -26,12 +22,6 @@
         </div>
 
         <!-- Copy -->
-        <div class="row">
-          <div class="col-md-6 mx-auto d-flex justify-content-center">
-            <mdb-checkbox [default]="true" class="mb-4">Send me a copy of this message</mdb-checkbox>
-          </div>
-        </div>
-
 
         <!-- Send button -->
         <button mdbBtn color="info" block="true" type="submit">Send</button>

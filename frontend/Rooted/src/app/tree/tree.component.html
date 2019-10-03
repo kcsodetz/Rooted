@@ -28,8 +28,47 @@
         </div>
 
         <div class="grid-item">
-            <h4 class="pageHeader">Insert Ben's Tree Frontend Here</h4>
-          
+          <nav class="nav green lighten-4 py-4">
+              <a class="nav-link active" href="#">Tree</a>
+              <a class="nav-link" href="#">Anouncements</a>
+              <a class="nav-link" href="#">About</a>
+              <a class="nav-link" href="#">Timeline</a>
+              <a class="nav-link" href="#">Photos</a>
+          </nav>
+          <mdb-card borderColor="border-success" *ngFor="let year of years">
+              <mdb-card-body>
+                  <mdb-card-title>
+                      <h3>{{year}}</h3>
+                  </mdb-card-title>
+                  <div class="usericon" *ngFor="let user of users">
+                    <i class="fas fa-user-circle fa-5x fa-green-text green-text pr-3 ml-3"></i>
+                    <span><a onclick="document.getElementById('userinfo').style.display='block'">
+                      {{user.name}}</a></span>
+                  </div>
+              </mdb-card-body>
+          </mdb-card>
+          <div id="userinfo" class="w3-modal">
+              <div class="w3-modal-content">
+                <div class="w3-container">
+                  <!-- Card Container and Body -->
+                  <mdb-card>
+                    <mdb-card-body>
+                        <span onclick="document.getElementById('userinfo').style.display='none'"
+                        class="w3-button w3-display-topright">&times;</span>
+                        <!-- View Profile Button -->
+                        <button mdbBtn href="#" routerLink="/profile" color="success" block="true" class="my-4">
+                          View their Profile!</button>
+                        <!-- View Profile Button -->
+                        <!-- Report User Button -->
+                        <button mdbBtn href="#" routerLink="/report-user" color="success" block="true" class="my-4">
+                          Report This User</button>
+                        <!-- Report User Button -->
+                    </mdb-card-body>
+                  </mdb-card>
+                  <!-- Card Container and Body -->
+                </div>
+              </div>
+          </div>
           <h1 class="greenLine">__________________________________________________________________</h1>
           <div class="adjustLeftMargin">
             <h4 class="pageHeader">Members of This Tree <button mdbBtn type="button" color="primary" mdbWavesEffect
@@ -87,7 +126,7 @@
           <html>
           <meta name="viewport" content="width=device-width, initial-scale=1">
           <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-
+          <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" media="screen" />
          
 
           </html>

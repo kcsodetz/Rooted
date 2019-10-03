@@ -112,3 +112,16 @@
     color: rgb(0, 176, 255);
     margin-left: 10px;
 }
+
+.usericon {
+  display: inline-block;
+}
+
+.usericon span{
+  color:black;
+  font-size:15px;
+  padding:5px 0 10px 25px;
+  display:block;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}

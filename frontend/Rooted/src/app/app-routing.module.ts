@@ -13,6 +13,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { ChangeEmailComponent } from './change-email/change-email.component';
 import { AboutComponent } from './about/about.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { ReportuserComponent } from './reportuser/reportuser.component';
 
 
 
@@ -51,6 +52,10 @@ const routes: Routes = [
   {
     path: 'forgot',
     component: ForgotPasswordComponent
+  },
+  {
+    path:'report-user',
+    component: ReportuserComponent
   },
   {
     path: 'change-password',

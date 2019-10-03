@@ -8,12 +8,13 @@
                           </div>
                       </div>
                       <div class="profileInfo" >
-                              <h1 style="line-height: 150px">UserName</h1>
+                              <h1 style="line-height: 150px" id="usernameLabel"></h1>
                       </div>
               </div>
         </div>
         <div class="profileInfo col">
-             <button data-toggle="modal" data-target="#photoModal">View Photo Library</button>
+             <button mdbBtn type="button" color="success"
+             mdbWavesEffect routerLink="/photo-library" >View Photo Library</button>
         </div>
     </div>
   
@@ -37,7 +38,7 @@
               <div class="col-9">
                   <label>Birth Year:</label>
                   <div class="form-group">
-                      <input type="text" id="birthYear" formControlName="birthYear" class="form-control" placeholder="BirthYear">
+                      <input type="text" id="birthYear"  class="form-control" placeholder="BirthYear">
                   </div>
               </div>
               <div class="col-1" style="align-content: center">
@@ -50,7 +51,7 @@
                   <div class="col-9">
                       <label>Email</label>
                           <div class="form-group">
-                              <input type="text" id="email" formControlName="email" class="form-control" placeholder="Email"
+                              <input type="text" id="email" class="form-control" placeholder="Email"
                                   [ngClass]="{ 'is-invalid': submitted && form.email.errors }" />
                               <div *ngIf="submitted && form.email.errors" class="invalid-feedback">
                                   <div *ngIf="form.email.errors.required">Email is required</div>
@@ -84,7 +85,7 @@
                   <div class="col-9">
                       <label>Facebook</label>
                           <div class="form-group">
-                              <input type="text" id="facebook" formControlName="facebook" class="form-control" placeholder="Facebook"/>
+                              <input type="text" id="facebook" class="form-control" placeholder="Facebook"/>
                           </div>
                   </div>
                   <div class="col-1" style="align-content: center">
@@ -97,7 +98,7 @@
                   <div class="col-9">
                       <label>Instagram</label>
                           <div class="form-group">
-                              <input type="text" id="instagram" formControlName="instagram" class="form-control" placeholder="Instagram"/>
+                              <input type="text" id="instagram" class="form-control" placeholder="Instagram"/>
                           </div>
                   </div>
                   <div class="col-1" style="align-content: center">
@@ -110,7 +111,7 @@
                   <div class="col-9">
                       <label>Twitter</label>
                           <div class="form-group">
-                              <input type="text" id="twitter" formControlName="twitter" class="form-control" placeholder="twitter"/>
+                              <input type="text" id="twitter" class="form-control" placeholder="Twitter"/>
                           </div>
                   </div>
                   <div class="col-1" style="align-content: center">
@@ -122,8 +123,8 @@
         </div>
         <div class="profileInfo col" >
             <h3>Groups</h3>
-            <div *ngFor="let user of user">
-                <a href="">Groupname</a>
+            <div *ngFor="let t of myTrees">
+                <h5 style="font-weight:bold" routerLink='/about' (click)="renderTree(t)">{{t.treeName}}</h5>
             </div>
         </div>
     </div>

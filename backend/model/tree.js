@@ -10,12 +10,15 @@ let treeSchema = new mongoose.Schema({
         user: String,
         message: String,
     }],
+    reportedUsers: [{
+        user: String,
+        reason: String,
+    }],
     imageUrl: {type: String, default: process.env.DEFAULT_IMAGE},
     image_id: {type: String},
     hasImage: {type: Boolean, default: false},
     description: {type: String},
 })
-
 
 /* Creating the user model from the schema and giving it to Mongoose */
 let Tree = mongoose.model('Trees', treeSchema);

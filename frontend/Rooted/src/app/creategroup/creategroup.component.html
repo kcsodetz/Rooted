@@ -1,0 +1,59 @@
+<!-- Default form register -->
+<form class="text-center border border-light p-5">
+
+  <p class="h4 mb-4">Create your Rooted Group!</p>
+
+  <!-- <div class="form-row mb-4">
+    <div class="col">
+      <input type="text" id="defaultRegisterFormFirstName" class="form-control" placeholder="First name">
+    </div>
+    <div class="col">
+      <input type="text" id="defaultRegisterFormLastName" class="form-control" placeholder="Last name">
+    </div>
+  </div> -->
+
+  <!-- Group Name -->
+  <div class="md-form form-group mt-5">
+  <input mdbInput type="text" id="groupRegisterFormGroupName" class="form-control" placeholder="Group name">
+  </div>
+
+  <!-- E-mail -->
+  <div class="md-form form-group mt-5">
+  <input mdbInput type="email" id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="Contact E-mail">
+  </div>
+
+  <!-- Phone number -->
+  <div class="md-form form-group mt-5">
+  <input type="text" id="defaultRegisterPhonePassword" class="form-control" placeholder="Contact Phone Number">
+  </div>
+
+  <!-- Founded Date -->
+  <div class="md-form form-group mt-5">
+    <input type="number" id="groupRegisterFormCreateDate" class="form-control" placeholder="Year Founded">
+  </div>
+
+  <!-- About Us -->
+  <div class="md-form form-group mt-5">
+    <textarea class="form-control rounded-0" id="exampleFormControlTextarea2" rows="3" placeholder="Group Information"></textarea>
+  </div>
+
+  <div class="md-form form-group mt-5">
+    <select class="browser-default custom-select">
+      <option selected>Group Visibility</option>
+      <option value="1">Public</option>
+      <option value="2">Private</option>
+    </select>
+  </div>
+
+  <!-- Newsletter -->
+  <div class="row">
+    <div class="col-md-6 mx-auto d-flex justify-content-center">
+      <mdb-checkbox [default]="true">Subscribe to our newsletter</mdb-checkbox>
+    </div>
+  </div>
+
+  <!-- Sign up button -->
+  <button mdbBtn color="info" block="true" class="my-4" type="submit">Create</button>
+  <hr>
+</form>
+<!-- Default form register -->

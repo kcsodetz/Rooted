@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
-import { NgForm, FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { Router } from '@angular/router'
+import { NgForm, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-other-profile',
@@ -15,7 +15,7 @@ export class OtherProfileComponent implements OnInit {
 
   }
   ngOnInit() {
-    
+
   }
 
   get response_msg() { return this.response; }

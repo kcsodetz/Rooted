@@ -27,6 +27,7 @@ export class AppComponent {
     this.authService.logout();
   }
 
+  // tslint:disable-next-line: use-life-cycle-interface
   ngOnInit() {
     if (this.authService.autoAuthUser()) {
       this.userAuthed = true;

@@ -9,6 +9,10 @@ let userSchema = new mongoose.Schema({
   password: { type: String, required: true, minlength: 8 },
   verified: Boolean,
   verificationNum: { type: Number, default: 0 },
+  images: [{
+    imageUrl: String,
+    id: String
+  }],
   email: {
     type: String,
     unique: true,

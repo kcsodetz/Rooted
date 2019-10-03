@@ -6,6 +6,8 @@ var bcrypt = require('bcrypt')
 var authenticate = require('../middleware/authenticate')
 var mailer = require('../middleware/mailer')
 var validate_email = require('../middleware/validate_email')
+var upload = require('../middleware/photo_upload')
+var validate = require('../middleware/validate_url')
 
 mongoose.connect(process.env.MONGODB_HOST, { useNewUrlParser: true });
 mongoose.set('useCreateIndex', true);
@@ -36,6 +38,7 @@ router.get("/account", authenticate, (req, res) => {
  * Register new user 
  */
 router.post("/register", (req, res) => {
+    console.log("registerhere");
     if (!req.body.email || !req.body.password || !req.body.username) {
         res.status(400).send({ message: "User data is incomplete" });
         return;
@@ -258,6 +261,50 @@ router.post("/change-password", authenticate, (req, res) => {
     mailer(req.user.email, email_subject, email_body);
 })
 
+
+/* 
+ * Add Profile picture
+ */ 
+// router.post('/add-profile-photo', authenticate, upload.single("image"), function (req, res) {
+//     if (!req.body || !req.body.email || !req.body.imageUrl) {
+//         res.status(400).send({ message: "Bad Request" })
+//         return
+//     }
+
+//     console.log(req.body.email);
+
+//     if (!validate(req.body.imageUrl)) {
+//         console.log("not valid");
+//         res.status(400).send({ message: "Invalid image, url is not validated" })
+//         return;
+//     }
+
+//     User.findOne({ _id: req.body.email }).then((usr) => {
+//         console.log('hew');
+//         if(!usr) {
+//             res.status(400).send({ message: "User does not exist" });
+//             return;
+//         }
+
+//         User.findByIdAndUpdate({ _id: req.body.email }, {
+//             $push: {
+//                 images: {
+//                     url: req.body.imageUrl
+//                 }
+//             }
+//         }).then((usr) => {
+//             console.log('yayyy');
+//             res.status(200).send({ message: "Upload successful" })
+//             return
+//         }).catch((err) => {
+//             console.log('boooo');
+//             res.send(err);
+//         })
+//     }). catch((err) => {
+//         console.log('boooo 2');
+//         res.send(err);
+//     })
+// });
 
 
 module.exports = router;

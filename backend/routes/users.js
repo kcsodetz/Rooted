@@ -263,6 +263,26 @@ router.post("/change-password", authenticate, (req, res) => {
 })
 
 
+/**
+ * Get specific user
+ */
+router.get ("/find-user", (req, res) => {
+    console.log('finding someone');
+    if (!req.body || !req.body.username) {
+        res.status(400).send({ message: 'Error retrieving user' })
+        return
+    }
+
+    User.findOne({ username: req.body.username }).then((user) => {
+        // console.log('user: ',user)
+        res.status(200).send(user);
+    }).catch((err) => {
+        res.status(400).send(err);
+    })
+})
+
+
+
 /* 
  * Add Profile picture
  */ 

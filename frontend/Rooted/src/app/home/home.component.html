@@ -6,11 +6,123 @@
   <!-- Main Body -->
 
   <body>
-    <h1>Welcome to Rooted!</h1>
-    
+    <!-- Main Container -->
+    <div class="w3-container">
+      <!-- Create New Tree Button -->
+      <button onclick="document.getElementById('id01').style.display='block'" mdbBtn type="button" color="primary"
+        mdbWavesEffect>Create a New Tree</button>
+
+      <!-- Create New Tree Modal -->
+      <div id="id01" class="w3-modal">
+        <div class="w3-modal-content">
+          <div class="w3-container">
+            <!-- Card Container and Body -->
+            <mdb-card>
+              <mdb-card-body>
+                <!-- Submission Form -->
+                <form (submit)="submitFile(f)" #f="ngForm" class="text-center border border-light p-5"
+                  [formGroup]="fileForm">
+                  <!-- Form Group -->
+                  <div class="form-group">
+                    <!-- Header -->
+                    <h4 class="pageHeader">Create a New Tree</h4>
+                    <!-- Header -->
+
+                    <!-- Tree Name Text Input -->
+                    <input type="text" id="treeName" formControlName="treeName" class="form-control"
+                      placeholder="What is the name of your tree?" [(ngModel)]="treeName"
+                      [ngClass]="{ 'is-invalid': submitted && form.treeName.errors }">
+                    <!-- Invalid Feedback -->
+                    <div *ngIf="submitted && form.treeName.errors" class="invalid-feedback">
+                      <div *ngIf="form.treeName.errors.required">
+                        <p style="font-size:15px;">
+                          Tree Name is required
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- Tree Description Text Input -->
+                    <input type="text" id="treeDesc" formControlName="treeDesc" class="form-control"
+                      placeholder="Tree Description" [(ngModel)]="treeDesc"
+                      [ngClass]="{ 'is-invalid': submitted && form.treeDesc.errors }">
+                    <!-- Invalid Feedback -->
+                    <div *ngIf="submitted && form.treeDesc.errors" class="invalid-feedback">
+                      <div *ngIf="form.treeDesc.errors.required">
+                        <p style="font-size:15px;">
+                          Tree Description is required
+                        </p>
+                      </div>
+                    </div>
+                    <!-- Tree Description Text Input -->
+
+                    <!-- Tree Image URL -->
+                    <input type="text" id="imageUrl" formControlName="imageUrl" class="form-control"
+                      placeholder="Paste the url of the image you would like to upload" [(ngModel)]="imageUrl">
+                    <!-- Tree Image URL -->
+
+                  </div>
+                  <!-- Form Group -->
+
+                  <!-- Create Tree Button -->
+                  <button mdbBtn color="info" block="true" class="my-4">Create
+                    Tree</button>
+                  <!-- Create Tree Button -->
+
+                  <!-- Cancel Button -->
+                  <button (click)="cancel()" type="button" onclick="document.getElementById('id01').style.display='none'" mdbBtn
+                    color="info" block="true" class="my-4">Cancel</button>
+                  <!-- Cancel Button -->
+
+                </form>
+                <!-- Submission Form -->
+              </mdb-card-body>
+            </mdb-card>
+            <!-- Card Container and Body -->
+          </div>
+        </div>
+      </div>
+      <!-- Create New Tree Modal -->
+    </div>
   </body>
   <!-- Main Body -->
 
   </html>
 </div>
 
+<!-- Content Div -->
+<div>
+  <h4 class="pageHeader">Your Trees</h4>
+  <div class="grid-container" id="treeObject">
+    <div *ngFor="let t of myTrees">
+      <h2 class="center">{{t.treeName}}</h2>
+      <div class="cardProperties grid-item" id="trees" (click)="renderTree(t)">
+
+        <!-- <div mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+        aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: true}">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header"> -->
+        <!-- <h4 class="modal-title w-100" id="myModalLabel">{{t.treeName}}</h4> -->
+
+        <img [src]="t.imageUrl" class="imgSize" />
+
+        <!-- <form (submit)="submitFile(f, t.treeName)" #f="ngForm" class="text-center border border-light p-5"
+                [formGroup]="fileForm">
+                <div class="form-group">
+                  <input type="text" id="url" formControlName="imageUrl" class="form-control" placeholder="Paste the url of the image you would like to upload"
+                    [ngClass]="{ 'is-invalid': submitted && form.imageUrl.errors }">
+                </div>
+                <button type="submit" mdbBtn type="button" color="primary" mdbWavesEffect>Add Image</button>
+              </form> -->
+
+        <!-- </div> -->
+        <!-- <div class="modal-footer"> -->
+        <!-- </div>
+          </div>
+        </div>
+      </div> -->
+
+      </div>
+    </div>
+  </div>
+</div>

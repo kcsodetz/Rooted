@@ -7,7 +7,8 @@ const cloudinaryStorage = require("multer-storage-cloudinary");
 require('dotenv').config();
 
 /* Routes */
-let user = require('./routes/users.js');   
+let user = require('./routes/users.js'); 
+let tree = require('./routes/tree.js');  
 
 const app = express(cors());
 
@@ -27,6 +28,7 @@ app.use((req, res, next) => {
 
 /* Routes */
 app.use('/user', user);
+app.use('/tree', tree)
 
 
 app.get('/', (res, req) => {

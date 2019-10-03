@@ -40,10 +40,10 @@ router.post("/add", authenticate, function (req, res) {
 
     let desc = 'A tree rooted in history';
     let url = process.env.DEFAULT_IMAGE;
-    if(req.body.description){
+    if (req.body.description) {
         desc = req.body.description
     }
-    if(req.body.imageUrl && validate(req.body.imageUrl)){
+    if (req.body.imageUrl && validate(req.body.imageUrl)) {
         url = req.body.imageUrl
     }
 
@@ -145,9 +145,9 @@ router.post('/add-user', authenticate, (req, res) => {
 
                     User.findEmailByUsername(req.body.username).then((email) => {
                         var emailSubject = "Rooted: You\'ve Been Added to \"" + tre.circleName + "\"!"
-                        var addedToTreeBody = "Dear " + req.body.username + 
-                        ",\n\nOne of your friends has added you to " + tre.founder + "\'s tree \"" + tre.treeName + "\". View your profile for more details.\n\n" +
-                        "Sincerely, \n\nThe Rooted Team";
+                        var addedToTreeBody = "Dear " + req.body.username +
+                            ",\n\nOne of your friends has added you to " + tre.founder + "\'s tree \"" + tre.treeName + "\". View your profile for more details.\n\n" +
+                            "Sincerely, \n\nThe Rooted Team";
 
                         mailer(email, emailSubject, addedToTreeBody);
 
@@ -191,7 +191,7 @@ router.post('/delete', authenticate, (req, res) => {
             res.status(400).send({ message: "Could not find tree" });
             return;
         }
-        Rooted.findOneAndDelete({_id: {$in: tre.rooted}}).then(() => {
+        Rooted.findOneAndDelete({ _id: { $in: tre.rooted } }).then(() => {
             res.status(200).send(tre) //returns all tree properties
             return
         }).catch((err) => {
@@ -232,16 +232,16 @@ router.post("/edit-name", authenticate, (req, res) => {
 })
 
 router.post('/add-message', authenticate, (req, res) => {
-    if(!req.body || !req.body.message || !req.body.treeID){
+    if (!req.body || !req.body.message || !req.body.treeID) {
         res.status(400).send({ message: "Bad request" });
         return;
     }
-    Tree.findOne({_id: req.body.treeID}).then((tree) => {
-        if(!tree){
-            res.status(400).send({message: "Tree does not exist"})
+    Tree.findOne({ _id: req.body.treeID }).then((tree) => {
+        if (!tree) {
+            res.status(400).send({ message: "Tree does not exist" })
             return
         }
-        Tree.findOneAndUpdate({_id: req.body.treeID}, {
+        Tree.findOneAndUpdate({ _id: req.body.treeID }, {
             $push: {
                 chat: {
                     message: req.body.message,
@@ -249,7 +249,7 @@ router.post('/add-message', authenticate, (req, res) => {
                 }
             }
         }).then((tre) => {
-            res.status(200).send({message: "message added"})
+            res.status(200).send({ message: "message added" })
             return
         }).catch((err) => {
             res.send(err);
@@ -283,21 +283,21 @@ router.post("/edit-tree-description", authenticate, (req, res) => {
 })
 
 router.post('/leave', authenticate, (req, res) => {
-    if(!req.body.treeID){
+    if (!req.body.treeID) {
         res.status(400).json({ message: "Tree description change is incomplete" });
         return;
     }
-    Tree.findOne({_id: req.body.treeID}).then((tre) => {
-        if(!tre){
-            res.status(400).send({message: "Tree does not exist"})
+    Tree.findOne({ _id: req.body.treeID }).then((tre) => {
+        if (!tre) {
+            res.status(400).send({ message: "Tree does not exist" })
             return
         }
-        Tree.findOneAndUpdate({_id: req.body.treeID}, {
+        Tree.findOneAndUpdate({ _id: req.body.treeID }, {
             $pull: {
                 members: req.user.username
             }
         }).then(() => {
-            res.status(200).send({ message: username + " has left tree"})
+            res.status(200).send({ message: username + " has left tree" })
             return
         }).catch((err) => {
             res.send(err);
@@ -375,8 +375,38 @@ router.get('/info', authenticate, (req, res) => {
     // make sure ID
 })
 
+/*
+*   Get report a user
+*/
+router.post('/report', authenticate, (req, res) => {
 
+    //ensure that request has body and has treeID
+    //if not, send bad request
+    if (!req.headers.treeid || !req.body.userToReport || !req.body.reason) {
+        // console.log(req.headers)
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
 
-
+    Tree.findOneAndUpdate({ _id: req.headers.treeid },
+        {
+            $push: {
+                reportedUsers: {
+                    user: req.body.userToReport,
+                    reason: req.body.reason,
+                }
+            }
+        }).then((tre) => {
+            if (tre == null) {
+                res.status(400).send({ message: "Something went wrong" });
+            }
+            res.status(200).send({ message: "Reported " + req.body.userToReport });
+            return;
+        }).catch((err) => {
+            console.log(err)
+            res.status(400).send({ message: "Something went wrong" });
+            return;
+        })
+})
 
 module.exports = router;

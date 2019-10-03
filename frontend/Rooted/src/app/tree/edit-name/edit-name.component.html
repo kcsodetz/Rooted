@@ -1,0 +1,58 @@
+<div class="p-2 profile animated fadeInUp">
+    <h1>Edit: {{myTree.treeName}}</h1>
+    <mdb-card class="outerCard">
+        <mdb-card-body>
+            <form (submit)="sendEdits(f)" #f="ngForm" [formGroup]="editTreeForm">
+                <div class="form-group">
+
+                    <h5 class="header">Edit Tree Name</h5>
+                    <input type="text" class="form-control" formControlName="treeName" value={{myTree.treeName}}
+                        [ngClass]="{ 'is-invalid': submitted && form.treeName.errors }" />
+                    <div *ngIf="submitted && form.treeName.errors" class="invalid-feedback">
+                        <div *ngIf="form.treeName.errors.required">Tree Name is required</div>
+                    </div>
+
+                    <h5 class="header">Edit Tree Photo URL</h5>
+                    <input type="text" class="form-control" formControlName="imageUrl" value={{myTree.imageUrl}}
+                        [ngClass]="{ 'is-invalid': submitted && form.imageUrl.errors }" />
+                    <div *ngIf="submitted && form.imageUrl.errors" class="invalid-feedback">
+                        <div *ngIf="form.imageUrl.errors.required">Tree Image URL is required</div>
+                    </div>
+
+                    <h5 class="header">Edit Tree Description</h5>
+                    <input type="text" class="form-control" formControlName="treeDescription" value={{myTree.description}}
+                        [ngClass]="{ 'is-invalid': submitted && form.treeDescription.errors }" />
+                    <div *ngIf="submitted && form.treeDescription.errors" class="invalid-feedback">
+                        <div *ngIf="form.treeDescription.errors.required">Tree Description is required</div>
+                    </div>
+
+                </div>
+
+               
+                <div *ngIf="response_msg === 'fatalError'" class="alert alert-danger" role="alert">
+                    A Fatal Error Has Occoured. PLease Try Again Later.
+                </div>
+                <div *ngIf="response_msg === 'invalidURL'" class="alert alert-danger" role="alert">
+                    Invalid IRL. Please check your image link.
+                </div>
+                <div *ngIf="response_msg === 'noEdit'" class="alert alert-info" role="alert">
+                    No Changes Applied
+                </div>
+                <div *ngIf="response_msg === 'complete'" class="alert alert-success" role="alert">
+                    Tree Edits Successfully Applied
+                </div>
+
+                <button mdbBtn color="info" block="true" class="my-4" type="submit">Submit</button>
+
+                <div *ngIf="submitted">
+                    <button mdbBtn (click)="cancelEdits()" color="info" outline="true" mdbWavesEffect block="true">Done</button>
+                </div>
+                <div *ngIf="!submitted">
+                    <button mdbBtn (click)="cancelEdits()" color="danger" outline="true" mdbWavesEffect block="true">Cancel</button>
+                </div>
+
+
+            </form>
+        </mdb-card-body>
+    </mdb-card>
+</div>

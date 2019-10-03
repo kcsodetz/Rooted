@@ -1,0 +1,56 @@
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { FormsModule, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  MDBBootstrapModule,
+  ModalModule,
+  NavbarModule,
+  BadgeModule,
+  BreadcrumbModule,
+  ButtonsModule,
+  CarouselModule,
+  CardsFreeModule,
+  MdbCardBodyComponent,
+  ChartsModule,
+  CheckboxModule,
+  CollapseModule,
+  DropdownModule,
+  IconsModule,
+  InputsModule,
+  PopoverModule,
+  TooltipModule,
+  WavesModule
+}
+  from 'angular-bootstrap-md';
+import { TreeComponent } from './tree.component';
+
+describe('TreeComponent', () => {
+  let component: TreeComponent;
+  let fixture: ComponentFixture<TreeComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule,
+        NavbarModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MDBBootstrapModule.forRoot(),
+      ],
+      declarations: [ TreeComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TreeComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

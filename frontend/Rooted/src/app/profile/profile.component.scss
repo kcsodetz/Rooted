@@ -7,24 +7,14 @@
     margin-left:3%;
     border:solid;
 }
-
 .croppedImg {
     width: 400px;
     height: 300px;
     margin: -75px 0 0 -75px;
 }
 
-
-.croppedImg {
-    width: 400px;
-    height: 300px;
-    margin: -75px 0 0 -100px;
-
-}
-
 .profileInfo{
     padding: 3%;
-
     padding-top: 0;
     padding-bottom:0;
     text-align: left;
@@ -46,14 +36,6 @@
     background-color: rgb(27, 172, 59);
     color:white;
 }
-button{
-    border-radius:10px;
-    padding-top:1%;
-    padding-bottom:1%;
-    background-color: rgb(27, 172, 59);
-    color:white;
-    border:none;
-}
 h1{
     color:rgb(27, 172, 59);
     font-weight: bolder;
@@ -61,22 +43,13 @@ h1{
 h3{
     color:rgb(27, 172, 59);
     font-weight: bolder;
-
-    padding-top: 2%;
-    padding-bottom:0;
-    text-align: center;
-    margin-bottom: 0;
 }
-.profileInfo{
-    text-align: center;
-    margin-bottom: 0;
 
-}
 
 .largeBold{
     font-size: larger;
     font-weight: bold;
 }
-p{
+p {
     margin-bottom: 0;
 }

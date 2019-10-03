@@ -73,6 +73,7 @@ router.post("/register", (req, res) => {
                 res.status(400).send({ message: "User already exists" })
                 return
             }
+            console.log(err);
             res.status(400).send(err)
             return;
         })

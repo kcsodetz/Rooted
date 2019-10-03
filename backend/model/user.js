@@ -10,11 +10,74 @@ let userSchema = new mongoose.Schema({
   verified: Boolean,
   verificationNum: { type: Number, default: 0 },
   email: {
-    type: String,
-    unique: true,
-    validate: {
-      validator: vdator.isEmail,
-      message: '{VALUE} is not a valid email'
+    properties:{
+      value:{
+        type: String,
+        unique: true,
+        validate: {
+          validator: vdator.isEmail,
+          message: '{VALUE} is not a valid email'
+        }
+      }, 
+      hidden:{
+        type:Boolean,
+        default:true
+      }
+    }
+  }, 
+  birthYear: {
+    properties:{
+      value:{
+        type: Number
+      },
+      hidden:{
+        type:Boolean,
+        default:true
+      }
+    }
+  },
+  phoneNumber: {
+    properties:{
+      value:{
+        type: String,
+      },
+      hidden:{
+        type:Boolean,
+        default:true
+      }
+    }
+  },
+  facebook:{
+    properties:{
+      value:{
+        type: String,
+      },
+      hidden:{
+        type:Boolean,
+        default:true
+      }
+    }
+  },
+  instagram:{
+    properties:{
+      value:{
+        type: String,
+      },
+      hidden:{
+        type:Boolean,
+        default:true
+      }
+    }
+  },
+  twitter:{
+    properties:{
+      value:{
+        type: String,
+      },
+      hidden:{
+        type:Boolean,
+        default:true
+      }
     }
   },
   tokens: [{

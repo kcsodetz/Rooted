@@ -35,11 +35,29 @@ export class ProfileComponent implements OnInit {
     this.userService.getAccountInfo().then((res) => {
       this.account = new Account(res);
       this.username = this.account.username;
-<<<<<<< HEAD
       console.log("Username is " + this.username);
-=======
       document.getElementById("usernameLabel").innerHTML=this.account.username;
->>>>>>> 00a010ba8f8282c11063bae842098457b032814d
+      document.getElementById("email").setAttribute("placeholder",this.account.email);      
+      if(this.account.birthYear!=undefined && !this.account.birthYearHidden)
+      {
+        document.getElementById("birthYear").setAttribute("placeholder",this.account.birthYear);
+      }
+      if(this.account.phoneNumber!=undefined && !this.account.phoneNumberHidden)
+      {
+        document.getElementById("phoneNumber").setAttribute("placeholder",this.account.phoneNumber);
+      }
+      if(this.account.facebook!=undefined && !this.account.facebookHidden)
+      {
+        document.getElementById("facebook").setAttribute("placeholder",this.account.facebook);
+      }
+      if(this.account.instagram!=undefined && !this.account.instagramHidden)
+      {
+        document.getElementById("instagram").setAttribute("placeholder",this.account.instagram);
+      }
+      if(this.account.twitter!=undefined && !this.account.twitterHidden)
+      {
+        document.getElementById("twitter").setAttribute("placeholder",this.account.twitter);
+      }
   });
 
     this.editProfileForm = this.formBuilder.group({

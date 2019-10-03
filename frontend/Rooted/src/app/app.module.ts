@@ -34,6 +34,7 @@ import { FormsModule, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './auth/login/login.component';
 import { HomeComponent } from './home/home.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { TreeComponent } from './tree/tree.component';
 
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ChangeEmailComponent } from './change-email/change-email.component';
@@ -68,6 +69,7 @@ import { ReportuserComponent } from './reportuser/reportuser.component';
     CreategroupComponent,
 
     ReportuserComponent,
+    TreeComponent
 
   ],
   imports: [

@@ -4,6 +4,7 @@ import { AuthGuard } from './auth/auth-guard';
 import { SignUpComponent } from './auth/signup/signup.component';
 import { LoginComponent } from './auth/login/login.component';
 import { HomeComponent } from './home/home.component';
+import { TreeComponent } from './tree/tree.component'
 import { ProfileComponent } from './profile/profile.component';
 import { OtherProfileComponent } from './other-profile/other-profile.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
@@ -61,6 +62,15 @@ const routes: Routes = [
   {
     path: 'about',
     component: AboutComponent
+  },
+  {
+    //:id is parameter, important 
+    path: 'tree/:id',
+    component: TreeComponent,
+    canActivate: [AuthGuard],
+    data: {
+      type: 'tree'
+    }
   },
   {
     path: 'not-found',

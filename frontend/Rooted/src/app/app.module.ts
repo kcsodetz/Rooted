@@ -41,6 +41,7 @@ import { ChangeEmailComponent } from './change-email/change-email.component';
 import { AboutComponent } from './about/about.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ProfileComponent } from './profile/profile.component';
+import { PhotoLibraryComponent } from './photo-library/photo-library.component'
 
 import { OtherProfileComponent } from './other-profile/other-profile.component';
 import { CreategroupComponent } from './creategroup/creategroup.component';
@@ -63,6 +64,7 @@ import { ReportuserComponent } from './reportuser/reportuser.component';
     AboutComponent,
     NotFoundComponent,
     ProfileComponent,
+    PhotoLibraryComponent,
 
     OtherProfileComponent,
 

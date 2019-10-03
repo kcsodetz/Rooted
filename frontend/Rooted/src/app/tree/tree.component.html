@@ -6,16 +6,14 @@
     <button mdbBtn type="button" color="primary" mdbWavesEffect (click)=back()> <i class="fa fa-arrow-left"> </i> Back
       to Your Trees </button>
 
-      <h4>FUCK</h4>
+      
 
     <div  class="mainDiv">
       <h1 class="treeTitle">{{myTree.treeName}}
       </h1>
       <div class="grid-container">
         <div class="grid-item">
-          <img [src]="myTree.imageUrl" class="cover" />
-          <button class="messagesButton" mdbBtn type="button" color="info" mdbWavesEffect (click)="show = !show"
-            (click)="getMessages()"> View Messages </button>
+        
           <div class="overflowTest" *ngIf="show">
             <div *ngFor="let m of messages">
               <b>{{m.user}}</b>:
@@ -30,16 +28,8 @@
         </div>
 
         <div class="grid-item">
-          <h4 class="treeTitle adjustLeftMargin">About This Tree <button mdbBtn type="button" color="primary"
-              mdbWavesEffect (click)=renderEditTreeName()>Edit Tree <i class="fa fa-edit"> </i></button> <button
-              type="button" class="btn btn-danger" (click)=delTre()>Delete Tree <i class="fa fa-trash"> </i></button>
-            <button type="button" class="btn btn-danger" (click)=leaveTree()>Leave Tree<i
-                class="fa fa-road"></i></button>
-          </h4>
-          <div class="adjustLeftMargin">
-            <h2>{{myTree.description}}</h2>
-
-          </div>
+            <h4 class="pageHeader">Insert Ben's Tree Frontend Here</h4>
+          
           <h1 class="greenLine">__________________________________________________________________</h1>
           <div class="adjustLeftMargin">
             <h4 class="pageHeader">Members of This Tree <button mdbBtn type="button" color="primary" mdbWavesEffect

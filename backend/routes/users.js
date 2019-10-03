@@ -270,4 +270,8 @@ router.get('/all-trees', authenticate, (req, res) => {
     })
 })
 
+// router.get('/photo-library', authenticate, (req, res) => {
+
+// }
+
 module.exports = router;

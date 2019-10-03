@@ -8,12 +8,13 @@
                           </div>
                       </div>
                       <div class="profileInfo" >
-                              <h1 style="line-height: 150px">UserName</h1>
+                              <h1 style="line-height: 150px">{{username}}</h1>
                       </div>
               </div>
         </div>
         <div class="profileInfo col">
-             <button data-toggle="modal" data-target="#photoModal">View Photo Library</button>
+             <button mdbBtn type="button" color="success"
+             mdbWavesEffect routerLink="/photo-library" >View Photo Library</button>
         </div>
     </div>
   

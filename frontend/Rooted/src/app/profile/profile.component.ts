@@ -31,6 +31,7 @@ export class ProfileComponent implements OnInit {
     this.userService.getAccountInfo().then((res) => {
       this.account = new Account(res);
       this.username = this.account.username;
+      console.log("Username is " + this.username);
   });
 
     this.editProfileForm = this.formBuilder.group({

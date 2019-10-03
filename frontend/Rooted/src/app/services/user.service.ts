@@ -26,4 +26,9 @@ export class UserService {
     getAccountInfo() {
         return this.http.get<Object>('http://localhost:5000/user/account').toPromise();
     }
+
+    getUserPhotos() {
+        return this.http.get<Object[]>('http:/localhost:5000/user/photo-library').toPromise();
+    }
+
 }

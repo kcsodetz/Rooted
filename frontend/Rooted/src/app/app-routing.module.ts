@@ -6,6 +6,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { HomeComponent } from './home/home.component';
 import { TreeComponent } from './tree/tree.component'
 import { ProfileComponent } from './profile/profile.component';
+import { PhotoLibraryComponent } from './photo-library/photo-library.component'
 import { OtherProfileComponent } from './other-profile/other-profile.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
@@ -71,6 +72,10 @@ const routes: Routes = [
     data: {
       type: 'tree'
     }
+  },
+  {
+    path: 'photo-library',
+    component: PhotoLibraryComponent
   },
   {
     path: 'not-found',

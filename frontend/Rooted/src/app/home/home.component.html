@@ -95,7 +95,7 @@
   <div class="grid-container" id="treeObject">
     <div *ngFor="let t of myTrees">
       <h2 class="center">{{t.treeName}}</h2>
-      <div class="cardProperties grid-item" id="trees" routerLink='/about' (click)="renderTree(t)">
+      <div class="cardProperties grid-item" id="trees" (click)="renderTree(t)">
 
         <!-- <div mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
         aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: true}">

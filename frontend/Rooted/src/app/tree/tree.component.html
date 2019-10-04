@@ -3,10 +3,10 @@
 
 
   <div>
-    <button mdbBtn type="button" color="primary" mdbWavesEffect (click)=back()> <i class="fa fa-arrow-left"> </i> Back
+    <button mdbBtn type="button" color="success" mdbWavesEffect (click)=back()> <i class="fa fa-arrow-left"> </i> Back
       to Your Trees </button>
-
-      
+    <button mdbBtn type="button" href="#" routerLink="/report-user" color="success" class="my-4"> Report
+      this group </button>
 
     <div  class="mainDiv">
       <h1 class="treeTitle">{{myTree.treeName}}
@@ -36,16 +36,16 @@
               <a class="nav-link" href="#">Photos</a>
           </nav>
           <mdb-card borderColor="border-success" *ngFor="let year of years">
-              <mdb-card-body>
-                  <mdb-card-title>
-                      <h3>{{year}}</h3>
-                  </mdb-card-title>
-                  <div class="usericon" *ngFor="let user of users">
-                    <i class="fas fa-user-circle fa-5x fa-green-text green-text pr-3 ml-3"></i>
-                    <span><a onclick="document.getElementById('userinfo').style.display='block'">
-                      {{user.name}}</a></span>
-                  </div>
-              </mdb-card-body>
+            <mdb-card-body>
+              <mdb-card-title>
+                  <h3>{{year}}</h3>
+              </mdb-card-title>
+              <div class="usericon" *ngFor="let user of users">
+                <i class="fas fa-user-circle fa-5x fa-green-text green-text pr-3 ml-3"></i>
+                <span><a onclick="document.getElementById('userinfo').style.display='block'">
+                  {{user.name}}</a></span>
+              </div>
+            </mdb-card-body>
           </mdb-card>
           <div id="userinfo" class="w3-modal">
               <div class="w3-modal-content">
@@ -72,6 +72,7 @@
           <h1 class="greenLine">__________________________________________________________________</h1>
           <div class="adjustLeftMargin">
             <h4 class="pageHeader">Members of {{myTree.treeName}} <button mdbBtn type="button" color="primary" mdbWavesEffect
+
                 onclick="document.getElementById('id02').style.display='block'">Add Member <i class="fa fa-user">
                 </i></button></h4>
             <div id="id02" class="w3-modal">
@@ -106,10 +107,10 @@
                           </div>
                         </div>
 
-                        <button mdbBtn color="info" block="true" class="my-4" type="submit" prevent-default>Add
+                        <button mdbBtn color="success" block="true" class="my-4" type="submit" prevent-default>Add
                           User</button>
                         <button (click)="cancel()" type="button"
-                          onclick="document.getElementById('id02').style.display='none'" mdbBtn color="info"
+                          onclick="document.getElementById('id02').style.display='none'" mdbBtn color="success"
                           block="true" class="my-4">Cancel</button>
 
                       </form>

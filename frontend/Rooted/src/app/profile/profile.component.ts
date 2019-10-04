@@ -32,34 +32,6 @@ export class ProfileComponent implements OnInit {
       this.userAuthed = true;
     }
     this.displayGroups();
-    this.userService.getAccountInfo().then((res) => {
-      this.account = new Account(res);
-      this.username = this.account.username;
-      console.log("Username is " + this.username);
-      document.getElementById("usernameLabel").innerHTML=this.account.username;
-      document.getElementById("email").setAttribute("placeholder",this.account.email);      
-      if(this.account.birthYear!=undefined && !this.account.birthYearHidden)
-      {
-        document.getElementById("birthYear").setAttribute("placeholder",this.account.birthYear);
-      }
-      if(this.account.phoneNumber!=undefined && !this.account.phoneNumberHidden)
-      {
-        document.getElementById("phoneNumber").setAttribute("placeholder",this.account.phoneNumber);
-      }
-      if(this.account.facebook!=undefined && !this.account.facebookHidden)
-      {
-        document.getElementById("facebook").setAttribute("placeholder",this.account.facebook);
-      }
-      if(this.account.instagram!=undefined && !this.account.instagramHidden)
-      {
-        document.getElementById("instagram").setAttribute("placeholder",this.account.instagram);
-      }
-      if(this.account.twitter!=undefined && !this.account.twitterHidden)
-      {
-        document.getElementById("twitter").setAttribute("placeholder",this.account.twitter);
-      }
-  });
-
     this.editProfileForm = this.formBuilder.group({
       birthYear: [''],
       email: ['', Validators.required],
@@ -67,7 +39,65 @@ export class ProfileComponent implements OnInit {
       facebook: [''],
       instagram: [''],
       twitter: [''],
+      birthYearHidden: [Boolean],
+      emailHidden: [Boolean],
+      phoneNumberHidden: [Boolean],
+      facebookHidden: [Boolean],
+      instagramHidden: [Boolean],
+      twitterHidden: [Boolean],
   });
+    this.userService.getAccountInfo().then((res) => {
+      this.account = new Account(res);
+      this.username = this.account.username;
+      console.log("EMAIL: "+ this.account.email);
+      document.getElementById("usernameLabel").innerHTML=this.account.username;
+      this.editProfileForm.get("email").setValue(this.account.email);
+      this.editProfileForm.get("birthYearHidden").setValue(this.account.birthYearHidden);
+  this.editProfileForm.get("emailHidden").setValue(this.account.emailHidden);
+  this.editProfileForm.get("phoneNumberHidden").setValue(this.account.phoneNumberHidden);
+  this.editProfileForm.get("facebookHidden").setValue(this.account.facebookHidden);
+  this.editProfileForm.get("instagramHidden").setValue(this.account.instagramHidden);
+  this.editProfileForm.get("twitterHidden").setValue(this.account.twitterHidden);
+      if(this.account.birthYear!=undefined && !this.account.birthYearHidden)
+      {
+        this.editProfileForm.get("birthYear").setValue(this.account.birthYear);
+      }
+      if(this.account.phoneNumber!=undefined && !this.account.phoneNumberHidden)
+      {
+        this.editProfileForm.get("phoneNumber").setValue(this.account.phoneNumber);
+      }
+      if(this.account.facebook!=undefined && !this.account.facebookHidden)
+      {
+        this.editProfileForm.get("facebook").setValue(this.account.facebook);
+      }
+      if(this.account.instagram!=undefined && !this.account.instagramHidden)
+      {
+        this.editProfileForm.get("instagram").setValue(this.account.instagram);
+      }
+      if(this.account.twitter!=undefined && !this.account.twitterHidden)
+      {
+        this.editProfileForm.get("twitter").setValue(this.account.twitterHidden);
+      }
+  //    console.log("Username is " + this.username);
+    //  document.getElementById("usernameLabel").innerHTML=this.account.username;
+      //document.getElementById("email").setAttribute("placeholder",this.account.email);      
+     
+  });
+
+    
+
+  
+ 
+ /* if(this.account.birthYearHidden!=true)
+  {
+    this.editProfileForm.get("birthYearHidden").setValue(false);
+  }
+  else{}
+  if(this.account.emailHidden!=true)
+  {
+    this.editProfileForm.get("emailHidden").setValue(false);
+  }*/
+  
   }
   displayGroups(){
     this.userService.getUserTrees().then((data) => {
@@ -96,7 +126,13 @@ export class ProfileComponent implements OnInit {
 
   get response_msg() { return this.response; }
 
+  submitStuff(){
+      //backend routes //look in change email
+      
+  }
+
   async onSubmitEditProfile(form: NgForm) {
+    console.log("WE ARE HERE");
       this.submitted = true;
       if (this.editProfileForm.invalid) {
           return;

@@ -31,6 +31,7 @@
   
       </div>
     </div>
+    <form  (submit)="submitEdit(f)" #f="ngForm" [formGroup]="editProfileForm">
     <div class="row profileInfoRow" style="padding-left:3%; padding-right: 3%;">
         <div class="profileInfo col line">
           <h3>Info</h3>
@@ -38,21 +39,21 @@
               <div class="col-9">
                   <label>Birth Year:</label>
                   <div class="form-group">
-                      <input type="text" id="birthYear"  class="form-control" placeholder="BirthYear">
+                      <input formControlName="birthYear" type="text"  class="form-control" placeholder="BirthYear">
                   </div>
               </div>
               <div class="col-1" style="align-content: center">
                   <label>Hide</label>
                   <br>
-                  <input type="checkbox" name="hideBirthYear"><br>    
+                  <input formControlName="birthYearHidden" type="checkbox" name="hideBirthYear"><br>    
               </div>
           </div>
           <div class="row">
                   <div class="col-9">
                       <label>Email</label>
                           <div class="form-group">
-                              <input type="text" id="email" class="form-control" placeholder="Email"
-                                  [ngClass]="{ 'is-invalid': submitted && form.email.errors }" />
+                              <input type="text" class="form-control" placeholder="Email"
+                                  [ngClass]="{ 'is-invalid': submitted && form.email.errors }" formControlName="email" />
                               <div *ngIf="submitted && form.email.errors" class="invalid-feedback">
                                   <div *ngIf="form.email.errors.required">Email is required</div>
                                   <div *ngIf="form.email.errors.email">Must be a valid email</div>
@@ -62,20 +63,20 @@
                   <div class="col-1" style="align-content: center">
                       <label>Hide</label>
                       <br>
-                      <input type="checkbox" name="hideEmail"><br>    
+                      <input type="checkbox" formControlName="emailHidden"><br>    
                   </div>
           </div>
           <div class="row">
                   <div class="col-9">
                       <label>Phone Number</label>
                           <div class="form-group">
-                              <input type="text" id="phoneNumber" formControlName="phoneNumber" class="form-control" placeholder="Phone Number"/>
+                              <input type="text" formControlName="phoneNumber" formControlName="phoneNumber" class="form-control" placeholder="Phone Number"/>
                           </div>
                   </div>
                   <div class="col-1" style="align-content: center">
                       <label>Hide</label>
                       <br>
-                      <input type="checkbox" name="hidePhoneNumber"><br>    
+                      <input type="checkbox" formControlName="phoneNumberHidden"><br>    
                   </div>
           </div>
         </div>
@@ -85,39 +86,39 @@
                   <div class="col-9">
                       <label>Facebook</label>
                           <div class="form-group">
-                              <input type="text" id="facebook" class="form-control" placeholder="Facebook"/>
+                              <input type="text" formControlName="facebook" class="form-control" placeholder="Facebook"/>
                           </div>
                   </div>
                   <div class="col-1" style="align-content: center">
                       <label>Hide</label>
                       <br>
-                      <input type="checkbox" name="hideFacebook"><br>    
+                      <input type="checkbox" formControlName="facebookHidden"><br>    
                   </div>
           </div>
           <div class="row">
                   <div class="col-9">
                       <label>Instagram</label>
                           <div class="form-group">
-                              <input type="text" id="instagram" class="form-control" placeholder="Instagram"/>
+                              <input type="text" formControlName="instagram" class="form-control" placeholder="Instagram"/>
                           </div>
                   </div>
                   <div class="col-1" style="align-content: center">
                       <label>Hide</label>
                       <br>
-                      <input type="checkbox" name="hideInstagram"><br>    
+                      <input type="checkbox" formControlName="instagramHidden"><br>    
                   </div>
           </div>
           <div class="row">
                   <div class="col-9">
                       <label>Twitter</label>
                           <div class="form-group">
-                              <input type="text" id="twitter" class="form-control" placeholder="Twitter"/>
+                              <input type="text" formControlName="twitter" class="form-control" placeholder="Twitter"/>
                           </div>
                   </div>
                   <div class="col-1" style="align-content: center">
                       <label>Hide</label>
                       <br>
-                      <input type="checkbox" name="hideTwitter"><br>    
+                      <input type="checkbox" formControlName="twitterHidden"><br>    
                   </div>
           </div>
         </div>
@@ -129,8 +130,9 @@
         </div>
     </div>
     <div class="row profileInfo">
-          <button type="submit">Submit</button>
+          <button type="submit" type="submit">Submit</button>
     </div>
+    </form>
   
     
   

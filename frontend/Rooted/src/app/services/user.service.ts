@@ -31,6 +31,10 @@ export class UserService {
         return this.http.get<Object[]>('http://localhost:5000/user/photo-library').toPromise();
     }
 
+    addPhotoToLibrary(photoURL: string) {
+        return this.http.post('http://localhost:5000/user/add-photo', photoURL).toPromise();
+    }
+
 
     //may not work 
     getUserProfile(username: string){

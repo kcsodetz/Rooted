@@ -10,9 +10,9 @@ let userSchema = new mongoose.Schema({
   verified: Boolean,
   verificationNum: { type: Number, default: 0 },
   images: [{
-    imageUrl: String,
+    url: String,
     id: String
-  }],
+}],
   email: {
     properties:{
       value:{
@@ -25,18 +25,18 @@ let userSchema = new mongoose.Schema({
       }, 
       hidden:{
         type:Boolean,
-        default:false
+        default:true
       }
     }
   }, 
   birthYear: {
     properties:{
       value:{
-        type: Number
+        type: String
       },
       hidden:{
         type:Boolean,
-        default:false
+        default:true
       }
     }
   },
@@ -47,7 +47,7 @@ let userSchema = new mongoose.Schema({
       },
       hidden:{
         type:Boolean,
-        default:false
+        default:true
       }
     }
   },
@@ -58,7 +58,7 @@ let userSchema = new mongoose.Schema({
       },
       hidden:{
         type:Boolean,
-        default:false
+        default:true
       }
     }
   },
@@ -69,7 +69,7 @@ let userSchema = new mongoose.Schema({
       },
       hidden:{
         type:Boolean,
-        default:false
+        default:true
       }
     }
   },
@@ -80,7 +80,7 @@ let userSchema = new mongoose.Schema({
       },
       hidden:{
         type:Boolean,
-        default:false
+        default:true
       }
     }
   },

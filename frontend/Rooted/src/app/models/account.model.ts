@@ -1,6 +1,6 @@
 export class Account {
     username: string;
-    email: Boolean;
+    email: string;
     birthYear: string;
     facebook: string;
     instagram: string;
@@ -12,10 +12,13 @@ export class Account {
     instagramHidden: boolean;
     phoneNumberHidden: boolean;
     twitterHidden: boolean;
+    myPhotos: string[];
+   
 
     constructor(response: any) {
         this.username = response.username;
         this.email = response.email.properties.value;
+<<<<<<< HEAD
         this.birthYear=response.birthYear;
         this.phoneNumber=response.phoneNumber;
         this.facebook=response.facebook;
@@ -27,7 +30,7 @@ export class Account {
         this.facebookHidden=false;
         this.instagramHidden=false;
         this.twitterHidden=false;
-
+        this.myPhotos = response.myPhotos;
         if(response.birthYearHidden==true)
         {
             this.birthYearHidden=true;
@@ -57,6 +60,20 @@ export class Account {
         {
             this.twitterHidden=true;
         }
+=======
+     /*   this.birthYear=response.birthYear.properties.value;
+        this.phoneNumber=response.phoneNumber.properties.value;
+        this.facebook=response.facebook.properties.value;
+        this.instagram=response.instagram.properties.value;
+        this.twitter=response.twitter.properties.value;
+
+        this.birthYearHidden=response.birthYear.properties.hidden;
+        this.emailHidden=response.email.properties.hidden;
+        this.phoneNumberHidden=response.phoneNumber.properties.hidden;
+        this.facebookHidden=response.facebook.properties.hidden;
+        this.instagramHidden=response.instagram.properties.hidden;
+        this.twitterHidden=response.twitter.properties.hidden;*/
+>>>>>>> 4c0729daa28f58f2b0059982473fac3c8d683c18
       
     }
 }

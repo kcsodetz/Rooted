@@ -12,6 +12,7 @@ export class Account {
     instagramHidden: boolean;
     phoneNumberHidden: boolean;
     twitterHidden: boolean;
+    myPhotos: string[];
    
 
     constructor(response: any) {
@@ -28,6 +29,7 @@ export class Account {
         this.facebookHidden=false;
         this.instagramHidden=false;
         this.twitterHidden=false;
+        this.myPhotos = response.myPhotos;
         if(response.birthYearHidden==true)
         {
             this.birthYearHidden=true;

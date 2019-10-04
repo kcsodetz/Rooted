@@ -31,26 +31,10 @@ export class UserService {
         return this.http.get<Object[]>('http://localhost:5000/user/photo-library').toPromise();
     }
 
-    uploadPhoto(formdata: FormData, username: string) {
-        const info = {
-            headers: new HttpHeaders({
-                // 'Content-Type': 'application/form-data',
-                'username': username
-            })
-        }
-        console.log(formdata.getAll('image'))
-        return this.http.post("http://localhost:5000/user/upload-photo", formdata, info).toPromise()
+    addPhotoToLibrary(photoURL: string) {
+        return this.http.post('http://localhost:5000/user/add-photo', photoURL).toPromise();
     }
 
-    getPhotos(username: string) {
-        const info = {
-            headers: new HttpHeaders({
-                // 'Content-Type': 'application/form-data',
-                'username': username
-            })
-        }
-        return this.http.get<Array<Object>>("http://localhost:5000/user/all-photos", info).toPromise()
-    }
 
     //may not work 
     getUserProfile(username: string){

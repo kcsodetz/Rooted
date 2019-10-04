@@ -1,16 +1,80 @@
 <div>
     <h4 class="pageHeader">Your Photos</h4>
 
-    <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
-    <button type="button" class="btn btn-info" (click)="fileInput.click()">Upload picture <i class="fa fa-camera">
-      </i> </button>
-    <div class="grid-container">
-      <div *ngFor="let i of images">
-      <img [src]="i.url" class="photoCardProperties grid-item" />
-    </div>
-    </div>
-
 
     
- 
+    <html>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+      
+        <!-- Main Body -->
+      
+        <body>
+          <!-- Main Container -->
+          <div class="w3-container">
+            <!-- Create New Tree Button -->
+            <button onclick="document.getElementById('id01').style.display='block'" mdbBtn type="button" color="success"
+              mdbWavesEffect>Add A Photo</button>
+      
+            <!-- Create New Tree Modal -->
+            <div id="id01" class="w3-modal">
+              <div class="w3-modal-content">
+                <div class="w3-container">
+                  <!-- Card Container and Body -->
+                  <mdb-card>
+                    <mdb-card-body>
+                      <!-- Submission Form -->
+                      <form (submit)="submitFile(f)" #f="ngForm" class="text-center border border-light p-5"
+                        [formGroup]="fileForm">
+                        <!-- Form Group -->
+                        <div class="form-group">
+                          <!-- Header -->
+                          <h4 class="pageHeader">Add A Photo</h4>
+                          <!-- Header -->
+      
+                     
+                        
+                          <!-- Tree Image URL -->
+                          <input type="text" id="imageUrl" formControlName="imageUrl" class="form-control"
+                            placeholder="Paste the url of the image you would like to upload" [(ngModel)]="imageUrl">
+                          <!-- Tree Image URL -->
+      
+                        </div>
+                        <!-- Form Group -->
+      
+                        <!-- Create Tree Button -->
+                        <button mdbBtn color="success" block="true" class="my-4">Add Photo</button>
+                        <!-- Create Tree Button -->
+      
+                        <!-- Cancel Button -->
+                        <button (click)="cancel()" type="button" onclick="document.getElementById('id01').style.display='none'" mdbBtn
+                          color="success" block="true" class="my-4">Cancel</button>
+                        <!-- Cancel Button -->
+      
+                      </form>
+                      <!-- Submission Form -->
+                    </mdb-card-body>
+                  </mdb-card>
+                  <!-- Card Container and Body -->
+                </div>
+              </div>
+            </div>
+            <!-- Create New Tree Modal -->
+          </div>
+        </body>
+        <!-- Main Body -->
+      
+        </html>
+    
+    <div class="grid-container" id="photo">
+        <div *ngFor="let p of photos">
+            <div class="photoCardProperties grid-item" id="photos" >
+
+      
+              <img [src]=p />
+            </div>
+            
+      
+        </div>
+    </div>
 </div>

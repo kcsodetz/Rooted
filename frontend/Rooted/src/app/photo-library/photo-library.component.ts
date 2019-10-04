@@ -4,7 +4,6 @@ import { Account } from '../models/account.model';
 import { AuthService } from "../services/auth.service";
 import { BehaviorSubject } from 'rxjs';
 import { NgForm, FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from '@angular/router';
 
 
 
@@ -14,58 +13,45 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./photo-library.component.scss']
 })
 export class PhotoLibraryComponent implements OnInit {
-    images: Array<Object>
-
-    myPhotos: String[];
+    photos = ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTdD0v9l5yAF-XiPHXrwBnIGwx64nVBJIO7SraU6gQNGz9lHMi", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTdD0v9l5yAF-XiPHXrwBnIGwx64nVBJIO7SraU6gQNGz9lHMi", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTdD0v9l5yAF-XiPHXrwBnIGwx64nVBJIO7SraU6gQNGz9lHMi", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTdD0v9l5yAF-XiPHXrwBnIGwx64nVBJIO7SraU6gQNGz9lHMi"]; 
     fileForm: FormGroup;
-
     userAuthed: Boolean;
     account: Account;
-    username: string = "User";
+    username: String = "User";
     private loggedIn = new BehaviorSubject<boolean>(false); 
     response: string;
     submitted = false;
-    constructor(private route: ActivatedRoute, private userService: UserService, private formBuilder: FormBuilder, public authService: AuthService) {
-      this.images = []
-
+    constructor(private userService: UserService, public authService: AuthService) {
+  
     }
 
   ngOnInit() {
     if(this.authService.autoAuthUser()){
         this.userAuthed = true;
       }
-
-     
   
       this.userService.getAccountInfo().then((res) => {
         this.account = new Account(res);
         this.username = this.account.username;
-      
     });
   }
 
-  onFileChanged(event) {
-    let file = event.target.files[0]
-    // console.log(event.target.files[0])
-    let formdata = new FormData()
-    formdata.append('image', file, file.name)
-    this.userService.uploadPhoto(formdata, this.username).then((res) => {
-      // console.log(res)
-      window.location.replace("/photo-library/");
-    })
-  }
+  /**
+   * Adds a Photo
+   * @param form Submission form for adding a photo
+   */
+  submitFile(form: NgForm) {
+    this.submitted = true;
+    if (this.fileForm.invalid) {
+      console.log(form);
+      return;
+    }
 
-  displayImages() {
-    var username = this.route.snapshot.params['username'];
-    this.userService.getPhotos(username).then((res) => {
-      // console.log(res)
-      var i: number = 0
-      res.forEach(element => {
-        this.images[i] = element
-        i++
-      });
-    })
+    // backend call
+    this.userService.addPhotoToLibrary(form.value.imageUrl).then(() => {
+      var confirm = window.alert('Photo ' + form.value.imageUrl + ' Added!')
+      window.location.replace("/photo-library")
+      console.log(confirm)
+    });
   }
-
-  
 }

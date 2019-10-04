@@ -55,6 +55,7 @@ export class ProfileComponent implements OnInit {
       this.username = this.account.username;
       this.emaill= this.account.email;
       console.log("Email: "+ this.account.email);
+      console.log("Email hidden: "+ this.account.emailHidden);
       console.log("Birth Year: "+ this.account.birthYear);
       console.log("Birth year hidden: "+ this.account.birthYearHidden);
       console.log("phone number: "+ this.account.phoneNumber);

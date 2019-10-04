@@ -16,18 +16,18 @@ export class Account {
     constructor(response: any) {
         this.username = response.username;
         this.email = response.email.properties.value;
-        this.birthYear=response.birthYear;
-        this.phoneNumber=response.phoneNumber;
-        this.facebook=response.facebook;
-        this.instagram=response.instagram;
-        this.twitter=response.twitter;
+     /*   this.birthYear=response.birthYear.properties.value;
+        this.phoneNumber=response.phoneNumber.properties.value;
+        this.facebook=response.facebook.properties.value;
+        this.instagram=response.instagram.properties.value;
+        this.twitter=response.twitter.properties.value;
 
-        this.birthYearHidden=response.birthYearHidden;
-        this.emailHidden=response.emailHidden;
-        this.phoneNumberHidden=response.phoneNumberHidden;
-        this.facebookHidden=response.facebookHidden;
-        this.instagramHidden=response.instagramHidden;
-        this.twitterHidden=response.twitterHidden;
+        this.birthYearHidden=response.birthYear.properties.hidden;
+        this.emailHidden=response.email.properties.hidden;
+        this.phoneNumberHidden=response.phoneNumber.properties.hidden;
+        this.facebookHidden=response.facebook.properties.hidden;
+        this.instagramHidden=response.instagram.properties.hidden;
+        this.twitterHidden=response.twitter.properties.hidden;*/
       
     };
     

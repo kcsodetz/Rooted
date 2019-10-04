@@ -1,0 +1,25 @@
+<div class="p-2 profile animated fadeInUp d-flex justify-content-center">
+    <mdb-card class="content">
+      <mdb-card-body>
+        <!-- Default form contact -->
+        <form (submit)="submitReport(treeID, treeName, reason, 'bmalone')" class="text-center border border-light p-5" [formGroup]="reportForm">
+  
+          <p class="h4 mb-4">Reporting: {{treeName}}</p>
+  
+          <!-- Message -->
+          <div class="form-group">
+            <textarea class="form-control rounded-0" id="reason" [(ngModel)]="reason" formControlName="reason" rows="3" placeholder="Report Reason"></textarea>
+          </div>
+  
+          <!-- Send button -->
+          <button mdbBtn color="success" block="true" type="submit">Send</button>
+          <br>
+          <button mdbBtn (click)="backClicked()" color="success" block="true">Cancel</button>
+          <!-- <button mdbBtn routerLink="['/tree/+treeID']" color="success" block="true">Cancel</button> -->
+  
+        </form>
+        <!-- Default form contact -->
+      </mdb-card-body>
+    </mdb-card>
+  </div>
+  

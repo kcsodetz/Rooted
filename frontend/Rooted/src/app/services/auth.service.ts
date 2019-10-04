@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthData } from '../models/auth-data.model';
+import { AuthDataEdit } from '../models/auth-dataEdit.model';
 import { Subject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { HomeComponent } from '../home/home.component';
 import { AppComponent } from '../app.component';
 import { map } from 'rxjs/operators';
+import { Account } from '../models/account.model';
+
 
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -42,6 +45,14 @@ export class AuthService {
     changeEmail(newEmail: string) {
         const auth: AuthData = { username: '', password: '', email: newEmail };
         return this.http.post<Object>('http://localhost:5000/user/change-email', auth).toPromise();
+    }
+
+    editProfile(accountObject: Account){
+        const auth: AuthDataEdit = { username: accountObject.username,  phoneNumber: accountObject.phoneNumber, 
+        birthYear: accountObject.birthYear, facebook: accountObject.facebook, instagram: accountObject.instagram, twitter: accountObject.twitter,
+        birthYearHidden: accountObject.birthYearHidden, emailHidden: accountObject.emailHidden, facebookHidden: accountObject.facebookHidden,
+        instagramHidden: accountObject.instagramHidden, phoneNumberHidden: accountObject.phoneNumberHidden, twitterHidden: accountObject.twitterHidden  };
+        return this.http.post<Object>('http://localhost:5000/user/edit-profile', auth).toPromise();
     }
 
     getAuthToken() {

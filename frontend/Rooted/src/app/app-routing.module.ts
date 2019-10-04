@@ -14,6 +14,7 @@ import { ChangeEmailComponent } from './change-email/change-email.component';
 import { AboutComponent } from './about/about.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ReportuserComponent } from './reportuser/reportuser.component';
+import { ReportgroupComponent } from './reportgroup/reportgroup.component';
 
 
 
@@ -56,6 +57,10 @@ const routes: Routes = [
   {
     path:'report-user',
     component: ReportuserComponent
+  },
+  {
+    path: 'report-group',
+    component: ReportgroupComponent
   },
   {
     path: 'change-password',

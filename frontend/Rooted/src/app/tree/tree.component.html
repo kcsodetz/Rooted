@@ -5,12 +5,17 @@
   <div>
     <button mdbBtn type="button" color="success" mdbWavesEffect (click)=back()> <i class="fa fa-arrow-left"> </i> Back
       to Your Trees </button>
-    <button mdbBtn type="button" href="#" routerLink="/report-user" color="success" class="my-4"> Report
+    <!-- <button mdbBtn type="button" href="#" routerLink="/report-group" [state]="{ data: {treeID: myTree.ID, treeName: myTree.treeName, reporter: username}}" color="success" class="my-4"> Report
       this group </button>
+    <a href="#" routerLink="/report-group" [state]="{ data: {treeID: myTree.ID, treeName: myTree.treeName, reporter: username}}" class="my-4"> Report
+      this group </a> -->
+    <button mdbBtn type="button" color="success" class="my-4">
+        <a href="#" routerLink="/report-group" [state]="{ data: {treeID: myTree.ID, treeName: myTree.treeName, reporter: username}}" class="my-4"> Report
+          this group </a>
+    </button>
 
     <div  class="mainDiv">
-      <h1 class="treeTitle">{{myTree.treeName}}
-      </h1>
+      <h1 class="treeTitle">{{myTree.treeName}}</h1>
       <div class="grid-container">
         <div class="grid-item">
         
@@ -44,31 +49,30 @@
                 <i class="fas fa-user-circle fa-5x fa-green-text green-text pr-3 ml-3"></i>
                 <span><a onclick="document.getElementById('userinfo').style.display='block'">
                   {{member}}</a></span>
+                  <div id="userinfo" class="w3-modal">
+                      <div class="w3-modal-content">
+                        <div class="w3-container">
+                          <!-- Card Container and Body -->
+                          <mdb-card>
+                            <mdb-card-body>
+                                <span onclick="document.getElementById('userinfo').style.display='none'"
+                                class="w3-button w3-display-topright">&times;</span>
+                                <button mdbBtn href="#" routerLink="/profile" color="success" block="true" class="my-4">
+                                  View {{member}}'s' Profile!</button>
+                                <button mdbBtn type="button" color="danger" class="report my-4">
+                                    <a href="#" routerLink="/report-user" [state]="{ data: {treeID: myTree.ID, userToReport: member}}">
+                                    Report This User</a>
+                                </button>
+                            </mdb-card-body>
+                          </mdb-card>
+                          <!-- Card Container and Body -->
+                        </div>
+                      </div>
+                  </div>
               </div>
             </mdb-card-body>
           </mdb-card>
-          <div id="userinfo" class="w3-modal">
-              <div class="w3-modal-content">
-                <div class="w3-container">
-                  <!-- Card Container and Body -->
-                  <mdb-card>
-                    <mdb-card-body>
-                        <span onclick="document.getElementById('userinfo').style.display='none'"
-                        class="w3-button w3-display-topright">&times;</span>
-                        <!-- View Profile Button -->
-                        <button mdbBtn href="#" routerLink="/profile" color="success" block="true" class="my-4">
-                          View their Profile!</button>
-                        <!-- View Profile Button -->
-                        <!-- Report User Button -->
-                        <button mdbBtn href="#" routerLink="/report-user" color="danger" block="true" class="my-4">
-                          Report This User</button>
-                        <!-- Report User Button -->
-                    </mdb-card-body>
-                  </mdb-card>
-                  <!-- Card Container and Body -->
-                </div>
-              </div>
-          </div>
+
           <h1 class="greenLine">__________________________________________________________________</h1>
           <div class="adjustLeftMargin">
             <h4 class="pageHeader">Members of {{myTree.treeName}} <button mdbBtn type="button" color="primary" mdbWavesEffect

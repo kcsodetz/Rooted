@@ -1,6 +1,6 @@
 export class Account {
     username: string;
-    email: Boolean;
+    email: string;
     birthYear: string;
     facebook: string;
     instagram: string;
@@ -12,7 +12,7 @@ export class Account {
     instagramHidden: boolean;
     phoneNumberHidden: boolean;
     twitterHidden: boolean;
-    photos: string[]
+   
 
     constructor(response: any) {
         this.username = response.username;
@@ -28,7 +28,6 @@ export class Account {
         this.facebookHidden=false;
         this.instagramHidden=false;
         this.twitterHidden=false;
-        this.photos = response.photos;
         if(response.birthYearHidden==true)
         {
             this.birthYearHidden=true;

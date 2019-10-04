@@ -54,7 +54,18 @@ export class ProfileComponent implements OnInit {
       this.rspp=res;
       this.username = this.account.username;
       this.emaill= this.account.email;
-      console.log("EMAIL: "+ this.account.birthYear);
+      console.log("Email: "+ this.account.email);
+      console.log("Birth Year: "+ this.account.birthYear);
+      console.log("Birth year hidden: "+ this.account.birthYearHidden);
+      console.log("phone number: "+ this.account.phoneNumber);
+      console.log("phone number hidden: "+ this.account.phoneNumberHidden);
+      console.log("facebook: "+ this.account.facebook);
+      console.log("facebook hidden: "+ this.account.facebookHidden);
+      console.log("instagram: "+ this.account.instagram);
+      console.log("instagram hidden: "+ this.account.instagramHidden);
+      console.log("twitter: "+ this.account.twitter);
+      console.log("twitter hidden: "+ this.account.twitterHidden);
+
       document.getElementById("usernameLabel").innerHTML=this.account.username;
       this.editProfileForm.get("email").setValue(this.account.email);
       this.editProfileForm.get("birthYearHidden").setValue(this.account.birthYearHidden);

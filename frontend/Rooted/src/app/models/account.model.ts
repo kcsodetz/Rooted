@@ -18,7 +18,6 @@ export class Account {
     constructor(response: any) {
         this.username = response.username;
         this.email = response.email.properties.value;
-<<<<<<< HEAD
         this.birthYear=response.birthYear;
         this.phoneNumber=response.phoneNumber;
         this.facebook=response.facebook;
@@ -60,7 +59,6 @@ export class Account {
         {
             this.twitterHidden=true;
         }
-=======
      /*   this.birthYear=response.birthYear.properties.value;
         this.phoneNumber=response.phoneNumber.properties.value;
         this.facebook=response.facebook.properties.value;
@@ -73,7 +71,6 @@ export class Account {
         this.facebookHidden=response.facebook.properties.hidden;
         this.instagramHidden=response.instagram.properties.hidden;
         this.twitterHidden=response.twitter.properties.hidden;*/
->>>>>>> 4c0729daa28f58f2b0059982473fac3c8d683c18
       
     }
 }

@@ -31,7 +31,7 @@
   
       </div>
     </div>
-    <form  (submit)="onSubmitEditProfile(f)" #f="ngForm" [formGroup]="editProfileForm">
+    <form  (submit)="submitEdit(f)" #f="ngForm" [formGroup]="editProfileForm">
     <div class="row profileInfoRow" style="padding-left:3%; padding-right: 3%;">
         <div class="profileInfo col line">
           <h3>Info</h3>
@@ -39,7 +39,7 @@
               <div class="col-9">
                   <label>Birth Year:</label>
                   <div class="form-group">
-                      <input formControlName="birthYear" type="text"  class="form-control" placeholder="Birth Year">
+                      <input formControlName="birthYear" type="text"  class="form-control" placeholder="BirthYear">
                   </div>
               </div>
               <div class="col-1" style="align-content: center">

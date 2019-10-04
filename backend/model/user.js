@@ -25,7 +25,7 @@ let userSchema = new mongoose.Schema({
       }, 
       hidden:{
         type:Boolean,
-        default:true
+        default:false
       }
     }
   }, 
@@ -36,7 +36,7 @@ let userSchema = new mongoose.Schema({
       },
       hidden:{
         type:Boolean,
-        default:true
+        default:false
       }
     }
   },
@@ -47,7 +47,7 @@ let userSchema = new mongoose.Schema({
       },
       hidden:{
         type:Boolean,
-        default:true
+        default:false
       }
     }
   },
@@ -58,7 +58,7 @@ let userSchema = new mongoose.Schema({
       },
       hidden:{
         type:Boolean,
-        default:true
+        default:false
       }
     }
   },
@@ -69,7 +69,7 @@ let userSchema = new mongoose.Schema({
       },
       hidden:{
         type:Boolean,
-        default:true
+        default:false
       }
     }
   },
@@ -80,7 +80,7 @@ let userSchema = new mongoose.Schema({
       },
       hidden:{
         type:Boolean,
-        default:true
+        default:false
       }
     }
   },

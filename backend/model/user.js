@@ -10,9 +10,9 @@ let userSchema = new mongoose.Schema({
   verified: Boolean,
   verificationNum: { type: Number, default: 0 },
   images: [{
-    imageUrl: String,
+    url: String,
     id: String
-  }],
+}],
   email: {
     properties:{
       value:{

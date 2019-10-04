@@ -1,13 +1,16 @@
 <div>
-    <h4>Your Photos</h4>
+    <h4 class="pageHeader">Your Photos</h4>
 
-    <div *ngFor="let p of photos">
-      
-
-      
-              <img [src]=p />
-      
-            
-      
+    <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+    <button type="button" class="btn btn-info" (click)="fileInput.click()">Upload picture <i class="fa fa-camera">
+      </i> </button>
+    <div class="grid-container">
+      <div *ngFor="let i of images">
+      <img [src]="i.url" class="photoCardProperties grid-item" />
     </div>
+    </div>
+
+
+    
+ 
 </div>

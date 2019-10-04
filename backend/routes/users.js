@@ -367,6 +367,55 @@ router.post("/edit-profile", authenticate, (req, res) => {
 
 })
 
+router.get('/all-photos', authenticate, (req, res) => {
+    if (!req.headers.username) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+    User.findById(req.headers.username, (err, u) => {
+
+        if (err) {
+            res.status(400).send({ message: "Could not find user" });
+            return;
+        }
+        res.status(200).send(u.images)
+        return
+        
+    }).catch((err) => {
+        res.status(400).send(err);
+        return;
+    })
+})
+
+router.post('/upload-photo', authenticate, upload.single("image"), (req, res) => {
+    // console.log(req)
+    if (!req.file.url || !req.file.public_id || !req.headers.username) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+    User.findOne({ _id: req.headers.username}).then((u) => {
+        if (!u) {
+            res.status(400).send({ message: "User does not exist" });
+            return;
+        }
+        User.findOneAndUpdate({ _id: req.headers.username }, {
+            $push: {
+                images: {
+                    url: req.file.url,
+                    id: req.file.public_id
+                }
+            }
+        }).then((u) => {
+            res.status(200).send({ message: "Photo successfully uploaded" })
+            return
+        }).catch((err) => {
+            res.send(err);
+        })
+    }).catch((err) => {
+        res.send(err);
+    })
+})
+
 /* 
  * Add Profile picture
  */

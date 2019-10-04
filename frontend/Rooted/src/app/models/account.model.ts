@@ -1,6 +1,6 @@
 export class Account {
     username: string;
-    email: Boolean;
+    email: string;
     birthYear: string;
     facebook: string;
     instagram: string;
@@ -21,42 +21,14 @@ export class Account {
         this.facebook=response.facebook;
         this.instagram=response.instagram;
         this.twitter=response.twitter;
-        this.birthYearHidden=false;
-        this.emailHidden=false;
-        this.phoneNumberHidden=false;
-        this.facebookHidden=false;
-        this.instagramHidden=false;
-        this.twitterHidden=false;
 
-        if(response.birthYearHidden==true)
-        {
-            this.birthYearHidden=true;
-        }
-        
-        if(response.emailHidden==true)
-        {
-            this.emailHidden=true;
-        }
-       
-        if(response.phoneNumberHidden==true)
-        {
-            this.phoneNumberHidden=true;
-        }
-       
-        if(response.facebookHidden==true)
-        {
-            this.facebookHidden=true;
-        }
-        
-        if(response.instagramHidden==true)
-        {
-            this.instagramHidden=true;
-        }
-        
-        if(response.twitterHidden==true)
-        {
-            this.twitterHidden=true;
-        }
+        this.birthYearHidden=response.birthYearHidden;
+        this.emailHidden=response.emailHidden;
+        this.phoneNumberHidden=response.phoneNumberHidden;
+        this.facebookHidden=response.facebookHidden;
+        this.instagramHidden=response.instagramHidden;
+        this.twitterHidden=response.twitterHidden;
       
-    }
+    };
+    
 }

@@ -21,7 +21,8 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 /* Objects */
 var Tree = require('../model/tree');
-var User = require('../model/user')
+var User = require('../model/user');
+var Admin = require('../model/admin');
 
 
 /**
@@ -378,7 +379,7 @@ router.get('/info', authenticate, (req, res) => {
 /*
 *   Get report a user
 */
-router.post('/report', authenticate, (req, res) => {
+router.post('/report-user', authenticate, (req, res) => {
 
     //ensure that request has body and has treeID
     //if not, send bad request
@@ -399,6 +400,7 @@ router.post('/report', authenticate, (req, res) => {
         }).then((tre) => {
             if (tre == null) {
                 res.status(400).send({ message: "Something went wrong" });
+                return;
             }
             res.status(200).send({ message: "Reported " + req.body.userToReport });
             return;
@@ -407,6 +409,43 @@ router.post('/report', authenticate, (req, res) => {
             res.status(400).send({ message: "Something went wrong" });
             return;
         })
+})
+
+/*
+*   Get report a tree/group
+*/
+router.post('/report-tree', authenticate, (req, res) => {
+    //ensure that request has body and has treeID
+    //if not, send bad request
+    if (!req.headers.treeid || !req.body.reporter || !req.body.reason || !req.body.treeName) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+
+    var report = {
+        treeID: req.header.treeid,
+        treeName: req.body.treeName,
+        reason: req.body.reason,
+        reporter: req.body.reporter
+    };
+
+    Admin.find({}, function (err, docs) {
+        if (!err && docs) {
+            console.log(docs[0].reportedTrees);
+            docs[0].reportedTrees.push(report)
+            docs[0].save().then(() => {
+                res.status(200).send({ message: "Saved" });
+                return;
+            }).catch((err) => {
+                res.status(400).send({ message: "Could not save" });
+                return;
+            })
+        }
+        else {
+            res.status(400).send({ message: "Could not find table" });
+            return;
+        }
+    });
 })
 
 module.exports = router;

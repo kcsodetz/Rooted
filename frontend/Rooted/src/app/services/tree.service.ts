@@ -1,113 +1,113 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { AuthData } from '../models/auth-data.model'
-import { Subject } from "rxjs";
-import { Router } from "@angular/router";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthData } from '../models/auth-data.model';
+import { Subject } from 'rxjs';
+import { Router } from '@angular/router';
 
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     observe: 'response' as 'response'
 };
 
-@Injectable({ providedIn: "root" })
+@Injectable({ providedIn: 'root' })
 
-export class TreeService{
+export class TreeService {
 
     Tree: Object;
-    constructor(private http:HttpClient, private _router: Router) {}
-    TreeUrl: string
+    constructor(private http: HttpClient, private _router: Router) {}
+    TreeUrl: string;
 
-    uploadPhoto(url:string, treeID:string){
+    uploadPhoto(url: string, treeID: string) {
         const options = {
             imageUrl: url,
             treeID: treeID,
-        }
-        return this.http.post("http://localhost:5000/tree/add-photo", options)
+        };
+        return this.http.post('http://localhost:5000/tree/add-photo', options);
     }
 
-    editTreeDescription(treeDescription:string, treeID:string) {
-        const tree:Object = {
+    editTreeDescription(treeDescription: string, treeID: string) {
+        const tree: Object = {
             treeDescription: treeDescription,
             treeID: treeID,
-        }
-        return this.http.post("http://localhost:5000/tree/edit-tree-description", tree)
+        };
+        return this.http.post('http://localhost:5000/tree/edit-tree-description', tree);
     }
 
-    addMessage(message:string, treeID:string){
+    addMessage(message: string, treeID: string) {
         const options = {
             treeID: treeID,
             message: message
-        }
-        return this.http.post("http://localhost:5000/tree/add-message", options).toPromise()
+        };
+        return this.http.post('http://localhost:5000/tree/add-message', options).toPromise();
     }
 
-    setTreeUrl(url:string){
-        this.TreeUrl=url
+    setTreeUrl(url: string) {
+        this.TreeUrl = url;
     }
 
-    getTreeUrl(){
-        return this.TreeUrl
+    getTreeUrl() {
+        return this.TreeUrl;
     }
 
-    getAllTreeInfo(treeID:string) {
+    getAllTreeInfo(treeID: string) {
         const info = {
             headers: new HttpHeaders({
                 'treeID': treeID
             })
-        }
+        };
 
         /* calls /tree/info from the backend*/
-        return this.http.get("http://localhost:5000/tree/info", info).toPromise().catch((err) => {
+        return this.http.get('http://localhost:5000/tree/info', info).toPromise().catch((err) => {
             // this._router.navigate(['/not-found']);
-        })
+        });
     }
 
-    getMessages(treeID:string){
+    getMessages(treeID: string) {
         const info = {
             headers: new HttpHeaders({
                 'treeid': treeID
             })
-        }
-        return this.http.get<Array<Object>>("http://localhost:5000/tree/chat", info).toPromise()
+        };
+        return this.http.get<Array<Object>>('http://localhost:5000/tree/chat', info).toPromise();
     }
 
-    leaveTree(treeID:string, username:string){
+    leaveTree(treeID: string, username: string) {
         const info = {
             treeID: treeID,
             username: username
-        }
-        return this.http.post("http://localhost:5000/tree/leave", info).toPromise()
+        };
+        return this.http.post('http://localhost:5000/tree/leave', info).toPromise();
     }
 
-    addUser(treeID:string, username:string){
+    addUser(treeID: string, username: string) {
         const info = {
             treeID: treeID,
             username: username
-        }
-        return this.http.post("http://localhost:5000/tree/add-user", info).toPromise()
+        };
+        return this.http.post('http://localhost:5000/tree/add-user', info).toPromise();
     }
 
-    deleteChosenTree(treeID:string) {
+    deleteChosenTree(treeID: string) {
         const chosen = {
             treeID: treeID
-        }
-        return this.http.post("http://localhost:5000/tree/delete", chosen).toPromise()
+        };
+        return this.http.post('http://localhost:5000/tree/delete', chosen).toPromise();
     }
 
-    editTreeName(treeName:string, treeID:string) {
-        const tree:Object = {
+    editTreeName(treeName: string, treeID: string) {
+        const tree: Object = {
             treeName: treeName,
             treeID: treeID,
-        }
-        return this.http.post("http://localhost:5000/tree/edit-name", tree)
+        };
+        return this.http.post('http://localhost:5000/tree/edit-name', tree);
     }
 
-    createTree(treeName:string, treeDescription:string, imageUrl: string){
+    createTree(treeName: string, treeDescription: string, imageUrl: string) {
         const tree = {
             treeName: treeName,
             description: treeDescription,
             imageUrl: imageUrl
-        }
-        return this.http.post("http://localhost:5000/tree/add", tree).toPromise()
+        };
+        return this.http.post('http://localhost:5000/tree/add', tree).toPromise();
     }
 }

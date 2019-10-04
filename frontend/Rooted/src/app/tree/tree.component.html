@@ -35,15 +35,15 @@
               <a class="nav-link" href="#">Timeline</a>
               <a class="nav-link" href="#">Photos</a>
           </nav>
-          <mdb-card borderColor="border-success" *ngFor="let year of years">
+          <mdb-card borderColor="border-success">
             <mdb-card-body>
               <mdb-card-title>
-                  <h3>{{year}}</h3>
+                  <h3>2019</h3>
               </mdb-card-title>
-              <div class="usericon" *ngFor="let user of users">
+              <div class="usericon" *ngFor="let member of myTree.members">
                 <i class="fas fa-user-circle fa-5x fa-green-text green-text pr-3 ml-3"></i>
                 <span><a onclick="document.getElementById('userinfo').style.display='block'">
-                  {{user.name}}</a></span>
+                  {{member}}</a></span>
               </div>
             </mdb-card-body>
           </mdb-card>
@@ -60,7 +60,7 @@
                           View their Profile!</button>
                         <!-- View Profile Button -->
                         <!-- Report User Button -->
-                        <button mdbBtn href="#" routerLink="/report-user" color="success" block="true" class="my-4">
+                        <button mdbBtn href="#" routerLink="/report-user" color="danger" block="true" class="my-4">
                           Report This User</button>
                         <!-- Report User Button -->
                     </mdb-card-body>

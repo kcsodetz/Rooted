@@ -10,6 +10,7 @@ var upload = require('../middleware/photo_upload')
 var validate = require('../middleware/validate_url')
 
 mongoose.connect(process.env.MONGODB_HOST, { useNewUrlParser: true });
+console.log(process.env.MONGODB_HOST)
 mongoose.set('useCreateIndex', true);
 
 mongoose.Promise = global.Promise;

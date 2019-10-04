@@ -168,6 +168,19 @@ userSchema.statics.findEmailByUsername = function(username) {
   });
 };
 
+userSchema.statics.findByUsername = function(username) {
+  var User = this;
+
+  return User.findOne({username}).then((user) => {
+    if (user == null) {
+      return Promise.reject();
+    }
+    else {
+      return Promise.resolve(user);
+    }
+  });
+};
+
 
 
 

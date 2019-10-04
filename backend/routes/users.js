@@ -50,12 +50,25 @@ router.post("/register", (req, res) => {
     console.log(req.body.password)
     encrypt(req.body.password).then((password) => {
         // User Data
+        // var newUser = new User({
+        //     username: req.body.username,
+        //     email: req.body.email,
+        //     password: password,
+        //     verified: false,
+        //     verificationNum: verificatonCode,
+        // });
+
         var newUser = new User({
             username: req.body.username,
-            email: req.body.email,
             password: password,
             verified: false,
             verificationNum: verificatonCode,
+            email: {
+                properties: {
+                    value: req.body.email,
+                    hidden: false
+                },
+            }
         });
 
         var newMemberEmailBody = "Dear " + req.body.username +
@@ -216,7 +229,12 @@ router.post("/change-email", authenticate, (req, res) => {
     User.findOneAndUpdate({ username: req.user.username },
         {
             $set: {
-                email: req.body.email
+                email: {
+                    properties: {
+                        value: req.body.email,
+                        hidden: false
+                    }
+                }
             }
         }).then(() => {
             res.status(200).send({ message: 'User email successfully updated' })
@@ -233,7 +251,7 @@ router.post("/change-email", authenticate, (req, res) => {
 })
 
 /*
- * Change Password 
+ * Change Password
  */
 router.post("/change-password", authenticate, (req, res) => {
 
@@ -267,7 +285,7 @@ router.post("/change-password", authenticate, (req, res) => {
 /**
  * Get specific user
  */
-router.get ("/find-user", (req, res) => {
+router.get("/find-user", (req, res) => {
     console.log('finding someone');
     if (!req.body || !req.body.username) {
         res.status(400).send({ message: 'Error retrieving user' })
@@ -282,11 +300,58 @@ router.get ("/find-user", (req, res) => {
     })
 })
 
+/*
+ * Edit Profile
+ */
+router.post("/edit-profile", authenticate, (req, res) => {
 
+    if (!req.body || !req.body.username) {
+        res.status(400).send({ message: "User information incomplete" })
+        return
+    }
+
+    User.findByUsername(req.body.username).then((user) => {
+
+        if (req.body.birthYear) {
+            user.birthYear = req.body.birthYear;
+        }
+
+        if (req.body.phoneNumber) {
+            user.phoneNumber = req.body.phoneNumber
+        }
+
+        if (req.body.facebook) {
+            // user.facebook = req.body.facebook
+            // console.log(user.facebook.value)
+            console.log(user.email)
+        }
+
+        if (req.body.twitter) {
+            user.twitter = req.body.twitter
+        }
+
+        if (req.body.instagram) {
+            user.instagram = req.body.instagram
+        }
+
+        user.save().then(() => {
+            res.status(200).send({ message: "Information updated" })
+        }).catch((err) => {
+            console.log(err)
+            res.status(400).send({ message: "Information not saved" })
+        });
+    }).catch((err) => {
+        console.log(err);
+        res.status(400).send({ message: "Cannot retrive user" })
+    })
+
+
+
+})
 
 /* 
  * Add Profile picture
- */ 
+ */
 // router.post('/add-profile-photo', authenticate, upload.single("image"), function (req, res) {
 //     if (!req.body || !req.body.email || !req.body.imageUrl) {
 //         res.status(400).send({ message: "Bad Request" })

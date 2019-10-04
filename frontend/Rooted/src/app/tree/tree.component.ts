@@ -43,7 +43,7 @@ export class TreeComponent implements OnInit {
   ngOnInit() {
 
     /* grabs url and finds parameter 'id' */
-    var id = this.route.snapshot.params['id'];
+    // var id = this.route.snapshot.params['id'];
 
     /* treeService calls getAllTreeInfo of specified ID
     * result is passed into data
@@ -55,12 +55,27 @@ export class TreeComponent implements OnInit {
       
     // });
 
-    
 
     // Form values and validators for create new DayDream
     this.addUserForm = this.formBuilder.group({
       username: ['', Validators.required]
     });
+
+    this.getTreeInfo();
+  }
+
+   /*
+   * Get all tree information
+   */
+  getTreeInfo(){
+    var id = this.route.snapshot.params['id'];
+
+    this.treeService.getAllTreeInfo(id).then((data) => {
+      this.myTree = new Tree(data);
+      console.log(data);
+    });
+
+    
   }
 
   /**

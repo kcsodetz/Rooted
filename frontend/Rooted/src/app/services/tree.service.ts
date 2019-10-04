@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { AuthData } from '../models/auth-data.model'
 import { Subject } from "rxjs";
 import { Router } from "@angular/router";
+import { RequestOptions, Headers } from '@angular/http';
 
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -52,14 +53,12 @@ export class TreeService{
     getAllTreeInfo(treeID:string) {
         const info = {
             headers: new HttpHeaders({
-                'treeID': treeID
+                'treeid': treeID
             })
         }
 
         /* calls /tree/info from the backend*/
-        return this.http.get("http://localhost:5000/tree/info", info).toPromise().catch((err) => {
-            // this._router.navigate(['/not-found']);
-        })
+        return this.http.get("http://localhost:5000/tree/info", info).toPromise()
     }
 
     getMessages(treeID:string){

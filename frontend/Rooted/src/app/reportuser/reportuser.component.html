@@ -2,29 +2,19 @@
   <mdb-card class="content">
     <mdb-card-body>
       <!-- Default form contact -->
-      <form class="text-center border border-light p-5">
+      <form (submit)="submitReport(treeID, reason, userToReport)" class="text-center border border-light p-5" [formGroup]="reportForm">
 
         <p class="h4 mb-4">Report a User</p>
 
-        <!-- Name -->
-        <input type="text" id="defaultContactFormName" class="form-control mb-4" placeholder="Name">
-
-        <select class="browser-default custom-select mb-4">
-          <option value="" selected disabled>Reasoning</option>
-          <option value="harassment">Harrassment</option>
-          <option value="phishing">Phishing</option>
-          <option value="offensive">Offensive Name</option>
-          <option value="other">Other</option>
-        </select>
-
         <!-- Message -->
         <div class="form-group">
-          <textarea class="form-control rounded-0" id="exampleFormControlTextarea2" rows="3" placeholder="Message"></textarea>
+          <textarea class="form-control rounded-0" id="reason" [(ngModel)]="reason" formControlName="reason" rows="3" placeholder="Report Reason"></textarea>
         </div>
 
         <!-- Send button -->
         <button mdbBtn color="success" block="true" type="submit">Send</button>
-
+        <br>
+        <button mdbBtn (click)="backClicked()" color="success" block="true">Cancel</button>
       </form>
       <!-- Default form contact -->
     </mdb-card-body>

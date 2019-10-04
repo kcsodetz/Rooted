@@ -111,4 +111,31 @@ export class TreeService {
         };
         return this.http.post('http://localhost:5000/tree/add', tree).toPromise();
     }
+
+    reportTree(treeId: string, treeName: string, reason: string, reporter: string) {
+        const report = {
+            treeName: treeName,
+            reason: reason,
+            reporter: reporter
+        }
+        const info = {
+            headers: new HttpHeaders({
+                'treeid': treeId
+            })
+        };
+        return this.http.post('http://localhost:5000/tree/report-tree', report, info).toPromise();
+    }
+
+    reportUser(treeId: string, reason: string, userToReport: string) {
+        const report = {
+            reason: reason,
+            userToReport: userToReport
+        }
+        const info = {
+            headers: new HttpHeaders({
+                'treeid': treeId
+            })
+        }
+        return this.http.post('http://localhost:5000/tree/report-user',report,info).toPromise();
+    }
 }

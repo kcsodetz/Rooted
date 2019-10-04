@@ -2,10 +2,9 @@
     <mdb-card class="content">
       <mdb-card-body>
         <!-- Default form contact -->
-        <form (submit)="submitReport(treeID, treeName, reason, 'bmalone')" class="text-center border border-light p-5" [formGroup]="reportForm">
+        <form (submit)="submitReport(treeID, treeName, reason, username)" class="text-center border border-light p-5" [formGroup]="reportForm">
   
           <p class="h4 mb-4">Reporting: {{treeName}}</p>
-  
           <!-- Message -->
           <div class="form-group">
             <textarea class="form-control rounded-0" id="reason" [(ngModel)]="reason" formControlName="reason" rows="3" placeholder="Report Reason"></textarea>

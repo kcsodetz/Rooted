@@ -7,6 +7,7 @@ import { TreeService } from '../services/tree.service';
 import { Tree } from '../models/tree.model';
 import { Router } from '@angular/router';
 import { Account } from '../models/account.model'
+import { ChangeEmailComponent } from '../change-email/change-email.component';
 
 
 @Component({
@@ -17,10 +18,12 @@ import { Account } from '../models/account.model'
 export class ProfileComponent implements OnInit {
   userAuthed: Boolean;
   account: Account;
-  username: String = "User";
+  username: string = "User";
+  emaill: string ="";
   private loggedIn = new BehaviorSubject<boolean>(false); 
   editProfileForm: FormGroup;
   response: string;
+  rspp: Object;
   submitted = false;
   myTrees: Tree[];
   constructor(private userService: UserService, public authService: AuthService, private formBuilder: FormBuilder, private _router: Router) {
@@ -34,7 +37,7 @@ export class ProfileComponent implements OnInit {
     this.displayGroups();
     this.editProfileForm = this.formBuilder.group({
       birthYear: [''],
-      email: ['', Validators.required],
+      email: [''],
       phoneNumber: [''],
       facebook: [''],
       instagram: [''],
@@ -48,56 +51,27 @@ export class ProfileComponent implements OnInit {
   });
     this.userService.getAccountInfo().then((res) => {
       this.account = new Account(res);
+      this.rspp=res;
       this.username = this.account.username;
-      console.log("EMAIL: "+ this.account.email);
+      this.emaill= this.account.email;
+      console.log("EMAIL: "+ this.account.birthYear);
       document.getElementById("usernameLabel").innerHTML=this.account.username;
       this.editProfileForm.get("email").setValue(this.account.email);
       this.editProfileForm.get("birthYearHidden").setValue(this.account.birthYearHidden);
-  this.editProfileForm.get("emailHidden").setValue(this.account.emailHidden);
-  this.editProfileForm.get("phoneNumberHidden").setValue(this.account.phoneNumberHidden);
-  this.editProfileForm.get("facebookHidden").setValue(this.account.facebookHidden);
-  this.editProfileForm.get("instagramHidden").setValue(this.account.instagramHidden);
-  this.editProfileForm.get("twitterHidden").setValue(this.account.twitterHidden);
-      if(this.account.birthYear!=undefined && !this.account.birthYearHidden)
-      {
+      this.editProfileForm.get("emailHidden").setValue(this.account.emailHidden);
+      this.editProfileForm.get("phoneNumberHidden").setValue(this.account.phoneNumberHidden);
+      this.editProfileForm.get("facebookHidden").setValue(this.account.facebookHidden);
+      this.editProfileForm.get("instagramHidden").setValue(this.account.instagramHidden);
+      this.editProfileForm.get("twitterHidden").setValue(this.account.twitterHidden);
         this.editProfileForm.get("birthYear").setValue(this.account.birthYear);
-      }
-      if(this.account.phoneNumber!=undefined && !this.account.phoneNumberHidden)
-      {
         this.editProfileForm.get("phoneNumber").setValue(this.account.phoneNumber);
-      }
-      if(this.account.facebook!=undefined && !this.account.facebookHidden)
-      {
         this.editProfileForm.get("facebook").setValue(this.account.facebook);
-      }
-      if(this.account.instagram!=undefined && !this.account.instagramHidden)
-      {
         this.editProfileForm.get("instagram").setValue(this.account.instagram);
-      }
-      if(this.account.twitter!=undefined && !this.account.twitterHidden)
-      {
         this.editProfileForm.get("twitter").setValue(this.account.twitterHidden);
-      }
-  //    console.log("Username is " + this.username);
-    //  document.getElementById("usernameLabel").innerHTML=this.account.username;
-      //document.getElementById("email").setAttribute("placeholder",this.account.email);      
-     
+        
+
   });
 
-    
-
-  
- 
- /* if(this.account.birthYearHidden!=true)
-  {
-    this.editProfileForm.get("birthYearHidden").setValue(false);
-  }
-  else{}
-  if(this.account.emailHidden!=true)
-  {
-    this.editProfileForm.get("emailHidden").setValue(false);
-  }*/
-  
   }
   displayGroups(){
     this.userService.getUserTrees().then((data) => {
@@ -126,18 +100,49 @@ export class ProfileComponent implements OnInit {
 
   get response_msg() { return this.response; }
 
-  submitStuff(){
-      //backend routes //look in change email
-      
-  }
 
   async onSubmitEditProfile(form: NgForm) {
-    console.log("WE ARE HERE");
       this.submitted = true;
       if (this.editProfileForm.invalid) {
           return;
       }
-      // NEEDS finishing
-      console.log(this.response);
+      
+      this.account = new Account(this.rspp);
+      this.account.username= this.username;
+
+      this.account.email=form.value.email;
+
+     if(this.account.email!=""&&this.account.email!=undefined&&this.account.email!=this.emaill)
+      {
+        this.authService.changeEmail(this.account.email).then((res) => {
+          console.log(res)
+          this.response = "complete_email"
+        }).catch((error) => {
+          console.log(error)
+          this.response = "fatal_error"
+        })
+      }
+
+      this.account.emailHidden=form.value.emailHidden;
+      this.account.birthYear=form.value.birthYear;
+      this.account.birthYearHidden=form.value.birthYearHidden;
+      this.account.phoneNumber=form.value.phoneNumber;
+      this.account.phoneNumberHidden=form.value.phoneNumberHidden;
+      console.log("hide: "+form.value.emailHidden);
+      this.account.facebook=form.value.facebook;
+      this.account.facebookHidden=form.value.facebookHidden;
+      this.account.instagram=form.value.instagram;
+      this.account.instagramHidden=form.value.instagramHidden;
+      this.account.twitter=form.value.twitter;
+      this.account.twitterHidden=form.value.twitterHidden;
+      console.log("AA");
+    this.authService.editProfile(this.account).then((res) => {
+          console.log(res)
+          this.response = "complete_editProfile"
+        }).catch((error) => {
+          console.log(error)
+          this.response = "fatal_error"
+        })
+      
   }
 }

@@ -32,7 +32,7 @@ let userSchema = new mongoose.Schema({
   birthYear: {
     properties:{
       value:{
-        type: Number
+        type: String
       },
       hidden:{
         type:Boolean,

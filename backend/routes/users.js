@@ -33,6 +33,7 @@ router.get("/", function (req, res) {
  */
 router.get("/account", authenticate, (req, res) => {
     res.status(200).send(req.user);
+    console.log(req.user);
 });
 
 /*

@@ -448,4 +448,15 @@ router.post('/report-tree', authenticate, (req, res) => {
     });
 })
 
+/**
+ * Get all trees
+ */
+router.get("/get-all-trees", authenticate, (req, res) => {
+    Tree.find({}).then((tree) => {
+        res.send(tree);
+    }).catch((err) => {
+        res.status(400).send(err);
+    })
+})
+
 module.exports = router;

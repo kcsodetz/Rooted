@@ -18,7 +18,7 @@ export class Account {
     constructor(response: any) {
         this.username = response.username;
         this.email = response.email.properties.value;
-        this.emailHidden=false;
+        this.emailHidden=response.email.properties.hidden;
 
         this.birthYear=response.birthYear.properties.value;
         this.birthYearHidden=response.birthYear.properties.hidden;

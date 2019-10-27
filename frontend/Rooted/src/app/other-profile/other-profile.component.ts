@@ -19,7 +19,7 @@ export class OtherProfileComponent implements OnInit {
   }
 
   getUser() {
-    this.userService.getUserProfile('testing_ken').then((usr) => {
+    this.userService.getUserProfile('bmalone').then((usr) => {
       console.log(usr);
     })
 

@@ -144,6 +144,14 @@ export class TreeComponent implements OnInit {
   
   }
 
+  /**
+   * Navigates to an admin Dashboard
+   */
+  renderAdminDashboard() {
+    /* Navigate to /tree/id  */
+    this._router.navigate(['/admin/' + this.myTree.ID]);
+  }
+
  
 
   leaveTree() {

@@ -22,8 +22,11 @@
       </form>
 
       <!-- Alert Toasts -->
-      <div *ngIf="response_msg === 'fatalError'" class="alert alert-danger" role="alert">
+      <div *ngIf="response_msg === 'fatal_error'" class="alert alert-danger" role="alert">
         Fatal Error. Please Try Again Later
+      </div>
+      <div *ngIf="response_msg === 'duplicate'" class="alert alert-danger" role="alert">
+        Duplicate Email: Someone is using that email. Please choose another mailing address. 
       </div>
       <div *ngIf="response_msg === 'complete_email'" class="alert alert-success" role="alert">
         Email Successfully Changed

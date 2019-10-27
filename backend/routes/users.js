@@ -302,14 +302,16 @@ router.get("/find-user", (req, res) => {
     console.log('finding someone');
     if (!req.body || !req.headers.username) {
         res.status(400).send({ message: 'Error retrieving user' })
-        return
+        return;
     }
 
     User.findOne({ username: req.headers.username }).then((user) => {
         // console.log('user: ',user)
         res.status(200).send(user);
+        return;
     }).catch((err) => {
         res.status(400).send(err);
+        return;
     })
 })
 

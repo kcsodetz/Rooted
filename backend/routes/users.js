@@ -1,16 +1,15 @@
 var express = require('express');
 var router = express.Router();
-let mongoose = require('mongoose');
-var encrypt = require('../middleware/encrypt')
-var bcrypt = require('bcrypt')
-var authenticate = require('../middleware/authenticate')
-var mailer = require('../middleware/mailer')
-var validate_email = require('../middleware/validate_email')
-var upload = require('../middleware/photo_upload')
-var validate = require('../middleware/validate_url')
+var mongoose = require('mongoose');
+var encrypt = require('../middleware/encrypt');
+var bcrypt = require('bcrypt');
+var authenticate = require('../middleware/authenticate');
+var mailer = require('../middleware/mailer');
+var validate_email = require('../middleware/validate_email');
+var upload = require('../middleware/photo_upload');
+var validate = require('../middleware/validate_url');
 
 mongoose.connect(process.env.MONGODB_HOST, { useNewUrlParser: true });
-console.log(process.env.MONGODB_HOST)
 mongoose.set('useCreateIndex', true);
 
 mongoose.Promise = global.Promise;
@@ -39,7 +38,7 @@ router.get("/account", authenticate, (req, res) => {
 });
 
 /*
- * Register new user 
+ * Register new user
  */
 router.post("/register", (req, res) => {
     console.log("registerhere");
@@ -50,7 +49,7 @@ router.post("/register", (req, res) => {
 
     // Create a verification code between 1000 and 9999
     var verificatonCode = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
-    console.log(req.body.password)
+    console.log(req.body.password);
     encrypt(req.body.password).then((password) => {
         // User Data
         // var newUser = new User({
@@ -142,8 +141,6 @@ router.post('/login', (req, res) => {
 /**
  * Verify new user's email
  */
-
- // TOOD: Fix change email, bugs with user schema
 router.post("/verify-email", (req, res) => {
     // Check if user data is complete
     // console.log("works")
@@ -220,7 +217,10 @@ router.post("/forgot-password", (req, res) => {
 /**
  * Edit a user's email
  */
+ // TOOD: Fix change email, bugs with user schema
 router.post("/change-email", authenticate, (req, res) => {
+
+
     if (!req.body || !req.body.email) {
         res.status(400).send({ message: "User data is incomplete" });
         return;
@@ -230,6 +230,7 @@ router.post("/change-email", authenticate, (req, res) => {
         res.status(400).send({ message: "Invalid email" });
         return;
     }
+
 
     User.findOneAndUpdate({ username: req.user.username },
         {
@@ -244,8 +245,15 @@ router.post("/change-email", authenticate, (req, res) => {
         }).then(() => {
             res.status(200).send({ message: 'User email successfully updated' })
         }).catch((err) => {
-            res.status(400).send({ message: "Error changing email" });
-            res.send(err);
+            console.log(err.codeName)
+
+            if (err.codeName == "DuplicateKey") {
+                res.status(400).send({ message: "Duplicate Found" });
+            }
+            else {
+                res.status(400).send({ message: "Fatal Error" });
+            }
+            return;
         })
 
     var email_subject = "Rooted Reset Email";

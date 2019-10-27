@@ -8,6 +8,7 @@ import { Tree } from '../models/tree.model';
 import { Router } from '@angular/router';
 import { Account } from '../models/account.model'
 import { ChangeEmailComponent } from '../change-email/change-email.component';
+import { fillProperties } from '@angular/core/src/util/property';
 
 
 @Component({
@@ -52,20 +53,24 @@ export class ProfileComponent implements OnInit {
     this.userService.getAccountInfo().then((res) => {
       this.account = new Account(res);
       this.rspp=res;
+      // console.log(this.rspp);
       this.username = this.account.username;
       this.emaill= this.account.email;
-      console.log("Email: "+ this.account.email);
-      console.log("Email hidden: "+ this.account.emailHidden);
-      console.log("Birth Year: "+ this.account.birthYear);
-      console.log("Birth year hidden: "+ this.account.birthYearHidden);
-      console.log("phone number: "+ this.account.phoneNumber);
-      console.log("phone number hidden: "+ this.account.phoneNumberHidden);
-      console.log("facebook: "+ this.account.facebook);
-      console.log("facebook hidden: "+ this.account.facebookHidden);
-      console.log("instagram: "+ this.account.instagram);
-      console.log("instagram hidden: "+ this.account.instagramHidden);
-      console.log("twitter: "+ this.account.twitter);
-      console.log("twitter hidden: "+ this.account.twitterHidden);
+      console.log("account: ", this.account);
+      // console.log(this.account.twitter.valu)
+      // console.log("Email: "+ this.account.email);
+      // console.log("Email hidden: "+ this.account.emailHidden);
+      // console.log("Birth Year: "+ this.account.birthYear);
+      // console.log("Birth year hidden: "+ this.account.birthYearHidden);
+      // console.log("phone number: "+ this.account.phoneNumber);
+      // console.log("phone number hidden: "+ this.account.phoneNumberHidden);
+      // console.log("facebook: "+ this.account.facebook);
+      // console.log("facebook hidden: "+ this.account.facebookHidden);
+      // console.log("instagram: "+ this.account.instagram);
+      // console.log("instagram hidden: "+ this.account.instagramHidden);
+      // console.log("twitter: "+ this.account.twitter);
+      // console.log("twitter hidden: "+ this.account.twitterHidden);
+      // console.log("facebook ", this.account.facebook[value]);
 
       document.getElementById("usernameLabel").innerHTML=this.account.username;
       this.editProfileForm.get("email").setValue(this.account.email);
@@ -75,11 +80,11 @@ export class ProfileComponent implements OnInit {
       this.editProfileForm.get("facebookHidden").setValue(this.account.facebookHidden);
       this.editProfileForm.get("instagramHidden").setValue(this.account.instagramHidden);
       this.editProfileForm.get("twitterHidden").setValue(this.account.twitterHidden);
-        this.editProfileForm.get("birthYear").setValue(this.account.birthYear);
-        this.editProfileForm.get("phoneNumber").setValue(this.account.phoneNumber);
-        this.editProfileForm.get("facebook").setValue(this.account.facebook);
-        this.editProfileForm.get("instagram").setValue(this.account.instagram);
-        this.editProfileForm.get("twitter").setValue(this.account.twitterHidden);
+      this.editProfileForm.get("birthYear").setValue(this.account.birthYear);
+      this.editProfileForm.get("phoneNumber").setValue(this.account.phoneNumber);
+      this.editProfileForm.get("facebook").setValue(this.account.facebook);
+      this.editProfileForm.get("instagram").setValue(this.account.instagram);
+      this.editProfileForm.get("twitter").setValue(this.account.twitter);
         
 
   });

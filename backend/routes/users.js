@@ -33,7 +33,7 @@ router.get("/", function (req, res) {
  * Get account information
  */
 router.get("/account", authenticate, (req, res) => {
-    console.log('req.user: ',req.user);
+    // console.log('req.user: ',req.user);
     res.status(200).send(req.user);
     
 });

@@ -34,16 +34,19 @@ import { FormsModule, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './auth/login/login.component';
 import { HomeComponent } from './home/home.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { TreeComponent } from './tree/tree.component';
 
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ChangeEmailComponent } from './change-email/change-email.component';
 import { AboutComponent } from './about/about.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ProfileComponent } from './profile/profile.component';
+import { PhotoLibraryComponent } from './photo-library/photo-library.component'
 
 import { OtherProfileComponent } from './other-profile/other-profile.component';
 import { CreategroupComponent } from './creategroup/creategroup.component';
 import { ReportuserComponent } from './reportuser/reportuser.component';
+import { ReportgroupComponent } from './reportgroup/reportgroup.component';
 
 
 
@@ -62,12 +65,15 @@ import { ReportuserComponent } from './reportuser/reportuser.component';
     AboutComponent,
     NotFoundComponent,
     ProfileComponent,
+    PhotoLibraryComponent,
 
     OtherProfileComponent,
 
     CreategroupComponent,
 
     ReportuserComponent,
+    TreeComponent,
+    ReportgroupComponent
 
   ],
   imports: [

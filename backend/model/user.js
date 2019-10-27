@@ -9,12 +9,79 @@ let userSchema = new mongoose.Schema({
   password: { type: String, required: true, minlength: 8 },
   verified: Boolean,
   verificationNum: { type: Number, default: 0 },
+  images: [{
+    url: String,
+    id: String
+}],
   email: {
-    type: String,
-    unique: true,
-    validate: {
-      validator: vdator.isEmail,
-      message: '{VALUE} is not a valid email'
+    properties:{
+      value:{
+        type: String,
+        unique: true,
+        validate: {
+          validator: vdator.isEmail,
+          message: '{VALUE} is not a valid email'
+        }
+      }, 
+      hidden:{
+        type:Boolean,
+        default:true
+      }
+    }
+  }, 
+  birthYear: {
+    properties:{
+      value:{
+        type: String
+      },
+      hidden:{
+        type:Boolean,
+        default:true
+      }
+    }
+  },
+  phoneNumber: {
+    properties:{
+      value:{
+        type: String,
+      },
+      hidden:{
+        type:Boolean,
+        default:true
+      }
+    }
+  },
+  facebook:{
+    properties:{
+      value:{
+        type: String,
+      },
+      hidden:{
+        type:Boolean,
+        default:true
+      }
+    }
+  },
+  instagram:{
+    properties:{
+      value:{
+        type: String,
+      },
+      hidden:{
+        type:Boolean,
+        default:true
+      }
+    }
+  },
+  twitter:{
+    properties:{
+      value:{
+        type: String,
+      },
+      hidden:{
+        type:Boolean,
+        default:true
+      }
     }
   },
   tokens: [{
@@ -101,12 +168,25 @@ userSchema.statics.findEmailByUsername = function(username) {
   });
 };
 
+userSchema.statics.findByUsername = function(username) {
+  var User = this;
+
+  return User.findOne({username}).then((user) => {
+    if (user == null) {
+      return Promise.reject();
+    }
+    else {
+      return Promise.resolve(user);
+    }
+  });
+};
+
 
 
 
 /* Function to prevent too much information from being returned on request when the response is the object */
 userSchema.methods.toJSON = function () {
-  return ld.pick(this.toObject(), ['_id', 'username', 'email', 'verified'])
+  return ld.pick(this.toObject(), ['_id', 'username', 'email', 'verified', 'birthYear','phoneNumber', 'facebook', 'instagram', 'twitter'  ])
 }
 
 /* Creating the user model from the schema and giving it to Mongoose */

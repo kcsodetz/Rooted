@@ -6,8 +6,11 @@ var bcrypt = require('bcrypt')
 var authenticate = require('../middleware/authenticate')
 var mailer = require('../middleware/mailer')
 var validate_email = require('../middleware/validate_email')
+var upload = require('../middleware/photo_upload')
+var validate = require('../middleware/validate_url')
 
 mongoose.connect(process.env.MONGODB_HOST, { useNewUrlParser: true });
+console.log(process.env.MONGODB_HOST)
 mongoose.set('useCreateIndex', true);
 
 mongoose.Promise = global.Promise;
@@ -30,13 +33,16 @@ router.get("/", function (req, res) {
  * Get account information
  */
 router.get("/account", authenticate, (req, res) => {
+    // console.log('req.user: ',req.user);
     res.status(200).send(req.user);
+    
 });
 
 /*
  * Register new user 
  */
 router.post("/register", (req, res) => {
+    console.log("registerhere");
     if (!req.body.email || !req.body.password || !req.body.username) {
         res.status(400).send({ message: "User data is incomplete" });
         return;
@@ -47,12 +53,25 @@ router.post("/register", (req, res) => {
     console.log(req.body.password)
     encrypt(req.body.password).then((password) => {
         // User Data
+        // var newUser = new User({
+        //     username: req.body.username,
+        //     email: req.body.email,
+        //     password: password,
+        //     verified: false,
+        //     verificationNum: verificatonCode,
+        // });
+
         var newUser = new User({
             username: req.body.username,
-            email: req.body.email,
             password: password,
             verified: false,
             verificationNum: verificatonCode,
+            email: {
+                properties: {
+                    value: req.body.email,
+                    hidden: false
+                },
+            }
         });
 
         var newMemberEmailBody = "Dear " + req.body.username +
@@ -73,6 +92,7 @@ router.post("/register", (req, res) => {
                 res.status(400).send({ message: "User already exists" })
                 return
             }
+            console.log(err);
             res.status(400).send(err)
             return;
         })
@@ -212,7 +232,12 @@ router.post("/change-email", authenticate, (req, res) => {
     User.findOneAndUpdate({ username: req.user.username },
         {
             $set: {
-                email: req.body.email
+                email: {
+                    properties: {
+                        value: req.body.email,
+                        hidden: false
+                    }
+                }
             }
         }).then(() => {
             res.status(200).send({ message: 'User email successfully updated' })
@@ -229,7 +254,7 @@ router.post("/change-email", authenticate, (req, res) => {
 })
 
 /*
- * Change Password 
+ * Change Password
  */
 router.post("/change-password", authenticate, (req, res) => {
 
@@ -259,6 +284,185 @@ router.post("/change-password", authenticate, (req, res) => {
     mailer(req.user.email, email_subject, email_body);
 })
 
+
+/**
+ * Get specific user
+ */
+router.get("/find-user", (req, res) => {
+    console.log('finding someone');
+    if (!req.body || !req.body.username) {
+        res.status(400).send({ message: 'Error retrieving user' })
+        return
+    }
+
+    User.findOne({ username: req.body.username }).then((user) => {
+        // console.log('user: ',user)
+        res.status(200).send(user);
+    }).catch((err) => {
+        res.status(400).send(err);
+    })
+})
+
+/*
+ * Edit Profile
+ */
+router.post("/edit-profile", authenticate, (req, res) => {
+
+    if (!req.body || !req.body.username) {
+        res.status(400).send({ message: "User information incomplete" })
+        return
+    }
+
+    User.findByUsername(req.body.username).then((user) => {
+
+        if (req.body.birthYear) {
+            user.birthYear.properties.value = req.body.birthYear;
+        }
+
+        if (req.body.phoneNumber) {
+            user.phoneNumber.properties.value = req.body.phoneNumber;
+        }
+
+        if (req.body.facebook) {
+            user.facebook.properties.value = req.body.facebook;
+        }
+
+        if (req.body.twitter) {
+            user.twitter.properties.value = req.body.twitter;
+        }
+
+        if (req.body.instagram) {
+            user.instagram.properties.value = req.body.instagram;
+        }
+
+        if (req.body.birthYearHidden) {
+            user.birthYear.properties.hidden = req.body.birthYearHidden;
+        }
+
+        if (req.body.phoneNumberHidden) {
+            user.phoneNumber.properties.hidden = req.body.phoneNumberHidden;
+        }
+
+        if (req.body.facebookHidden) {
+            user.facebook.properties.hidden = req.body.facebookHidden
+        }
+
+        if (req.body.twitterHidden) {
+            user.twitter.properties.hidden = req.body.twitterHidden
+        }
+
+        if (req.body.instagramHidden) {
+            user.instagram.properties.hidden = req.body.instagramHidden
+        }
+
+        user.save().then(() => {
+            res.status(200).send({ message: "Information updated" })
+        }).catch((err) => {
+            console.log(err)
+            res.status(400).send({ message: "Information not saved" })
+        });
+    }).catch((err) => {
+        console.log(err);
+        res.status(400).send({ message: "Cannot retrive user" })
+    })
+
+
+
+})
+
+router.get('/all-photos', authenticate, (req, res) => {
+    if (!req.headers.username) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+    User.findById(req.headers.username, (err, u) => {
+
+        if (err) {
+            res.status(400).send({ message: "Could not find user" });
+            return;
+        }
+        res.status(200).send(u.images)
+        return
+        
+    }).catch((err) => {
+        res.status(400).send(err);
+        return;
+    })
+})
+
+router.post('/upload-photo', authenticate, upload.single("image"), (req, res) => {
+    // console.log(req)
+    if (!req.file.url || !req.file.public_id || !req.headers.username) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+    User.findOne({ _id: req.headers.username}).then((u) => {
+        if (!u) {
+            res.status(400).send({ message: "User does not exist" });
+            return;
+        }
+        User.findOneAndUpdate({ _id: req.headers.username }, {
+            $push: {
+                images: {
+                    url: req.file.url,
+                    id: req.file.public_id
+                }
+            }
+        }).then((u) => {
+            res.status(200).send({ message: "Photo successfully uploaded" })
+            return
+        }).catch((err) => {
+            res.send(err);
+        })
+    }).catch((err) => {
+        res.send(err);
+    })
+})
+
+/* 
+ * Add Profile picture
+ */
+// router.post('/add-profile-photo', authenticate, upload.single("image"), function (req, res) {
+//     if (!req.body || !req.body.email || !req.body.imageUrl) {
+//         res.status(400).send({ message: "Bad Request" })
+//         return
+//     }
+
+//     console.log(req.body.email);
+
+//     if (!validate(req.body.imageUrl)) {
+//         console.log("not valid");
+//         res.status(400).send({ message: "Invalid image, url is not validated" })
+//         return;
+//     }
+
+//     User.findOne({ _id: req.body.email }).then((usr) => {
+//         console.log('hew');
+//         if(!usr) {
+//             res.status(400).send({ message: "User does not exist" });
+//             return;
+//         }
+
+//         User.findByIdAndUpdate({ _id: req.body.email }, {
+//             $push: {
+//                 images: {
+//                     url: req.body.imageUrl
+//                 }
+//             }
+//         }).then((usr) => {
+//             console.log('yayyy');
+//             res.status(200).send({ message: "Upload successful" })
+//             return
+//         }).catch((err) => {
+//             console.log('boooo');
+//             res.send(err);
+//         })
+//     }). catch((err) => {
+//         console.log('boooo 2');
+//         res.send(err);
+//     })
+// });
+
 /**
  * Get all trees
  */
@@ -269,5 +473,9 @@ router.get('/all-trees', authenticate, (req, res) => {
         res.status(400).send(err)
     })
 })
+
+// router.get('/photo-library', authenticate, (req, res) => {
+
+// }
 
 module.exports = router;

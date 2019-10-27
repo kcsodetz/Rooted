@@ -30,7 +30,7 @@ var Admin = require('../model/admin');
 */
 router.get("/", function (req, res) {
     res.send('This router is for all tree related tasks');
-})
+});
 
 router.post("/add", authenticate, function (req, res) {
 
@@ -39,32 +39,35 @@ router.post("/add", authenticate, function (req, res) {
         return;
     }
 
-    let desc = 'A tree rooted in history';
-    let url = process.env.DEFAULT_IMAGE;
+    var desc = 'A tree rooted in history';
+    var url = process.env.DEFAULT_IMAGE;
     if (req.body.description) {
-        desc = req.body.description
+        desc = req.body.description;
     }
     if (req.body.imageUrl && validate(req.body.imageUrl)) {
-        url = req.body.imageUrl
+        url = req.body.imageUrl;
     }
 
     var newTree = new Tree({
         founder: req.user.username,
         treeName: req.body.treeName,
         description: desc,
-        imageUrl: url,
-    })
+        imageUrl: url
+    });
 
     newTree.save().then(() => {
         Tree.findOneAndUpdate({ treeName: req.body.treeName }, {
             $push: {
-                'members': req.user.username,
+                members: req.user.username,
+                admins: req.user.username
             }
         }).then((tree) => {
-            res.status(200).send(tree)
+            res.status(200).send(tree);
             return
         }).catch((err) => {
-            // console.log(err)
+            console.log(err)
+            res.status(400).send({message: "Error: Could not create tree"});
+            return
         })
     })
 
@@ -119,11 +122,9 @@ router.post('/add-user', authenticate, (req, res) => {
             return
         }
 
-        for (var i = 0; i < tre.members.length; i++) {
-            if (tre.members[i] == req.body.username) {
-                res.status(400).send({ message: "User is already in tree" })
-                return
-            }
+        if (tre.members.includes(req.body.username)) {
+            res.status(400).send({ message: "User is already in tree" })
+            return
         }
 
         User.findOne({ username: req.body.username }).then((user) => {
@@ -145,7 +146,79 @@ router.post('/add-user', authenticate, (req, res) => {
                 }).then(() => {
 
                     User.findEmailByUsername(req.body.username).then((email) => {
-                        var emailSubject = "Rooted: You\'ve Been Added to \"" + tre.circleName + "\"!"
+                        var emailSubject = "Rooted: You\'ve Been Added to \"" + tre.treeName + "\"!"
+                        var addedToTreeBody = "Dear " + req.body.username +
+                            ",\n\nOne of your friends has added you to " + tre.founder + "\'s tree \"" + tre.treeName + "\". View your profile for more details.\n\n" +
+                            "Sincerely, \n\nThe Rooted Team";
+
+                        mailer(email, emailSubject, addedToTreeBody);
+
+                        res.status(200).send({ message: req.body.username + " added to Tree" })
+                    })
+
+                    return
+                }).catch((err) => {
+                    res.status(400).send(err);
+                    return;
+                })
+            }).catch((err) => {
+                res.status(400).send(err);
+                return;
+            })
+        }).catch((err) => {
+            res.send(err);
+            return;
+        })
+
+    })
+})
+
+
+router.post('/add-admin', authenticate, (req, res) => {
+
+    if (!req.body || !req.body.username || !req.body.treeID) {
+        res.status(400).send("Bad request")
+        return
+    }
+
+
+    Tree.findById(req.body.treeID, (err, tre) => {
+
+        if (err) {
+            res.status(400).send({ message: "Tree does not exist" })
+            return;
+        }
+
+        if (!tre.admins.includes(req.user.username)) {
+            res.status(401).send({ message: "Not authorized to make changes" });
+            return;
+        }
+
+        if (tre.admins.includes(req.body.username)) {
+            res.status(400).send({ message: "User is already an admin" });
+            return;
+        }
+
+        User.findOne({ username: req.body.username }).then((user) => {
+
+            if (!user) {
+                res.status(400).send({ message: "Username does not exist" });
+                return;
+            }
+
+            Tree.findOneAndUpdate({ _id: req.body.treeID }, {
+                $push: {
+                    admins: req.body.username,
+                }
+            }).then(() => {
+                Tree.findOneAndUpdate({ _id: req.body.treeID }, {
+                    $inc: {
+                        numberOfPeople: 1
+                    }
+                }).then(() => {
+
+                    User.findEmailByUsername(req.body.username).then((email) => {
+                        var emailSubject = "Rooted: You\'ve Been Added to \"" + tre.treeName + "\"!"
                         var addedToTreeBody = "Dear " + req.body.username +
                             ",\n\nOne of your friends has added you to " + tre.founder + "\'s tree \"" + tre.treeName + "\". View your profile for more details.\n\n" +
                             "Sincerely, \n\nThe Rooted Team";

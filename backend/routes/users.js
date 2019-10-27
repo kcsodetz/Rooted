@@ -142,6 +142,8 @@ router.post('/login', (req, res) => {
 /**
  * Verify new user's email
  */
+
+ // TOOD: Fix change email, bugs with user schema
 router.post("/verify-email", (req, res) => {
     // Check if user data is complete
     // console.log("works")

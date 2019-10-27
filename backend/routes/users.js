@@ -345,28 +345,14 @@ router.post("/edit-profile", authenticate, (req, res) => {
             user.instagram.properties.value = req.body.instagram;
         }
 
-        if (req.body.birthYearHidden) {
-            user.birthYear.properties.hidden = req.body.birthYearHidden;
-        }
-
-        if (req.body.phoneNumberHidden) {
-            user.phoneNumber.properties.hidden = req.body.phoneNumberHidden;
-        }
-
-        if (req.body.facebookHidden) {
-            user.facebook.properties.hidden = req.body.facebookHidden
-        }
-
-        if (req.body.twitterHidden) {
-            user.twitter.properties.hidden = req.body.twitterHidden
-        }
-
-        if (req.body.instagramHidden) {
-            user.instagram.properties.hidden = req.body.instagramHidden
-        }
-
+        user.birthYear.properties.hidden =req.body.birthYearHidden
+        user.phoneNumber.properties.hidden = req.body.phoneNumberHidden
+        user.facebook.properties.hidden = req.body.facebookHidden
+        user.twitter.properties.hidden = req.body.twitterHidden
+        user.instagram.properties.hidden = req.body.instagramHidden
+        user.email.properties.hidden=req.body.emailHidden
         user.save().then(() => {
-            res.status(200).send({ message: "Information updated" })
+            res.status(200).send({ message: "Information updated"})
         }).catch((err) => {
             console.log(err)
             res.status(400).send({ message: "Information not saved" })

@@ -292,12 +292,12 @@ router.post("/change-password", authenticate, (req, res) => {
  */
 router.get("/find-user", (req, res) => {
     console.log('finding someone');
-    if (!req.body || !req.body.username) {
+    if (!req.body || !req.headers.username) {
         res.status(400).send({ message: 'Error retrieving user' })
         return
     }
 
-    User.findOne({ username: req.body.username }).then((user) => {
+    User.findOne({ username: req.headers.username }).then((user) => {
         // console.log('user: ',user)
         res.status(200).send(user);
     }).catch((err) => {
@@ -475,6 +475,37 @@ router.get('/all-trees', authenticate, (req, res) => {
         res.status(400).send(err)
     })
 })
+
+
+/**
+ * Get all users
+ */
+router.get("/get-all-users", authenticate, (req, res) => {
+    User.find({}).then((usr) => {
+        // console.log(usr.user.username);
+        res.send(usr);
+    }).catch((err) => {
+        res.status(400).send(err);
+    })
+})
+
+
+router.get("/user-profile", authenticate, (req, res) => {
+    if (!req.body || !req.body.username) {
+        res.status(400).send({ message: 'Error retrieving user' })
+        return
+    }
+
+    User.findOne({ username: req.body.username }).then((user) => {
+        // console.log('user: ',user)
+        res.status(200).send(user);
+    }).catch((err) => {
+        res.status(400).send(err);
+    })
+
+    
+});
+
 
 // router.get('/photo-library', authenticate, (req, res) => {
 

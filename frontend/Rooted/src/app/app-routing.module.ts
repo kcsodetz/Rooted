@@ -6,6 +6,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { HomeComponent } from './home/home.component';
 import { TreeComponent } from './tree/tree.component'
 import { ProfileComponent } from './profile/profile.component';
+import { AdminComponent } from './tree/admin/admin.component';
 import { PhotoLibraryComponent } from './photo-library/photo-library.component'
 import { OtherProfileComponent } from './other-profile/other-profile.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
@@ -40,7 +41,11 @@ const routes: Routes = [
     component: OtherProfileComponent,
     canActivate: [AuthGuard]
   },
-
+  {
+    path: 'admin/:id',
+    component: AdminComponent,
+    canActivate: [AuthGuard],
+  },
   {
     path: 'login',
     component: LoginComponent

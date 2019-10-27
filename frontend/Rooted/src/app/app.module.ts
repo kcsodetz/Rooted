@@ -47,6 +47,7 @@ import { OtherProfileComponent } from './other-profile/other-profile.component';
 import { CreategroupComponent } from './creategroup/creategroup.component';
 import { ReportuserComponent } from './reportuser/reportuser.component';
 import { ReportgroupComponent } from './reportgroup/reportgroup.component';
+import { AdminComponent } from './tree/admin/admin.component';
 
 
 
@@ -73,7 +74,8 @@ import { ReportgroupComponent } from './reportgroup/reportgroup.component';
 
     ReportuserComponent,
     TreeComponent,
-    ReportgroupComponent
+    ReportgroupComponent,
+    AdminComponent,
 
   ],
   imports: [

@@ -30,7 +30,7 @@ var Admin = require('../model/admin');
 */
 router.get("/", function (req, res) {
     res.send('This router is for all tree related tasks');
-})
+});
 
 router.post("/add", authenticate, function (req, res) {
 
@@ -39,32 +39,35 @@ router.post("/add", authenticate, function (req, res) {
         return;
     }
 
-    let desc = 'A tree rooted in history';
-    let url = process.env.DEFAULT_IMAGE;
+    var desc = 'A tree rooted in history';
+    var url = process.env.DEFAULT_IMAGE;
     if (req.body.description) {
-        desc = req.body.description
+        desc = req.body.description;
     }
     if (req.body.imageUrl && validate(req.body.imageUrl)) {
-        url = req.body.imageUrl
+        url = req.body.imageUrl;
     }
 
     var newTree = new Tree({
         founder: req.user.username,
         treeName: req.body.treeName,
         description: desc,
-        imageUrl: url,
-    })
+        imageUrl: url
+    });
 
     newTree.save().then(() => {
         Tree.findOneAndUpdate({ treeName: req.body.treeName }, {
             $push: {
-                'members': req.user.username,
+                members: req.user.username,
+                admins: req.user.username
             }
         }).then((tree) => {
-            res.status(200).send(tree)
+            res.status(200).send(tree);
             return
         }).catch((err) => {
-            // console.log(err)
+            console.log(err)
+            res.status(400).send({message: "Error: Could not create tree"});
+            return
         })
     })
 

@@ -1,2 +1,9 @@
 
- 
+ <div class="grid-container" id="treeObject">
+   <div *ngFor="let t of searchTrees">
+     <h2 class="center">{{t.treeName}}</h2>
+     <div class="cardProperties grid-item" id="trees" (click)="renderTree(t)">
+       <img [src]="t.imageUrl" class="imgSize" />
+     </div>
+   </div>
+ </div>

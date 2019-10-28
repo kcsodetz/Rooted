@@ -11,12 +11,19 @@
         <!-- Collapsible content -->
         <links>
             <ul class="navbar-nav">
-                    <div class="col-xs-3">
-                            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                        </div>
-                        <div class="col-xs-1">
-                            <button class="btn btn-sm" type="submit" style="border:none"><i class="fa fa-search"></i></button>
-                        </div>
+                    <div class="searchSec flex-center">
+                            <div class="inner-form" >
+                              <div class="input-field" >
+                                <div class="form-control round" style="overflow:auto; width:fixed;">
+                                  <input autocomplete= "off" class="form-control flex-center" id="searchinput" type="text" style="border: 0px; background: transparent; min-width:800; outline: none; -webkit-box-shadow:none; -moz-box-shadow:none; box-shadow: none; cursor: default; " placeholder="Type to input search..."/>
+                                      <div id="contain" ></div>
+                                </div>
+                              </div>
+                            </div>
+                    </div>
+                    <div class="col-xs-1">
+                         <button class="btn btn-sm" type="submit" style="border:none"><i class="fa fa-search"></i></button>
+                    </div>
             </ul>
             <!-- Links -->
             <ul class="navbar-nav ml-auto">

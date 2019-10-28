@@ -109,6 +109,10 @@ export class ProfileComponent implements OnInit {
       }
     });
   }
+  showNotifications()
+  {
+
+  }
   renderTree(tree: Tree) {
     /* Navigate to /tree/id  */
     this._router.navigate(['/tree/' + tree.ID]);

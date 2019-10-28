@@ -103,5 +103,8 @@ export class HomeComponent implements OnInit {
     this.submitted = false;
     this.fileForm.reset();
   }
+  searchPage(){
+    return
+  }
 
 }

@@ -47,11 +47,6 @@ export class PhotoLibraryComponent implements OnInit {
       return;
     }
 
-    // backend call
-    this.userService.addPhotoToLibrary(form.value.imageUrl).then(() => {
-      var confirm = window.alert('Photo ' + form.value.imageUrl + ' Added!')
-      window.location.replace("/photo-library")
-      console.log(confirm)
-    });
+    
   }
 }

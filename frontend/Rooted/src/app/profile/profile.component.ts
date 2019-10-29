@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { NgForm, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TreeService } from '../services/tree.service';
 import { Tree } from '../models/tree.model';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Account } from '../models/account.model'
 import { ChangeEmailComponent } from '../change-email/change-email.component';
 import { fillProperties } from '@angular/core/src/util/property';
@@ -17,8 +17,11 @@ import { fillProperties } from '@angular/core/src/util/property';
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
+  profilePictureFileForm: FormGroup;
   userAuthed: Boolean;
+  images: Array<Object>;
   account: Account;
+  profilePicture: string;
   username: string = "User";
   emaill: string ="";
   private loggedIn = new BehaviorSubject<boolean>(false); 
@@ -27,8 +30,8 @@ export class ProfileComponent implements OnInit {
   rspp: Object;
   submitted = false;
   myTrees: Tree[];
-  constructor(private userService: UserService, public authService: AuthService, private formBuilder: FormBuilder, private _router: Router) {
-
+  constructor(private route: ActivatedRoute, private userService: UserService, public authService: AuthService, private formBuilder: FormBuilder, private _router: Router) {
+    this.images = []
   }
   ngOnInit() {
     
@@ -36,6 +39,10 @@ export class ProfileComponent implements OnInit {
       this.userAuthed = true;
     }
     this.displayGroups();
+    // Form inputs and validators
+    this.profilePictureFileForm = this.formBuilder.group({
+      profilePictureURL: ['']
+    })
     this.editProfileForm = this.formBuilder.group({
       birthYear: [''],
       email: [''],
@@ -55,6 +62,7 @@ export class ProfileComponent implements OnInit {
       this.rspp=res;
       // console.log(this.rspp);
       this.username = this.account.username;
+      this.profilePicture = this.account.profilePictureURL;
       this.emaill= this.account.email;
       console.log("account: ", this.account);
       // console.log(this.account.twitter.valu)
@@ -117,10 +125,77 @@ export class ProfileComponent implements OnInit {
     /* Navigate to /tree/id  */
     this._router.navigate(['/tree/' + tree.ID]);
   }
+
+  onFileChanged(event) {
+    let file = event.target.files[0]
+    // console.log(event.target.files[0])
+    let formdata = new FormData()
+    formdata.append('image', file, file.name)
+    this.userService.uploadPhoto(formdata, this.account.username).then((res) => {
+      // console.log(res)
+      window.location.replace("/profile/");
+    })
+  }
+
+  displayImages() {
+    var id = this.route.snapshot.params['id'];
+    this.userService.getPhotos(id).then((res) => {
+      // console.log(res)
+      var i: number = 0
+      res.forEach(element => {
+        this.images[i] = element
+        i++
+      });
+    })
+  }
+
   get form() { return this.editProfileForm.controls; }
 
   get response_msg() { return this.response; }
 
+  
+  submitProfilePictureFile(form: NgForm) {
+  
+    console.log(form.value.profilePictureURL);
+    if (this.profilePictureFileForm.invalid) {
+      console.log("edit: " + form.value.profilePictureURL);
+      return;
+    }
+
+    if (form.value.profilePictureURL != this.account.profilePictureURL) {
+      console.log(form.value.profilePictureURL)
+      this.userService.editUserProfilePicture(form.value.profilePictureURL, this.account.username).subscribe((response) => {
+        console.log(response);
+        this.response = "complete";
+      },
+        (err) => {
+          console.log(err);
+          this.response = "fatalError";
+        });
+    }
+    else {
+      this.response = "noEdit";
+      console.log("else");
+    }
+
+    window.location.replace("/profile")
+
+  }
+
+
+    cancelEdits() {
+      this._router.navigate(['/profile/']);
+    }
+
+  
+ 
+  /**
+   * Resets all values for the form when the cancel button is invoked
+   */
+  cancel() {
+    this.submitted = false;
+    this.profilePictureFileForm.reset();
+  }
 
   async onSubmitEditProfile(form: NgForm) {
       this.submitted = true;

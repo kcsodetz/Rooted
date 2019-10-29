@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm, FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { AuthService } from '../services/auth.service'
+import { NgForm, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-change-email',
@@ -10,9 +10,9 @@ import { AuthService } from '../services/auth.service'
 export class ChangeEmailComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, public authservice: AuthService) { }
-  response: string = "NULL";
+  response = 'NULL';
   changeEmailForm: FormGroup;
-  submitted_email: boolean = false;
+  submitted_email = false;
 
   ngOnInit() {
     this.changeEmailForm = this.formBuilder.group({
@@ -21,15 +21,15 @@ export class ChangeEmailComponent implements OnInit {
     }, { validator: this.checkEmails });
   }
 
-  get form_email() { return this.changeEmailForm.controls }
-  get response_msg() { return this.response }
+  get form_email() { return this.changeEmailForm.controls; }
+  get response_msg() { return this.response; }
 
   // custom validator for checking emails
   checkEmails(group: FormGroup) {
-    let email = group.controls.email.value;
-    let confirmEmail = group.controls.confirmEmail.value;
+    const email = group.controls.email.value;
+    const confirmEmail = group.controls.confirmEmail.value;
 
-    return email === confirmEmail ? null : { notSame: true }
+    return email === confirmEmail ? null : { notSame: true };
   }
 
   onSubmitEmail(form: NgForm) {
@@ -40,11 +40,15 @@ export class ChangeEmailComponent implements OnInit {
     }
 
     this.authservice.changeEmail(form.value.email).then((res) => {
-      console.log(res)
-      this.response = "complete_email"
+      console.log(res);
+      this.response = 'complete_email';
     }).catch((error) => {
-      console.log(error)
-      this.response = "fatal_error"
-    })
+      console.log(error.error.message);
+      if (error.error.message === 'Duplicate Found') {
+        this.response = 'duplicate';
+      } else {
+        this.response = 'fatal_error';
+      }
+    });
   }
 }

@@ -64,12 +64,11 @@
               </mdb-card-title>
               <div class="usericon" *ngFor="let member of myTree.members">
                 <i class="fas fa-user-circle fa-5x fa-green-text green-text pr-3 ml-3"></i>
-                <span><a onclick="document.getElementById('userinfo').style.display='block'">
-                  {{member}}</a></span>
-                  <div id="userinfo" class="w3-modal">
+                <span><a (click)="userProfile(member)">
+                    {{member}}</a></span>
+                  <!-- <div id="userinfo" class="w3-modal">
                       <div class="w3-modal-content">
                         <div class="w3-container">
-                          <!-- Card Container and Body -->
                           <mdb-card>
                             <mdb-card-body>
                                 <span onclick="document.getElementById('userinfo').style.display='none'"
@@ -82,10 +81,9 @@
                                 </button>
                             </mdb-card-body>
                           </mdb-card>
-                          <!-- Card Container and Body -->
                         </div>
                       </div>
-                  </div>
+                  </div> -->
               </div>
             </mdb-card-body>
           </mdb-card>

@@ -11,16 +11,17 @@
   <div id="userinfo" class="w3-modal">
     <div class="w3-modal-content">
       <div class="w3-container">
-        <mdb-card>
           <mdb-card-body>
-              <span onclick="document.getElementById('userinfo').style.display='none'"
-              class="w3-button w3-display-topright">&times;</span>
-              <h3 class="ques">Are you sure you want to delete this tree?</h3>
-              <button mdbBtn type="button" color="danger" class="report my-4">
-                  <a href="#" (click)="deleteTree()">Delete</a>
-              </button>
+                <span onclick="document.getElementById('userinfo').style.display='none'"
+                class="w3-button w3-display-topright">&times;</span>
+                <h3 class="ques">Are you sure you want to delete this tree?</h3>
+                <div class="ques" style=" align-self: center;">
+                  <button type="button" style="background-color: rgb(255, 28, 47);" color="danger" (click)="deleteTree()" >
+                    Delete
+                 </button>
+              </div>
+             
           </mdb-card-body>
-        </mdb-card>
       </div>
     </div>
   </div>

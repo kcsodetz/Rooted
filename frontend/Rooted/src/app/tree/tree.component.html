@@ -105,7 +105,7 @@
                         <h4 class="pageHeader">Add Member</h4>
 
                         <div class="form-group">
-                          <label>By Rooted Username</label>
+                          <label style="float:left">By Rooted Username:</label>
                           <input type="text" id="addUser" formControlName="username" class="form-control"
                             placeholder="Username" [(ngModel)]="username"
                             [ngClass]="{ 'is-invalid': submitted && form_add_user.username.errors }">
@@ -127,21 +127,31 @@
                           </div>
                         </div>
 
-                        <div class="form-group">
-                            <label>By Email</label>
+                        <div class="form-group" >
+                            <label style="float:left">By Email:</label>
                             <input type="text" id="addUserEmail" class="form-control"
                               placeholder="Email">
+                              <br>
                             <input type="text" id="addUserName" class="form-control"
                               placeholder="Name">
+                              <br>
                         </div>
 
-                        <div class="row">
-                            <button mdbBtn color="success" block="true" class="my-4" type="submit" prevent-default>Add
-                                User</button>
-                            <button (click)="cancel()" type="button"
-                                onclick="document.getElementById('id02').style.display='none'" mdbBtn color="success"
-                                block="true" class="my-4">Cancel</button>
+                        <div class="form-group" >
+                            <div class="row" style="width:100%; ">
+                              <!--Alignment issues, unsure of issue, temp fix of padding-left:3%-->
+                                <div class="spacer" style="width:50%; display: flex; align-content: start; padding-left: 3%;">
+                                    <button color="success" block="true"  type="submit" prevent-default style="align-self: start;">Add
+                                      User</button>
+                                </div>
+                                <div class="spacer" style="width:50%; display: flex; justify-content: end;">
+                                    <button (click)="cancel()" type="button"
+                                    onclick="document.getElementById('id02').style.display='none'"  color="success"
+                                    block="true">Cancel</button>
+                                </div>
+                              </div>
                         </div>
+                        
                         
                       </form>
                     </mdb-card-body>

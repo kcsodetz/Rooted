@@ -368,25 +368,32 @@ router.post("/edit-profile", authenticate, (req, res) => {
 
 })
 
-router.get('/all-photos', authenticate, (req, res) => {
-    if (!req.headers.username) {
-        res.status(400).send({ message: "Bad request" });
+router.post("/edit-profile-picture", authenticate, (req, res) => {
+    if (!req.body.profilePictureURL || !req.body.username) {
+        res.status(400).json({ message: "Profile picture change is incomplete" });
         return;
     }
-    User.findById(req.headers.username, (err, u) => {
 
-        if (err) {
-            res.status(400).send({ message: "Could not find user" });
+    User.findOne({ username: req.body.username }).then((u) => {
+        console.log(u);
+        if (!u) {
+            res.status(400).send({ message: "User does not exist" });
             return;
         }
-        res.status(200).send(u.images)
-        return
-        
-    }).catch((err) => {
-        res.status(400).send(err);
-        return;
+        User.findOneAndUpdate({ username: req.body.username },
+            {
+                $set: {
+                    profilePictureURL: req.body.profilePictureURL,
+                }
+            }).then(() => {
+                res.status(200).send({ message: 'Profile picture updated!' })
+                return
+            }).catch((err) => {
+                res.send(err);
+            })
     })
 })
+
 
 router.post('/upload-photo', authenticate, upload.single("image"), (req, res) => {
     // console.log(req)
@@ -414,6 +421,26 @@ router.post('/upload-photo', authenticate, upload.single("image"), (req, res) =>
         })
     }).catch((err) => {
         res.send(err);
+    })
+})
+
+router.get('/all-photos', authenticate, (req, res) => {
+    if (!req.headers.username) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+    User.findById(req.headers.username, (err, u) => {
+
+        if (err) {
+            res.status(400).send({ message: "Could not find user" });
+            return;
+        }
+        res.status(200).send(u.images) 
+        return
+        // console.log(dd.images)
+    }).catch((err) => {
+        res.status(400).send(err);
+        return;
     })
 })
 

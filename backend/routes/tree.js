@@ -597,6 +597,25 @@ router.post('/unban-user', authenticate, (req, res) => {
 
 
 /*
+*   Display banned users
+*/
+router.get("/display-banned-users", authenticate, (req, res) => {
+    if (!req.body || !req.body.treeID) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+
+    Tree.findById(req.body.treeID, (err, tre) => {
+        res.status(200).send(tre.bannedUsers)
+    }).catch((err) => {
+        res.status(400).send({ message: "Could not find tree" });
+        return;
+    })
+
+
+})
+
+/*
 *   Get report a user
 */
 router.post('/report-user', authenticate, (req, res) => {

@@ -20,7 +20,7 @@ export class Account {
         this.username = response.username;
         this.profilePictureURL = response.profilePictureURL;
         this.email = response.email.properties.value;
-        this.emailHidden=false;
+        this.emailHidden=response.email.properties.hidden;
 
         this.birthYear=response.birthYear.properties.value;
         this.birthYearHidden=response.birthYear.properties.hidden;

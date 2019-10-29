@@ -1,4 +1,8 @@
-<div>
+<html>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<div class="w3-container"> 
+    
     <div class="row">
         <div class="profileInfo col-9">
               <div class="row">
@@ -13,7 +17,10 @@
         <div class="profileInfo col">
              <button mdbBtn type="button" color="success"
              mdbWavesEffect routerLink="/photo-library" >View Photo Library</button>
+             <button mdbBtn type="button" color="success"
+             mdbWavesEffect (click)="showNotifications()" onclick="document.getElementById('id01').style.display='block'" >View Notifications (INSERT NUMBER)</button>
         </div>
+       
     </div>
   
     <div class="marginTop">
@@ -103,7 +110,7 @@
               <div class="col-1" style="align-content: center">
                   <label>Hide</label>
                   <br>
-                  <input formControlName="birthYearHidden" type="checkbox" name="hideBirthYear"><br>    
+                  <input formControlName="birthYearHidden" type="checkbox" name="hideBirthYear" value=false  ><br>    
               </div>
           </div>
           <div class="row">
@@ -121,7 +128,7 @@
                   <div class="col-1" style="align-content: center">
                       <label>Hide</label>
                       <br>
-                      <input type="checkbox" formControlName="emailHidden"><br>    
+                      <input type="checkbox" formControlName="emailHidden" ><br>    
                   </div>
           </div>
           <div class="row">
@@ -134,7 +141,7 @@
                   <div class="col-1" style="align-content: center">
                       <label>Hide</label>
                       <br>
-                      <input type="checkbox" formControlName="phoneNumberHidden"><br>    
+                      <input type="checkbox" formControlName="phoneNumberHidden" ><br>    
                   </div>
           </div>
         </div>
@@ -150,7 +157,7 @@
                   <div class="col-1" style="align-content: center">
                       <label>Hide</label>
                       <br>
-                      <input type="checkbox" formControlName="facebookHidden"><br>    
+                      <input type="checkbox" formControlName="facebookHidden"  ><br>    
                   </div>
           </div>
           <div class="row">
@@ -163,7 +170,7 @@
                   <div class="col-1" style="align-content: center">
                       <label>Hide</label>
                       <br>
-                      <input type="checkbox" formControlName="instagramHidden"><br>    
+                      <input type="checkbox" formControlName="instagramHidden" ><br>    
                   </div>
           </div>
           <div class="row">
@@ -176,7 +183,7 @@
                   <div class="col-1" style="align-content: center">
                       <label>Hide</label>
                       <br>
-                      <input type="checkbox" formControlName="twitterHidden"><br>    
+                      <input type="checkbox" formControlName="twitterHidden" ><br>    
                   </div>
           </div>
         </div>
@@ -190,12 +197,59 @@
     <div class="row profileInfo">
           <button type="submit" type="submit">Submit</button>
     </div>
+    
+
+
+
+    <div id="id01" class="w3-modal" style="display: none;">
+        <div class="w3-modal-content w-3-card4">
+            <header class="w3-container "> 
+                <span onclick="document.getElementById('id01').style.display='none'" 
+                     class="w3-button w3-display-topright">&times;</span>
+                <h2>Notficiations</h2>
+          </header>
+          <div class="w3-container col" >
+
+                <div class="card notificationCard" name="notificationAcceptReject">
+                    <div class="row">
+                        <div class="col-9">
+                            Notification description (if accept/reject notification)
+                        </div>
+                        <div class="col-3">
+                            <div class="row" style="width:100%;justify-content: end;" >
+                                    <div class="spacer">
+                                        <button class="notificationBtn"  type="button" color="success" >Accept</button>
+                                    </div>
+                                    <div class="spacer">
+                                        <button class="notificationBtn"  type="button" color="success" >Reject</button>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="card notificationCard" name="notificationAcknowledge">
+                    <div class="row">
+                        <div class="col-9">
+                                Notification description
+                        </div>
+                        <div class="col-3" style="padding:0;">
+                            <div class="row" style="width:100%;justify-content: end; padding: 0; " >
+                                    <div class="spacer">
+                                    <button class="notificationBtn" type="button" color="success" >x</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button (click)="cancel()" type="button" onclick="document.getElementById('id01').style.display='none'" mdbBtn
+                    color="success" block="true" class="my-4">Close</button>
+          </div>
+        </div>
+      </div>
+
+
+
     </form>
-  
-    
-  
-    
-  
-  
-  
   </div>
+</html>

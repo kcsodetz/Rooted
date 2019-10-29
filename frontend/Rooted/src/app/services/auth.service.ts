@@ -48,6 +48,10 @@ export class AuthService {
     }
 
     editProfile(accountObject: Account){
+        /*console.log("username: "+ accountObject.username+ ", phoneNumber: "+accountObject.phoneNumber+ 
+            ", birthYear: "+accountObject.birthYear+", facebook: "+ accountObject.facebook+", instagram: "+accountObject.instagram+", twitter: "+accountObject.twitter+
+            ", birthYearHidden: "+accountObject.birthYearHidden+", emailHidden: "+accountObject.emailHidden+", facebookHidden: "+accountObject.facebookHidden+
+            ", instagramHidden: "+accountObject.instagramHidden+", phoneNumberHidden: "+accountObject.phoneNumberHidden+", twitterHidden: "+accountObject.twitterHidden );*/
         const auth: AuthDataEdit = { username: accountObject.username,  phoneNumber: accountObject.phoneNumber, 
         birthYear: accountObject.birthYear, facebook: accountObject.facebook, instagram: accountObject.instagram, twitter: accountObject.twitter,
         birthYearHidden: accountObject.birthYearHidden, emailHidden: accountObject.emailHidden, facebookHidden: accountObject.facebookHidden,

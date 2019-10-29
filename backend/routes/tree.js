@@ -450,6 +450,83 @@ router.get('/info', authenticate, (req, res) => {
 })
 
 /*
+*   Ban a user
+*/
+router.post('/ban-user', authenticate, (req, res) => {
+
+    if (!req.body.userToBan || !req.body.treeID) {
+        res.status(400).send("Bad request")
+        return
+    }
+
+
+    Tree.findById(req.body.treeID, (err, tre) => {
+
+        if (err) {
+            res.status(400).send({ message: "Tree does not exist" })
+            return;
+        }
+
+        if (!tre.admins.includes(req.user.username)) {
+            res.status(401).send({ message: "Not authorized to make changes" });
+            return;
+        }
+
+        if (tre.bannedUsers.includes(req.body.userToBan)) {
+            res.status(400).send({ message: "User is already banned" });
+            return;
+        }
+
+        User.findOne({ username: req.body.userToBan }).then((user) => {
+
+            if (!user) {
+                res.status(400).send({ message: "Username does not exist" });
+                return;
+            }
+
+            Tree.findOneAndUpdate({ _id: req.body.treeID }, {
+                $push: {
+                    bannedUsers: req.body.userToBan,
+                }
+            }).then(() => {
+                Tree.findOneAndUpdate({ _id: req.body.treeID }, {
+                    $inc: {
+                        numberOfPeople: 0
+                    }
+                }).then(() => {
+
+                    User.findEmailByUsername(req.body.userToBan).then((email) => {
+                        var emailSubject = "Rooted: You\'ve Been Banned in \"" + tre.treeName + "\"!"
+                        var addedToTreeBody = "Dear " + req.body.userToBan +
+                            ",\n\nYou have been banned by one of the admins of " + tre.founder + "\'s tree \"" + tre.treeName + "\". View your profile for more details.\n\n" +
+                            "Sincerely, \n\nThe Rooted Team";
+
+                        mailer(email, emailSubject, addedToTreeBody);
+
+                        res.status(200).send({ message: req.body.userToBan + " has been banned." })
+                    })
+
+                    return
+                }).catch((err) => {
+                    res.status(400).send(err);
+                    return;
+                })
+            }).catch((err) => {
+                res.status(400).send(err);
+                return;
+            })
+        }).catch((err) => {
+            res.send(err);
+            return;
+        })
+
+    })
+})
+
+
+
+
+/*
 *   Get report a user
 */
 router.post('/report-user', authenticate, (req, res) => {

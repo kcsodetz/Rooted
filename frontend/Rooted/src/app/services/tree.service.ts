@@ -138,4 +138,41 @@ export class TreeService {
         }
         return this.http.post('http://localhost:5000/tree/report-user',report,info).toPromise();
     }
+
+    setPrivateStatus(treeId: string, privateStatus: boolean){
+        const status = {
+            treeID: treeId,
+            private: privateStatus,
+        };
+        return this.http.post('http://localhost:5000/tree/set-private-status', status).toPromise();
+    }
+
+     /* If this doesn't work, tell Julien */
+    banUser(treeId: string, username: string){
+        const user = {
+            treeID: treeId,
+            userToBan: username,
+        };
+        return this.http.post('http://localhost:5000/tree/ban-user', user).toPromise();
+    }
+
+     /* If this doesn't work, tell Julien */
+    unbanUser(treeId: string, username: string){
+        const user = {
+            treeID: treeId,
+            userToUnban: username,
+        };
+        return this.http.post('http://localhost:5000/tree/unban-user', user).toPromise();
+    }
+
+    /* If this doesn't work, tell Julien */
+    getBannedUsers(treeId: string){
+        const users = {
+            headers: new HttpHeaders({
+                'treeID': treeId
+            })
+        };
+        return this.http.get('http://localhost:5000/tree/display-banned-users', users).toPromise();
+    }
+
 }

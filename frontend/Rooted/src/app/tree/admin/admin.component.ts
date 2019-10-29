@@ -4,19 +4,20 @@ import { Tree } from '../../models/tree.model';
 import { Router, ActivatedRoute, Params, Data } from '@angular/router';
 import { NgForm, FormGroup, FormBuilder, Validators, Form } from "@angular/forms";
 
-
-
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
-  
+
 })
 export class AdminComponent implements OnInit {
 
   myTree: Tree = { founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null, chat: null, imageUrl: null, ID: null, description: null };
 
   constructor(private route: ActivatedRoute, private treeService: TreeService, private _router: Router) { }
+
+
+  activeTabSection= "Tree";
 
 
   ngOnInit() {
@@ -32,6 +33,7 @@ export class AdminComponent implements OnInit {
 
   }
   get tree() { return this.myTree }
+
 
   /**
    * Method that deletes a tree and redirects back to the homepage
@@ -51,6 +53,22 @@ export class AdminComponent implements OnInit {
       //navigate back to page
       this._router.navigate(['/home']);
     })
+
+  toggle(SectionName){
+    console.log(SectionName);
+    if(this.activeTabSection==SectionName)
+    {
+      return;
+    }
+    document.getElementById(this.activeTabSection+"Tab").classList.toggle("active");
+    document.getElementById(this.activeTabSection+"Section").classList.toggle("invisible");
+    document.getElementById(SectionName+"Tab").classList.toggle("active");
+    document.getElementById(SectionName+"Section").classList.toggle("invisible");
+    this.activeTabSection=SectionName;
+  }
+  deleteTree(){
+    this.treeService.deleteChosenTree(this.route.snapshot.params['id']);
+    
   }
 
 }

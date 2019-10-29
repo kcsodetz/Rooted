@@ -1,3 +1,13 @@
+.report {
+    width: 50%;
+    text-align: center;
+    margin-left: 25%;
+}
+
+.ques {
+    text-align: center;
+    color: black;
+}
 .header{
     font-size:50px;
     margin-top: 35px;
@@ -35,30 +45,7 @@ button{
   margin-left: 7px;
 }
 
-.grid-container {
-    display: grid;
-    grid-template-columns: auto auto;
-    padding: 10px;
-   
-  }
-  .grid-item {
-    text-align: left;
-    padding-left: 3%;
-    padding-right: 3%;
-   // margin-left: 50px;
-    overflow: hidden;
-  }
 
-  .grid-container-daydreams {
-    display: grid;
-    grid-template-columns: auto auto auto auto;
-    padding: 10px;
-  }
-  .grid-item-daydreams {
-    text-align: center;
-    margin-left: 50px;
-    overflow: hidden;
-  }
 
   .circleTitle{
       font-size: 50px;

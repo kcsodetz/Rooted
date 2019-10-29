@@ -22,3 +22,97 @@ footer {
  bottom: 0;
  width: 100%;
 }
+    
+.round {
+  background-color:white;
+  min-height: 77;
+  border-radius: 50px;
+  border: 1px;
+  padding: 5px 5px 5px 25px;
+  overflow:auto; 
+} 
+.roundt {
+  background-color: #d5dfe2;
+  display: inline;
+  height: 20;
+  border-radius: 50px;
+  border: 50px;
+  padding: 5px 5px 5px 5px;
+  padding-right: 7px;
+  padding-left: 7px;
+  position: relative;
+} 
+.searchSec form .inner-form .input-field {
+  width: 900;
+  position: relative;
+}
+.searchSec form .inner-form .input-field .btn-search {
+  width: 70px;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  -ms-flex-pack: center;
+  justify-content: center;
+  align-items: center;
+}
+.btn{
+  text-shadow: none;
+  box-shadow: none;
+}
+button{
+  border-radius:10px;
+  padding-top:1%;
+  padding-bottom:1%;
+  background-color: rgb(27, 172, 59);
+  color:white;
+  border:none;
+} 
+.invisible{
+  display: none;
+}
+.active{
+  background-color: rgb(118, 197, 135) !important;
+  border-radius: 0;
+}
+.tab{
+  background-color: transparent;
+  color:black;
+  padding: 0;
+}
+.spacer{
+  padding-left: 1%;
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto;
+  padding: 10px;
+ 
+}
+.grid-item {
+  text-align: left;
+  padding-left: 3%;
+  padding-right: 3%;
+ // margin-left: 50px;
+  overflow: hidden;
+}
+
+.grid-container-daydreams {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  padding: 10px;
+}
+.grid-item-daydreams {
+  text-align: center;
+  margin-left: 50px;
+  overflow: hidden;
+}

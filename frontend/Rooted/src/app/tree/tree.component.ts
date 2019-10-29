@@ -26,6 +26,7 @@ export class TreeComponent implements OnInit {
   show = false;
   response: string = "NULL";
   messages: Array<Object>
+  activeTabSection= "Tree";
 
   /* variables used in editing tree name*/
   renderComponent: string;
@@ -77,7 +78,18 @@ export class TreeComponent implements OnInit {
 
     
   }
-
+  toggle(SectionName){
+    console.log(SectionName);
+    if(this.activeTabSection==SectionName)
+    {
+      return;
+    }
+    document.getElementById(this.activeTabSection+"Tab").classList.toggle("active");
+    document.getElementById(this.activeTabSection+"Section").classList.toggle("invisible");
+    document.getElementById(SectionName+"Tab").classList.toggle("active");
+    document.getElementById(SectionName+"Section").classList.toggle("invisible");
+    this.activeTabSection=SectionName;
+  }
   /**
    * Get all messages for a tree
    */
@@ -94,6 +106,11 @@ export class TreeComponent implements OnInit {
       });
       console.log(this.messages)
     });
+  }
+
+  userProfile(username: string) {
+    /* Navigate to /tree/id  */
+    this._router.navigate(['/other-profile/' + username]);
   }
 
   /**
@@ -142,6 +159,14 @@ export class TreeComponent implements OnInit {
     this._router.navigate(['/edit-name/' + this.myTree.ID]);
 
   
+  }
+
+  /**
+   * Navigates to an admin Dashboard
+   */
+  renderAdminDashboard() {
+    /* Navigate to /tree/id  */
+    this._router.navigate(['/admin/' + this.myTree.ID]);
   }
 
  

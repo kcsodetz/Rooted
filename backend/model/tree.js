@@ -18,7 +18,8 @@ let treeSchema = new mongoose.Schema({
     image_id: {type: String},
     hasImage: {type: Boolean, default: false},
     description: {type: String},
-    admins: {type: [String]}
+    admins: {type: [String]},
+    privateStatus: {type: Boolean, default: false},
 })
 
 /* Creating the user model from the schema and giving it to Mongoose */

@@ -9,6 +9,10 @@ let userSchema = new mongoose.Schema({
   password: { type: String, required: true, minlength: 8 },
   verified: Boolean,
   verificationNum: { type: Number, default: 0 },
+  notifications: [{
+    sender: String,
+    body: String
+  }],
   images: [{
     url: String,
     id: String

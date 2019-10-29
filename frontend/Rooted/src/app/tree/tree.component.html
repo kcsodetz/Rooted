@@ -3,34 +3,27 @@
 
 
   <div>
-    <button mdbBtn type="button" color="success" mdbWavesEffect (click)=back()> <i class="fa fa-arrow-left"> </i> Back
-      to Your Trees </button>
-    <!-- <button mdbBtn type="button" href="#" routerLink="/report-group" [state]="{ data: {treeID: myTree.ID, treeName: myTree.treeName, reporter: username}}" color="success" class="my-4"> Report
-      this group </button>
-    <a href="#" routerLink="/report-group" [state]="{ data: {treeID: myTree.ID, treeName: myTree.treeName, reporter: username}}" class="my-4"> Report
-      this group </a> -->
-    <button mdbBtn type="button" color="success" class="my-4">
-        <a href="#" routerLink="/report-group" [state]="{ data: {treeID: myTree.ID, treeName: myTree.treeName, reporter: username}}" class="my-4"> Report
-          this group </a>
-    </button>
-    <button mdbBtn type="button" color="success" class="my-4">
-      <a class="my-4" (click)=renderAdminDashboard()>  Admin Dashboard <i class="fa fa-shield"> </i></a>
-  </button>
+   
+   
       <div class="row">
-          <div class="profileInfo col-9">
+          <div class="profileInfo col-8">
               <h1 class="treeTitle">{{myTree.treeName}}</h1>
           </div>
           <div class="profileInfo col">
               <div class="row" style="justify-content: right;">
+                  <button mdbBtn type="button" color="success"
+                  mdbWavesEffect (click)=back()  ><i class="fa fa-arrow-left"> </i> Back
+                  to Your Trees </button>
+                  <button mdbBtn type="button" color="success" >
+                      <a (click)=renderAdminDashboard()>  Admin Dashboard <i class="fa fa-shield"> </i></a>
+                  </button>
                   <button mdbBtn type="button" color="success"
                   mdbWavesEffect (click)=back() routerLink="/photo-library" >Request to Join </button>
                   <button mdbBtn type="button" color="success" >
                      <a href="#" routerLink="/report-group" [state]="{ data: {treeID: myTree.ID, treeName: myTree.treeName, reporter: username}}" class="my-4"> Report
                        Group </a>
                  </button>
-                 <button mdbBtn type="button" color="success"
-                 mdbWavesEffect (click)=back() routerLink="/photo-library" ><i class="fa fa-arrow-left"> </i> Back
-                 to Your Trees </button>
+                
               </div>
           </div>
          
@@ -105,14 +98,14 @@
             <div id="id02" class="w3-modal">
               <div class="w3-modal-content">
                 <div class="w3-container">
-                  <mdb-card>
                     <mdb-card-body>
                       <form (submit)="addUser(g)" #g="ngForm" class="text-center border border-light p-5"
                         [formGroup]="addUserForm">
 
-                        <h4 class="pageHeader">Add User</h4>
+                        <h4 class="pageHeader">Add Member</h4>
 
                         <div class="form-group">
+                          <label>By Rooted Username</label>
                           <input type="text" id="addUser" formControlName="username" class="form-control"
                             placeholder="Username" [(ngModel)]="username"
                             [ngClass]="{ 'is-invalid': submitted && form_add_user.username.errors }">
@@ -134,15 +127,24 @@
                           </div>
                         </div>
 
-                        <button mdbBtn color="success" block="true" class="my-4" type="submit" prevent-default>Add
-                          User</button>
-                        <button (click)="cancel()" type="button"
-                          onclick="document.getElementById('id02').style.display='none'" mdbBtn color="success"
-                          block="true" class="my-4">Cancel</button>
+                        <div class="form-group">
+                            <label>By Email</label>
+                            <input type="text" id="addUserEmail" class="form-control"
+                              placeholder="Email">
+                            <input type="text" id="addUserName" class="form-control"
+                              placeholder="Name">
+                        </div>
 
+                        <div class="row">
+                            <button mdbBtn color="success" block="true" class="my-4" type="submit" prevent-default>Add
+                                User</button>
+                            <button (click)="cancel()" type="button"
+                                onclick="document.getElementById('id02').style.display='none'" mdbBtn color="success"
+                                block="true" class="my-4">Cancel</button>
+                        </div>
+                        
                       </form>
                     </mdb-card-body>
-                  </mdb-card>
                 </div>
               </div>
             </div>

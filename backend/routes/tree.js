@@ -66,7 +66,7 @@ router.post("/add", authenticate, function (req, res) {
             return
         }).catch((err) => {
             console.log(err)
-            res.status(400).send({message: "Error: Could not create tree"});
+            res.status(400).send({ message: "Error: Could not create tree" });
             return
         })
     })
@@ -259,21 +259,20 @@ router.post('/delete', authenticate, (req, res) => {
     }
 
     //find specific Tree object by ID
-    //requires treeid to be passed in as a header
-    Tree.findByIdAndDelete(req.body.treeID, (err, tre) => {
-        if (err || tre == null) {
-            res.status(400).send({ message: "Could not find tree" });
+    Tree.findOneAndDelete({_id: req.body.treeID }).then((tre) => {
+        console.log(tre)
+        if (tre != null) {
+            res.status(200).json({ message: tre.treeName + " has been deleted."})
             return;
         }
-        Rooted.findOneAndDelete({ _id: { $in: tre.rooted } }).then(() => {
-            res.status(200).send(tre) //returns all tree properties
-            return
-        }).catch((err) => {
-            res.send(err);
-        })
-        // console.log(tre);
+        else {
+            res.status(400).json({ message: "Could not find tree"})
+            return;
+        }
     }).catch((err) => {
-        res.send(err);
+        console.log(err)
+        res.status(400).json({ message: "Fatal error"})
+        return;
     })
 })
 
@@ -619,7 +618,7 @@ router.post("/set-private-status", authenticate, (req, res) => {
     }
 
     console.log("private value: ", req.body.private);
-    Tree.findByIdAndUpdate({_id: req.body.treeID},
+    Tree.findByIdAndUpdate({ _id: req.body.treeID },
         {
             $set: {
                 privateStatus: req.body.private

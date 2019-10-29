@@ -108,6 +108,11 @@ export class TreeComponent implements OnInit {
     });
   }
 
+  userProfile(username: string) {
+    /* Navigate to /tree/id  */
+    this._router.navigate(['/other-profile/' + username]);
+  }
+
   /**
    * Add a message to a tree
    * @param event Event to parse input from

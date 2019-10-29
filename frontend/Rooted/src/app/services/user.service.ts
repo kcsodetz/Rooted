@@ -37,10 +37,10 @@ export class UserService {
 
 
     //may not work 
-    getUserProfile(username: string){
+    getUserProfile(name: string){
         const user = {
             headers: new HttpHeaders({
-                'username': username
+                'username': name
             })
         }
         return this.http.get<Object>('http://localhost:5000/user/find-user', user).toPromise();

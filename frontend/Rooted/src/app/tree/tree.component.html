@@ -75,6 +75,7 @@
               </mdb-card-title>
               <div class="usericon" *ngFor="let member of myTree.members">
                 <i class="fas fa-user-circle fa-5x fa-green-text green-text pr-3 ml-3"></i>
+<<<<<<< HEAD
                 <span><a onclick="document.getElementById('userinfo').style.display='block'">
                     {{member}}</a></span>
                 <div id="userinfo" class="w3-modal">
@@ -98,6 +99,28 @@
                     </div>
                   </div>
                 </div>
+=======
+                <span><a (click)="userProfile(member)">
+                    {{member}}</a></span>
+                  <!-- <div id="userinfo" class="w3-modal">
+                      <div class="w3-modal-content">
+                        <div class="w3-container">
+                          <mdb-card>
+                            <mdb-card-body>
+                                <span onclick="document.getElementById('userinfo').style.display='none'"
+                                class="w3-button w3-display-topright">&times;</span>
+                                <button mdbBtn href="#" routerLink="/profile" color="success" block="true" class="my-4">
+                                  View {{member}}'s' Profile!</button>
+                                <button mdbBtn type="button" color="danger" class="report my-4">
+                                    <a href="#" routerLink="/report-user" [state]="{ data: {treeID: myTree.ID, userToReport: member}}">
+                                    Report This User</a>
+                                </button>
+                            </mdb-card-body>
+                          </mdb-card>
+                        </div>
+                      </div>
+                  </div> -->
+>>>>>>> ce04f3ba27124ae3bd598e4fe901a5435e342aab
               </div>
             </mdb-card-body>
           </mdb-card>

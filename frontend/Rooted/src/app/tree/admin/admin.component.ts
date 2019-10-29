@@ -31,4 +31,8 @@ export class AdminComponent implements OnInit {
   }
   get tree() { return this.myTree }
 
+  deleteTree(){
+    this.treeService.deleteChosenTree(this.route.snapshot.params['id']);
+  }
+
 }

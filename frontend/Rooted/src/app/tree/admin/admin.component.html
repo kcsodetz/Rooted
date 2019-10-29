@@ -1,3 +1,23 @@
 <div>
   <h1>Admin page for: {{myTree.treeName}}</h1>
+  <button mdbBtn type="button" color="success" class="my-4">
+  <a onclick="document.getElementById('userinfo').style.display='block'">Delete This Tree</a>
+  </button>
+  <div id="userinfo" class="w3-modal">
+    <div class="w3-modal-content">
+      <div class="w3-container">
+        <mdb-card>
+          <mdb-card-body>
+              <span onclick="document.getElementById('userinfo').style.display='none'"
+              class="w3-button w3-display-topright">&times;</span>
+              <h3 class="ques">Are you sure you want to delete this tree?</h3>
+              <button mdbBtn type="button" color="danger" class="report my-4">
+                  <a href="#" (click)="deleteTree()">Delete</a>
+              </button>
+          </mdb-card-body>
+        </mdb-card>
+      </div>
+    </div>
+  </div>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </div>

@@ -532,4 +532,28 @@ router.get("/get-all-trees", authenticate, (req, res) => {
     })
 })
 
+/**
+ * Set tree to be private or public
+ */
+router.post("/set-private-status", authenticate, (req, res) => {
+    if (!req.body.treeID || !req.body.private) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+
+    console.log("private value: ", req.body.private);
+    Tree.findByIdAndUpdate({_id: req.body.treeID},
+        {
+            $set: {
+                privateStatus: req.body.private
+            }
+        }).then(() => {
+            res.status(200).send({ message: 'Tree private status updated!' })
+            return;
+        }).catch((err) => {
+            res.send(err);
+        })
+})
+
+
 module.exports = router;

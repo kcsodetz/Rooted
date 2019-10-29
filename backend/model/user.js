@@ -10,9 +10,11 @@ let userSchema = new mongoose.Schema({
   verified: Boolean,
   verificationNum: { type: Number, default: 0 },
   notifications: [{
-    sender: String,
-    type: String,
-    body: String
+    notification: {
+      sender: String,
+      type: String,
+      body: String
+    }
   }],
   images: [{
     url: String,

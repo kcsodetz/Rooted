@@ -138,4 +138,13 @@ export class TreeService {
         }
         return this.http.post('http://localhost:5000/tree/report-user',report,info).toPromise();
     }
+
+    setPrivateStatus(treeId: string, privateStatus: boolean){
+        const status = {
+            treeID: treeId,
+            private: privateStatus,
+        };
+        return this.http.post('http://localhost:5000/tree/set-private-status', status).toPromise();
+    }
+
 }

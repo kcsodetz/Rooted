@@ -3,6 +3,7 @@ import { UserService } from '../services/user.service';
 import { NgForm, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Account } from '../models/account.model';
+import { Tree } from '../models/tree.model';
 
 @Component({
   selector: 'app-other-profile',
@@ -13,12 +14,19 @@ export class OtherProfileComponent implements OnInit {
   response: string;
   account: Account;
   email: string;
+  emailHidden: Boolean;
   birthYear: string;
+  birthYearHidden: Boolean;
   phoneNumber: string;
+  phoneNumberHidden: Boolean;
   facebook: string;
+  facebookHidden: Boolean;
   instagram: string;
+  instagramHidden: Boolean;
   twitter: string;
+  twitterHidden: Boolean;
   username: string;
+  myTrees: Tree[];
   submitted = false;
   constructor(private route: ActivatedRoute, private userService: UserService, private formBuilder: FormBuilder, private _router: Router) {
 
@@ -26,6 +34,7 @@ export class OtherProfileComponent implements OnInit {
   ngOnInit() {
     let user = this.route.snapshot.params['username'];
     this.getUser(user);
+    this.displayGroups();
   }
 
   getUser(user: string) {
@@ -35,14 +44,47 @@ export class OtherProfileComponent implements OnInit {
       this.account = new Account(usr);
       this.username = this.account.username;
       this.email = this.account.email;
+      this.emailHidden = this.account.emailHidden;
+      console.log(this.emailHidden);
       this.birthYear = this.account.birthYear;
+      this.birthYearHidden = this.account.birthYearHidden;
       this.phoneNumber = this.account.phoneNumber;
+      this.phoneNumberHidden = this.account.phoneNumberHidden;
       this.facebook = this.account.facebook;
+      this.facebookHidden = this.account.facebookHidden;
       this.instagram = this.account.instagram;
+      this.instagramHidden = this.account.instagramHidden;
       this.twitter = this.account.twitter;
+      this.twitterHidden = this.account.twitterHidden;
     })
 
   }
+
+  displayGroups(){
+    this.userService.getUserTrees().then((data) => {
+
+      let i: number;
+
+      let response = [];
+      response.push(data);
+
+      this.myTrees = new Array(response[0].length)
+
+      for (i = 0; i < response[0].length; i += 1) {
+        let tree = new Tree(response[0][i])
+        if (tree.treeName.length > 18) {
+          tree.treeName = tree.treeName.substring(0, 20) + '...'
+        }
+        this.myTrees[i] = tree;
+      }
+    });
+  }
+
+  renderTree(tree: Tree) {
+    /* Navigate to /tree/id  */
+    this._router.navigate(['/tree/' + tree.ID]);
+  }
+
   get response_msg() { return this.response; }
 
 }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TreeService } from '../../services/tree.service';
 import { Tree } from '../../models/tree.model';
 import { Router, ActivatedRoute, Params, Data } from '@angular/router';
-import { NgForm, FormGroup, FormBuilder, Validators, Form } from "@angular/forms";
+import { NgForm, FormGroup, FormBuilder, Validators, Form } from '@angular/forms';
 
 @Component({
   selector: 'app-admin',
@@ -17,11 +17,11 @@ export class AdminComponent implements OnInit {
   constructor(private route: ActivatedRoute, private treeService: TreeService, private _router: Router) { }
 
 
-  activeTabSection= "Tree";
+  activeTabSection = 'Tree';
 
 
   ngOnInit() {
-    var id = this.route.snapshot.params['id'];
+    const id = this.route.snapshot.params['id'];
 
 
     this.treeService.getAllTreeInfo(id).then((data) => {
@@ -29,10 +29,10 @@ export class AdminComponent implements OnInit {
       console.log(this.myTree);
     });
 
-    
+
 
   }
-  get tree() { return this.myTree }
+  get tree() { return this.myTree; }
 
 
   /**
@@ -42,33 +42,32 @@ export class AdminComponent implements OnInit {
   delTre(tree: Tree) {
 
     // call delete method from service
-    var confirm = window.confirm('Are you sure you want to remove this tree? This action cannot be undone')
-    if (confirm == false) {
-      return
-    }
-    var id = this.route.snapshot.params['id'];
-    this.treeService.deleteChosenTree(id).then((data) => {
-      this.myTree = new Tree(data);
-      console.log("Deleting Tree");
-      //navigate back to page
-      this._router.navigate(['/home']);
-    })
-
-  toggle(SectionName){
-    console.log(SectionName);
-    if(this.activeTabSection==SectionName)
-    {
+    const confirm = window.confirm('Are you sure you want to remove this tree? This action cannot be undone');
+    if (confirm === false) {
       return;
     }
-    document.getElementById(this.activeTabSection+"Tab").classList.toggle("active");
-    document.getElementById(this.activeTabSection+"Section").classList.toggle("invisible");
-    document.getElementById(SectionName+"Tab").classList.toggle("active");
-    document.getElementById(SectionName+"Section").classList.toggle("invisible");
-    this.activeTabSection=SectionName;
-  }
-  deleteTree(){
-    this.treeService.deleteChosenTree(this.route.snapshot.params['id']);
-    
+    const id = this.route.snapshot.params['id'];
+    this.treeService.deleteChosenTree(id).then((data) => {
+      this.myTree = new Tree(data);
+      console.log('Deleting Tree');
+      // navigate back to page
+      this._router.navigate(['/home']);
+    });
   }
 
+  toggle(SectionName) {
+    console.log(SectionName);
+    if (this.activeTabSection === SectionName) {
+      return;
+    }
+    document.getElementById(this.activeTabSection + 'Tab').classList.toggle('active');
+    document.getElementById(this.activeTabSection + 'Section').classList.toggle('invisible');
+    document.getElementById(SectionName + 'Tab').classList.toggle('active');
+    document.getElementById(SectionName + 'Section').classList.toggle('invisible');
+    this.activeTabSection = SectionName;
+  }
+
+  deleteTree() {
+    this.treeService.deleteChosenTree(this.route.snapshot.params['id']);
+  }
 }

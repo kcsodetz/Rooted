@@ -600,12 +600,12 @@ router.post('/unban-user', authenticate, (req, res) => {
 *   Display banned users
 */
 router.get("/display-banned-users", authenticate, (req, res) => {
-    if (!req.body || !req.body.treeID) {
+    if (!req.body || !req.headers.treeID) {
         res.status(400).send({ message: "Bad request" });
         return;
     }
 
-    Tree.findById(req.body.treeID, (err, tre) => {
+    Tree.findById(req.headers.treeID, (err, tre) => {
         res.status(200).send(tre.bannedUsers)
     }).catch((err) => {
         res.status(400).send({ message: "Could not find tree" });

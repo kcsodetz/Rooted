@@ -135,7 +135,9 @@ button{
   text-transform:uppercase;
   letter-spacing:1px;
 }
-
+.spacer{
+  padding-left: 1%;
+}
 .report{
   width: 100%;
 }
@@ -146,4 +148,16 @@ button{
 }
 .notificationBtn{
   font-size: 12px;
+}
+.active{
+  background-color: rgb(118, 197, 135) !important;
+  border-radius: 0;
+}
+.tab{
+  background-color: transparent;
+  color:black;
+  padding: 0;
+}
+.invisible{
+  display: none;
 }

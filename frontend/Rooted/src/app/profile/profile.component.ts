@@ -145,14 +145,12 @@ export class ProfileComponent implements OnInit {
       this.account.birthYearHidden=form.value.birthYearHidden;
       this.account.phoneNumber=form.value.phoneNumber;
       this.account.phoneNumberHidden=form.value.phoneNumberHidden;
-      console.log("hide: "+form.value.emailHidden);
       this.account.facebook=form.value.facebook;
       this.account.facebookHidden=form.value.facebookHidden;
       this.account.instagram=form.value.instagram;
       this.account.instagramHidden=form.value.instagramHidden;
       this.account.twitter=form.value.twitter;
       this.account.twitterHidden=form.value.twitterHidden;
-      console.log("AA");
     this.authService.editProfile(this.account).then((res) => {
           console.log(res)
           this.response = "complete_editProfile"

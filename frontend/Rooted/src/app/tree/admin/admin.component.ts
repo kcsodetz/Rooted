@@ -15,7 +15,7 @@ export class AdminComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private treeService: TreeService, private _router: Router) { }
 
-
+  activeTabSection= "Tree";
 
   ngOnInit() {
     var id = this.route.snapshot.params['id'];
@@ -30,7 +30,18 @@ export class AdminComponent implements OnInit {
 
   }
   get tree() { return this.myTree }
-
+  toggle(SectionName){
+    console.log(SectionName);
+    if(this.activeTabSection==SectionName)
+    {
+      return;
+    }
+    document.getElementById(this.activeTabSection+"Tab").classList.toggle("active");
+    document.getElementById(this.activeTabSection+"Section").classList.toggle("invisible");
+    document.getElementById(SectionName+"Tab").classList.toggle("active");
+    document.getElementById(SectionName+"Section").classList.toggle("invisible");
+    this.activeTabSection=SectionName;
+  }
   deleteTree(){
     this.treeService.deleteChosenTree(this.route.snapshot.params['id']);
   }

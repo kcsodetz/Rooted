@@ -1,8 +1,13 @@
-<div>
-  <h1>Admin page for: {{myTree.treeName}}</h1>
-  <button mdbBtn type="button" color="success" class="my-4">
-  <a onclick="document.getElementById('userinfo').style.display='block'">Delete This Tree</a>
-  </button>
+<div class="col" style="display: flex; align-content: center; width:100%;">
+  <div class="row">
+    <h1>Admin page for: {{myTree.treeName}}</h1>
+    <div class="spacer" style="float: right; align-self: right;">
+      <button (click)="cancel()" onclick="document.getElementById('userinfo').style.display='block'" type="button"
+      block="true">Delete This Tree</button>
+    </div>
+  </div>
+</div>
+  
   <div id="userinfo" class="w3-modal">
     <div class="w3-modal-content">
       <div class="w3-container">
@@ -20,4 +25,129 @@
     </div>
   </div>
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+
+<div class="mainDiv">
+  <div class="grid-item" style="padding: 3%;">
+    <nav class="nav green py-4 col">
+      <div class="spacer">
+        <button class="tab active" id="TreeTab" (click)="toggle('Tree')">Tree</button>
+      </div>
+      <div class="spacer">
+        <button class="tab " id="AnouncementsTab" (click)="toggle('Anouncements')">Anouncements</button>
+      </div>
+      <div class="spacer">
+        <button class="tab " id="AboutTab" (click)="toggle('About')">About</button>
+      </div>
+      <div class="spacer">
+        <button class="tab " id="PhotosTab" (click)="toggle('Photos')">Photos</button>
+      </div>
+      <div class="spacer">
+        <button class="tab " id="BannedUsersTab" (click)="toggle('BannedUsers')">Banned Users</button>
+      </div>
+    
+    
+    </nav>
+    <mdb-card id="TreeSection"  borderColor="border-success">
+      <mdb-card-body>
+        <mdb-card-title>
+          <h3>2019</h3>
+        </mdb-card-title>
+        <div class="usericon" *ngFor="let member of myTree.members">
+          <i class="fas fa-user-circle fa-5x fa-green-text green-text pr-3 ml-3"></i>
+          <!--<span><a onclick="document.getElementById('userinfo').style.display='block'">
+              {{member}}</a></span>-->
+          <div id="userinfo" class="w3-modal">
+            <div class="w3-modal-content">
+              <div class="w3-container">
+                <!-- Card Container and Body -->
+                <mdb-card>
+                  <mdb-card-body>
+                    <span onclick="document.getElementById('userinfo').style.display='none'"
+                      class="w3-button w3-display-topright">&times;</span>
+                    <button mdbBtn href="#" routerLink="/profile" color="success" block="true" class="my-4">
+                      View {{member}}'s' Profile!</button>
+                    <button mdbBtn type="button" color="danger" class="report my-4">
+                      <a href="#" routerLink="/report-user"
+                        [state]="{ data: {treeID: myTree.ID, userToReport: member}}">
+                        Report This User</a>
+                    </button>
+                  </mdb-card-body>
+                </mdb-card>
+              </div>
+            </div>
+          </div>
+          <span><a (click)="userProfile(member)">
+              {{member}}</a></span>
+            <!-- <div id="userinfo" class="w3-modal">
+                <div class="w3-modal-content">
+                  <div class="w3-container">
+                    <mdb-card>
+                      <mdb-card-body>
+                          <span onclick="document.getElementById('userinfo').style.display='none'"
+                          class="w3-button w3-display-topright">&times;</span>
+                          <button mdbBtn href="#" routerLink="/profile" color="success" block="true" class="my-4">
+                            View {{member}}'s' Profile!</button>
+                          <button mdbBtn type="button" color="danger" class="report my-4">
+                              <a href="#" routerLink="/report-user" [state]="{ data: {treeID: myTree.ID, userToReport: member}}">
+                              Report This User</a>
+                          </button>
+                      </mdb-card-body>
+                    </mdb-card>
+                  </div>
+                </div>
+            </div> -->
+    
+        </div>
+      </mdb-card-body>
+    </mdb-card>
+    
+    <mdb-card id="AnouncementsSection" class="invisible" borderColor="border-success">
+      <mdb-card-body>
+        <mdb-card-title>
+          <h3>Anouncements</h3>
+        </mdb-card-title>
+    
+      </mdb-card-body>
+    </mdb-card>
+    
+    <mdb-card id="AboutSection" class="invisible" borderColor="border-success">
+        <mdb-card-body>
+          <mdb-card-title>
+            <h3>About</h3>
+          </mdb-card-title>
+    
+        </mdb-card-body>
+    </mdb-card>
+    
+    <mdb-card id="PhotosSection" class="invisible" borderColor="border-success">
+        <mdb-card-body>
+          <mdb-card-title>
+            <h3>Photos</h3>
+          </mdb-card-title>
+    
+        </mdb-card-body>
+    </mdb-card>
+    <mdb-card id="BannedUsersSection"  class="invisible" borderColor="border-success">
+      <mdb-card-body>
+        <mdb-card-title>
+          <h3>BannedUsers</h3>
+        </mdb-card-title>
+        <div class="card notificationCard" name="notificationAcceptReject">
+            <div class="row">
+              <div class="col-9">
+                <label style="float:left">User:</label>
+              </div>
+              <div class="col-3">
+                <div class="row" style="width:100%;justify-content: end;">
+                  <div class="spacer">
+                    <button class="notificationBtn" type="button" color="success">Unban</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </mdb-card-body>
+    </mdb-card>
+  </div>
 </div>

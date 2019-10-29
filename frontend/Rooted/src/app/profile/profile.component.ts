@@ -23,7 +23,8 @@ export class ProfileComponent implements OnInit {
   account: Account;
   profilePicture: string;
   username = 'User';
-  emaill = "";
+  emaill = '';
+
   private loggedIn = new BehaviorSubject<boolean>(false);
   editProfileForm: FormGroup;
   response: string;
@@ -137,7 +138,9 @@ export class ProfileComponent implements OnInit {
   }
 
   displayImages() {
-    let id = this.route.snapshot.params['id'];
+
+    const id = this.route.snapshot.params['id'];
+
     this.userService.getPhotos(id).then((res) => {
       // console.log(res)
       let i = 0;
@@ -206,13 +209,15 @@ export class ProfileComponent implements OnInit {
 
       this.account.email = form.value.email;
 
-     if (this.account.email !=''&& this.account.email != undefined && this.account.email != this.emaill) {
+
+     if (this.account.email != '' && this.account.email != undefined && this.account.email != this.emaill) {
         this.authService.changeEmail(this.account.email).then((res) => {
           console.log(res);
-          this.response = 'complete_email'
+          this.response = 'complete_email';
         }).catch((error) => {
           console.log(error);
-          this.response = 'fatal_error'
+          this.response = 'fatal_error';
+
         });
       }
 
@@ -221,20 +226,23 @@ export class ProfileComponent implements OnInit {
       this.account.birthYearHidden = form.value.birthYearHidden;
       this.account.phoneNumber = form.value.phoneNumber;
       this.account.phoneNumberHidden = form.value.phoneNumberHidden;
+
+      console.log('hide: ' + form.value.emailHidden);
+
       this.account.facebook = form.value.facebook;
       this.account.facebookHidden = form.value.facebookHidden;
       this.account.instagram = form.value.instagram;
       this.account.instagramHidden = form.value.instagramHidden;
       this.account.twitter = form.value.twitter;
       this.account.twitterHidden = form.value.twitterHidden;
-    this.authService.editProfile(this.account).then((res) => {
+      console.log('AA');
+      this.authService.editProfile(this.account).then((res) => {
           console.log(res);
-          this.response = 'complete_editProfile'
-          window.alert('Information Updated!');
+          this.response = 'complete_editProfile';
         }).catch((error) => {
           console.log(error);
-          this.response = 'fatal_error'
-          window.alert('Error updating Information.');
+          this.response = 'fatal_error';
+
         });
 
   }

@@ -16,6 +16,7 @@ import { AboutComponent } from './about/about.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ReportuserComponent } from './reportuser/reportuser.component';
 import { ReportgroupComponent } from './reportgroup/reportgroup.component';
+import { SearchComponent } from './search/search.component';
 
 
 
@@ -45,6 +46,10 @@ const routes: Routes = [
     path: 'admin/:id',
     component: AdminComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'search',
+    component: SearchComponent
   },
   {
     path: 'login',

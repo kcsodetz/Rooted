@@ -3,6 +3,7 @@
 
 
   <div>
+<<<<<<< HEAD
     <button mdbBtn type="button" color="success" mdbWavesEffect (click)=back()> <i class="fa fa-arrow-left"> </i> Back
       to Your Trees </button>
     <!-- <button mdbBtn type="button" href="#" routerLink="/report-group" [state]="{ data: {treeID: myTree.ID, treeName: myTree.treeName, reporter: username}}" color="success" class="my-4"> Report
@@ -16,11 +17,33 @@
     <button mdbBtn type="button" color="success" class="my-4">
       <a class="my-4" (click)=renderAdminDashboard()>  Admin Dashboard <i class="fa fa-shield"> </i></a>
   </button>
+=======
+      <div class="row">
+          <div class="profileInfo col-9">
+              <h1 class="treeTitle">{{myTree.treeName}}</h1>
+          </div>
+          <div class="profileInfo col">
+              <div class="row" style="justify-content: right;">
+                  <button mdbBtn type="button" color="success"
+                  mdbWavesEffect (click)=back() routerLink="/photo-library" >Request to Join </button>
+                  <button mdbBtn type="button" color="success" >
+                     <a href="#" routerLink="/report-group" [state]="{ data: {treeID: myTree.ID, treeName: myTree.treeName, reporter: username}}" class="my-4"> Report
+                       Group </a>
+                 </button>
+                 <button mdbBtn type="button" color="success"
+                 mdbWavesEffect (click)=back() routerLink="/photo-library" ><i class="fa fa-arrow-left"> </i> Back
+                 to Your Trees </button>
+              </div>
+          </div>
+         
+      </div>
+   
+>>>>>>> abigehl_RequestJoinGroup
 
     <div  class="mainDiv">
-      <h1 class="treeTitle">{{myTree.treeName}}</h1>
-      <div class="grid-container">
-        <div class="grid-item">
+      
+      <div class="">
+        <div class="grid-item" style="padding: 0;">
         
           <div class="overflowTest" *ngIf="show">
             <div *ngFor="let m of messages">
@@ -36,12 +59,13 @@
         </div>
 
         <div class="grid-item">
-          <nav class="nav green lighten-4 py-4">
+          <nav class="nav green lighten-4 py-4 row">
               <a class="nav-link active" href="#">Tree</a>
               <a class="nav-link" href="#">Anouncements</a>
               <a class="nav-link" href="#">About</a>
               <a class="nav-link" href="#">Timeline</a>
               <a class="nav-link" href="#">Photos</a>
+             
           </nav>
           <mdb-card borderColor="border-success">
             <mdb-card-body>
@@ -76,12 +100,11 @@
             </mdb-card-body>
           </mdb-card>
 
-          <h1 class="greenLine">__________________________________________________________________</h1>
           <div class="adjustLeftMargin">
-            <h4 class="pageHeader">Members of {{myTree.treeName}} <button mdbBtn type="button" color="primary" mdbWavesEffect
-
-                onclick="document.getElementById('id02').style.display='block'">Add Member <i class="fa fa-user">
-                </i></button></h4>
+            <h4 >Members of {{myTree.treeName}}</h4>
+            <button style="float: right;" mdbBtn type="button" color="success" mdbWavesEffect
+            onclick="document.getElementById('id02').style.display='block'">Add Member <i class="fa fa-user">
+            </i></button>
             <div id="id02" class="w3-modal">
               <div class="w3-modal-content">
                 <div class="w3-container">
@@ -126,10 +149,9 @@
                 </div>
               </div>
             </div>
-            <h2>Founder: {{myTree.founder}}</h2>
-            <h2>Members: {{myTree.members}} </h2>
+            <h5>Founder: {{myTree.founder}}</h5>
+            <h5>Members: {{myTree.members}} </h5>
           </div>
-          <h1 class="greenLine">__________________________________________________________________</h1>
 
           <html>
           <meta name="viewport" content="width=device-width, initial-scale=1">

@@ -3,7 +3,14 @@
     margin-top: 35px;
   
 }
-
+button{
+  border-radius:10px;
+  padding-top:1%;
+  padding-bottom:1%;
+  background-color: rgb(27, 172, 59);
+  color:white;
+  border:none;
+} 
 .circleInfo{
     text-align: left;
     margin-left: 30px;
@@ -32,10 +39,13 @@
     display: grid;
     grid-template-columns: auto auto;
     padding: 10px;
+   
   }
   .grid-item {
     text-align: left;
-    margin-left: 50px;
+    padding-left: 3%;
+    padding-right: 3%;
+   // margin-left: 50px;
     overflow: hidden;
   }
 

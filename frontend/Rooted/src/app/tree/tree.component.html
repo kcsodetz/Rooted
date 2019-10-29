@@ -55,7 +55,7 @@
               <a class="nav-link" href="#">About</a>
               <a class="nav-link" href="#">Timeline</a>
               <a class="nav-link" href="#">Photos</a>
-             
+              <button  style="background-color: transparent; color:black; padding: 0;" onclick="document.getElementById('id03').style.display='block'">Banned Users (SHOULD ONLY BE VISIBLE TO ADMINS)</button>
           </nav>
           <mdb-card borderColor="border-success">
             <mdb-card-body>
@@ -169,7 +169,41 @@
          
 
           </html>
-
+          <div id="id03" class="w3-modal" style="display: none;">
+            
+                <div class="w3-container">
+                    <mdb-card-body>
+                        <div class="w3-modal-content w-3-card4">
+                            <header class="w3-container "> 
+                                <span onclick="document.getElementById('id03').style.display='none'" 
+                                     class="w3-button w3-display-topright">&times;</span>
+                                <h2 style="align-content: center;">Unban User</h2>
+                          </header>
+                          <div class="w3-container col" >
+                
+                                <div class="card notificationCard" name="notificationAcceptReject">
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <label style="float:left">User:</label>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="row" style="width:100%;justify-content: end;" >
+                                                    <div class="spacer">
+                                                        <button class="notificationBtn"  type="button" color="success" >Unban</button>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                               
+                                <button (click)="cancel()" type="button" onclick="document.getElementById('id03').style.display='none'" mdbBtn
+                                    color="success" block="true" class="my-4">Close</button>
+                          </div>
+                        </div>
+                    </mdb-card-body>
+                </div>
+            </div>
         
         </div>
       </div>
@@ -177,6 +211,8 @@
 
     </div>
   </div>
+
+
 
 
   

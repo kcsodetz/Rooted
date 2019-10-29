@@ -49,6 +49,7 @@ import { ReportuserComponent } from './reportuser/reportuser.component';
 import { ReportgroupComponent } from './reportgroup/reportgroup.component';
 import { AdminComponent } from './tree/admin/admin.component';
 import { SearchComponent } from './search/search.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -106,6 +107,7 @@ import { SearchComponent } from './search/search.component';
     PopoverModule.forRoot(),
     TooltipModule.forRoot(),
     WavesModule.forRoot(),
+    BrowserAnimationsModule,
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent]

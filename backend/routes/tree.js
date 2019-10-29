@@ -526,7 +526,7 @@ router.post('/ban-user', authenticate, (req, res) => {
 
 
 /*
-*   Ban a user
+*   Unban a user
 */
 router.post('/unban-user', authenticate, (req, res) => {
 

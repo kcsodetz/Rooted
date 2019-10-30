@@ -89,39 +89,13 @@
 </div>
 
 <!-- Content Div -->
-<div>
+<div style="display: flex; flex-wrap: wrap; width:100%">
   <h4 class="pageHeader">Your Trees</h4>
-  <div class="grid-container" id="treeObject">
+  <div class="grid-container" style="display: flex; flex-wrap: wrap; width:100%" id="treeObject">
     <div *ngFor="let t of myTrees">
       <h2 class="center">{{t.treeName}}</h2>
       <div class="cardProperties grid-item" id="trees" (click)="renderTree(t)">
-
-        <!-- <div mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
-        aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: true}">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header"> -->
-        <!-- <h4 class="modal-title w-100" id="myModalLabel">{{t.treeName}}</h4> -->
-
         <img [src]="t.imageUrl" class="imgSize" />
-
-       
-        <!-- <form (submit)="submitFile(f, t.treeName)" #f="ngForm" class="text-center border border-light p-5"
-                [formGroup]="fileForm">
-                <div class="form-group">
-                  <input type="text" id="url" formControlName="imageUrl" class="form-control" placeholder="Paste the url of the image you would like to upload"
-                    [ngClass]="{ 'is-invalid': submitted && form.imageUrl.errors }">
-                </div>
-                <button type="submit" mdbBtn type="button" color="primary" mdbWavesEffect>Add Image</button>
-              </form> -->
-
-        <!-- </div> -->
-        <!-- <div class="modal-footer"> -->
-        <!-- </div>
-          </div>
-        </div>
-      </div> -->
-
       </div>
     </div>
   </div>

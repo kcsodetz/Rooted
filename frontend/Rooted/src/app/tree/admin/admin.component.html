@@ -145,7 +145,7 @@
                 <div class="col-3">
                   <div class="row" style="width:100%;justify-content: end;">
                     <div class="spacer">
-                      <button class="notificationBtn" type="button" color="success">Ban</button>
+                      <button (click)="banUser(user)" class="notificationBtn" type="button" color="success">Ban</button>
                     </div>
                   </div>
                 </div>
@@ -166,7 +166,7 @@
               <div class="col-3">
                 <div class="row" style="width:100%;justify-content: end;">
                   <div class="spacer">
-                    <button class="notificationBtn" type="button" color="success">Unban</button>
+                    <button (click)="unbanUser(user)"class="notificationBtn" type="button" color="success">Unban</button>
                   </div>
                 </div>
               </div>

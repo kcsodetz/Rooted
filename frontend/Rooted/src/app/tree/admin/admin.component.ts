@@ -58,6 +58,16 @@ export class AdminComponent implements OnInit {
     });
   }
 
+  banUser(username: string){
+    console.log("banned: " + username);
+    this.treeService.banUser(this.route.snapshot.params['id'],username);
+  }
+
+  unbanUser(username: string){
+    console.log("unbanned: " + username);
+    this.treeService.unbanUser(this.route.snapshot.params['id'],username);
+  }
+
   toggle(SectionName) {
     console.log(SectionName);
     if (this.activeTabSection === SectionName) {

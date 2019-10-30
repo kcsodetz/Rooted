@@ -5,10 +5,9 @@
       </i> </button>
 
 
-    <div>
-      <div *ngFor="let i of images">
-        <a>a</a>
-      <img [src]="i.url" />
+    <div style="display: flex; flex-wrap: wrap; width: 100%; ">
+      <div class="spacer" *ngFor="let i of images">
+            <img [src]="i.url" />
     </div>
     </div>
 

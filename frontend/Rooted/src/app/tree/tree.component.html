@@ -5,7 +5,8 @@
 
 
 
-
+   
+  
 
     <div class="row">
       <div class="profileInfo col-8">
@@ -23,7 +24,7 @@
             to Join </button>
           <button mdbBtn type="button" color="success">
             <a href="#" routerLink="/report-group"
-              [state]="{ data: {treeID: myTree.ID, treeName: myTree.treeName, reporter: username}}" class="my-4"> Report
+              [state]="{ data: {treeID: myTree.ID, treeName: myTree.treeName, reporter: username}}"> class="my-4"> Report
               Group </a>
           </button>
 
@@ -39,35 +40,25 @@
         <div class="grid-item" style="padding: 0;">
 
 
-          <div class="overflowTest" *ngIf="show">
-            <div *ngFor="let m of messages">
-              <b>{{m.user}}</b>:
-              {{m.message}}
-            </div>
-          </div>
-          <br>
-
-          <div *ngIf="show"><input #box placeholder="Add message" class="messagesInput"
-              (keyup.enter)="addMessage(box.value);box.value=''"> <a class="iconSize"
-              (click)="addMessage(box.value);box.value=''"><i class="fa fa-angle-double-right"></i></a></div>
-        </div>
+          
 
         <div class="grid-item">
           <nav class="nav green py-4 row">
             <div class="spacer">
-              <button class="tab active" id="TreeTab" (click)="toggle('Tree')">Tree</button>
+              <button class="tab active" id="TreeTab" (click)="toggle('Tree')" (click)="show = !show">Tree</button>
             </div>
             <div class="spacer">
-              <button class="tab " id="AnouncementsTab" (click)="toggle('Anouncements')">Anouncements</button>
+              <button class="tab " id="AnouncementsTab" (click)="toggle('Anouncements')" (click)="show = !show">Anouncements</button>
             </div>
             <div class="spacer">
-              <button class="tab " id="AboutTab" (click)="toggle('About')">About</button>
+              <button class="tab " id="AboutTab" (click)="toggle('About')" (click)="show = !show">About</button>
             </div>
             <div class="spacer">
-              <button class="tab " id="PhotosTab" (click)="toggle('Photos')">Photos</button>
+              <button class="tab " id="PhotosTab" (click)="toggle('Photos')" (click)="show = !show">Photos</button>
             </div>
             <div class="spacer">
-              <button class="tab " id="BannedUsersTab" (click)="toggle('BannedUsers')">Banned Users</button>
+              <button class="tab " id="MessagesTab" (click)="toggle('Messages')" (click)="show = true"
+              (click)="getMessages()">Messages</button>
             </div>
 
 
@@ -153,23 +144,29 @@
               </mdb-card-body>
           </mdb-card>
 
-          <mdb-card id="BannedUsersSection"  class="invisible" borderColor="border-success">
+          <mdb-card id="MessagesSection"  class="invisible" borderColor="border-success">
               <mdb-card-body>
                 <mdb-card-title>
-                  <h3>BannedUsers</h3>
                 </mdb-card-title>
                 <div class="card notificationCard" name="notificationAcceptReject">
                     <div class="row">
-                      <div class="col-9">
-                        <label style="float:left">User:</label>
-                      </div>
-                      <div class="col-3">
-                        <div class="row" style="width:100%;justify-content: end;">
-                          <div class="spacer">
-                            <button class="notificationBtn" type="button" color="success">Unban</button>
-                          </div>
+                      
+
+                      <div class="overflowTest" *ngIf="show">
+                        <div *ngFor="let m of messages">
+                          <b>{{m.user}}</b>:
+                          {{m.message}}
                         </div>
                       </div>
+                      <br>
+            
+                      <div *ngIf="show"><input #box placeholder="Add message" class="messagesInput"
+                          (keyup.enter)="addMessage(box.value);box.value=''"> <a class="iconSize"
+                          (click)="addMessage(box.value);box.value=''"><i class="fa fa-angle-double-right"></i></a>
+                        </div>
+
+
+
                     </div>
                   </div>
               </mdb-card-body>

@@ -102,7 +102,6 @@ export class TreeComponent implements OnInit {
       let len = this.myTree.members.length;
       let i = 0;
       for(i;i<len;i++){
-        console.log(this.myTree.members[i]);
         if(this.username==this.myTree.members[i]){
           this.isMember = true;
           return;
@@ -151,7 +150,7 @@ export class TreeComponent implements OnInit {
       var admins = [];
       admins = this.myTree.admins;
       var i: number = 0;
-      console.log("admins lenght: " + this.myTree.admins.length);
+      console.log("admins length: " + this.myTree.admins.length);
       this.myTree.admins.forEach(element => {
         console.log(this.myTree.admins[i]);
         if(this.myTree.admins[i] == this.username){
@@ -159,6 +158,7 @@ export class TreeComponent implements OnInit {
           console.log("user admin status: " + this.isAdmin);
           return;
         }
+        i++;
       });
     });
   }

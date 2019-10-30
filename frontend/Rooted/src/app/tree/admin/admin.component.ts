@@ -18,6 +18,7 @@ export class AdminComponent implements OnInit {
   constructor(private route: ActivatedRoute, private treeService: TreeService, private _router: Router) { }
   privateStatus: Boolean;
   editTreeForm: FormGroup;
+  admins = [];
 
   activeTabSection = 'Tree';
   submitted = false;
@@ -36,6 +37,7 @@ export class AdminComponent implements OnInit {
       this.bannedUsers = this.myTree.bannedUsers;
       this.users = this.myTree.members;
       this.privateStatus = this.myTree.privateStatus;
+      this.admins = this.myTree.admins;
       console.log("this tree's private status: " + this.myTree.privateStatus);
     });
 
@@ -73,6 +75,12 @@ export class AdminComponent implements OnInit {
   unbanUser(username: string){
     console.log("unbanned: " + username);
     this.treeService.unbanUser(this.route.snapshot.params['id'],username);
+  }
+
+  makeAdmin(username: string){
+    console.log("making admin: "+username);
+    this.treeService.addAdmin(this.route.snapshot.params['id'],username);
+    window.location.replace("/admin/" + this.route.snapshot.params['id']);
   }
 
   changeVisibility(){

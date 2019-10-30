@@ -638,8 +638,7 @@ router.post("/invite-user", authenticate, (req, res) => {
         return;
     }
 
-    //{$push: { pendingUsers: req.body.username }, $pull: { memberRequestedUsers: req.body.username } }
-
+    // Find tree to invite the user to
     Tree.findById(req.body.treeID, (err, tre) => {
 
         if (err) {
@@ -647,30 +646,29 @@ router.post("/invite-user", authenticate, (req, res) => {
             return;
         }
 
-
+        // Check if there was no tree found
         if (tre == null) {
             res.status(400).send({ message: "Tree does not exist" });
             return;
         }
 
+        // Check if the user has been requested
         if (!tre.memberRequestedUsers.includes(req.body.username)) {
             res.status(400).send({ message: "User has not been requested" });
             return;
-        } else {
-            var n = tre.memberRequestedUsers.indexOf(req.body.username);
-
-            if (n > -1) {
-                tre.memberRequestedUsers.splice(n, 1)
-            }
-            else {
-                res.status(400).send({ message: "Fatal Error" });
-                return;
-            }
-            tre.pendingUsers.push(req.body.username)
-
-            tre.save()
         }
 
+        // Remove user from memberRequestedUsers
+        var n = tre.memberRequestedUsers.indexOf(req.body.username);
+        tre.memberRequestedUsers.splice(n, 1)
+
+        // Add user to pendingUsers
+        tre.pendingUsers.push(req.body.username)
+
+        // Save changes to tree
+        tre.save()
+
+        // Send notification to user that they have been added to a tree
         User.findOneAndUpdate({ username: req.body.username }, {
             $push: {
                 notifications: {
@@ -702,6 +700,7 @@ router.post("/request-admin-to-add-user", authenticate, (req, res) => {
         return;
     }
 
+    // Find tree object
     Tree.findById(req.body.treeID, (err, tre) => {
 
         if (err) {
@@ -709,11 +708,13 @@ router.post("/request-admin-to-add-user", authenticate, (req, res) => {
             return;
         }
 
+        // Check if tree exists
         if (tre == null) {
             res.status(400).send({ message: "Tree does not exist" });
             return;
         }
 
+        // Check if user is already in tree or if the user has already been requested / pending join
         if (tre.members.includes(req.body.username)) {
             res.status(400).send({ message: "User is already in tree" });
             return;
@@ -722,7 +723,12 @@ router.post("/request-admin-to-add-user", authenticate, (req, res) => {
             res.status(400).send({ message: "User has already been requested" });
             return;
         }
+        else if (tre.pendingUsers.includes(req.body.username)) {
+            res.status(400).send({ message: "User has already been approved, waiting for them to join" });
+            return;
+        }
 
+        // Find user and add to memberRequestedUsers
         User.findOne({ username: req.body.username }).then((user) => {
 
             if (!user) {
@@ -730,6 +736,7 @@ router.post("/request-admin-to-add-user", authenticate, (req, res) => {
                 return;
             }
 
+            // Update tree
             Tree.findOneAndUpdate({ _id: req.body.treeID }, {
                 $push: {
                     memberRequestedUsers: req.body.username,

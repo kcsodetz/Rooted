@@ -34,14 +34,12 @@ router.get("/", function (req, res) {
 router.get("/account", authenticate, (req, res) => {
     // console.log('req.user: ',req.user);
     res.status(200).send(req.user);
-    
 });
 
 /*
  * Register new user
  */
 router.post("/register", (req, res) => {
-    console.log("registerhere");
     if (!req.body.email || !req.body.password || !req.body.username) {
         res.status(400).send({ message: "User data is incomplete" });
         return;
@@ -69,14 +67,14 @@ router.post("/register", (req, res) => {
                 properties: {
                     value: req.body.email,
                     hidden: false
-                },
+                }
             }
         });
 
         var newMemberEmailBody = "Dear " + req.body.username +
             ",\n\nWelcome to Rooted! We ask you to please verify your account with us. Your verification code is:\n" +
             verificatonCode + "\nWe look forward to having you with us!\n\nSincerely, \nThe Rooted Team";
-        var newMemberEmailSubject = "Welcome to Rooted!"
+        var newMemberEmailSubject = "Welcome to Rooted!";
 
         // Add to database with auth
         newUser.save().then(() => {

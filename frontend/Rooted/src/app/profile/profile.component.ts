@@ -126,30 +126,7 @@ export class ProfileComponent implements OnInit {
     this._router.navigate(['/tree/' + tree.ID]);
   }
 
-  onFileChanged(event) {
-    const file = event.target.files[0];
-    // console.log(event.target.files[0])
-    const formdata = new FormData();
-    formdata.append('image', file, file.name);
-    this.userService.uploadPhoto(formdata, this.account.username).then((res) => {
-      // console.log(res)
-      window.location.replace('/profile/');
-    });
-  }
-
-  displayImages() {
-
-    const id = this.route.snapshot.params['id'];
-
-    this.userService.getPhotos(id).then((res) => {
-      // console.log(res)
-      let i = 0;
-      res.forEach(element => {
-        this.images[i] = element;
-        i++;
-      });
-    });
-  }
+  
 
   get form() { return this.editProfileForm.controls; }
 

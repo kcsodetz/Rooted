@@ -12,6 +12,9 @@ export class Tree{
     imageUrl: string;
     ID: string;
     description: string;
+    admins: [String];
+    privateStatus: Boolean;
+    bannedUsers: [String];
     
     constructor(response: any) {
         this.ID = response._id;
@@ -23,7 +26,9 @@ export class Tree{
         this.chat = response.chat;
         this.imageUrl = response.imageUrl;
         this.description = response.description;
-        
+        this.admins = response.admins;
+        this.privateStatus = response.privateStatus;
+        this.bannedUsers = response.bannedUsers
         
     }
 }

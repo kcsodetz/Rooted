@@ -12,7 +12,7 @@ import { NgForm, FormGroup, FormBuilder, Validators, Form } from '@angular/forms
 })
 export class AdminComponent implements OnInit {
 
-  myTree: Tree = { founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null, chat: null, imageUrl: null, ID: null, description: null };
+  myTree: Tree = { founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null, chat: null, imageUrl: null, ID: null, description: null, admins: null, privateStatus: false, bannedUsers: null };
 
   constructor(private route: ActivatedRoute, private treeService: TreeService, private _router: Router) { }
 

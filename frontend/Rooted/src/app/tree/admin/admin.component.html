@@ -13,7 +13,14 @@
     </div>
   </div>
 </div>
-  
+<div class="custom-control custom-switch">
+  <input *ngIf="this.privateStatus; else elseStatus" type="checkbox" class="custom-control-input" id="customSwitches" checked>
+  <ng-template #elseStatus>
+      <input type="checkbox" class="custom-control-input" id="customSwitches">
+  </ng-template>
+  <label (click)="changeVisibility()" class="custom-control-label" for="customSwitches">Toggle Group Privacy. Currently: {{this.myTree.privateStatus}}</label>
+</div>
+
   <div id="userinfo" class="w3-modal">
     <div class="w3-modal-content">
       <div class="w3-container">

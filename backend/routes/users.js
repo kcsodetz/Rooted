@@ -477,6 +477,9 @@ router.post('/join-tree', authenticate, (req, res) => {
     }).catch((err) => {
         res.status(400).send({ message: "Fatal Error"});
 
+    })
+})
+
 router.get('/all-photos', authenticate, (req, res) => {
     if (!req.headers.username) {
         res.status(400).send({ message: "Badadfasdfas request" });

@@ -12,7 +12,8 @@ let userSchema = new mongoose.Schema({
   notifications: [{
     sender: String,
     nType: String,
-    body: String
+    body: String,
+    meta: String
   }],
   images: [{
     url: String,

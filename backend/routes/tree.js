@@ -676,7 +676,8 @@ router.post("/invite-user", authenticate, (req, res) => {
                 notifications: {
                     sender: tre.treeName,
                     nType: "Invitation",
-                    body: "You've Been Invited to " + tre.treeName + "!"
+                    body: "You've Been Invited to " + tre.treeName + "!",
+                    meta: tre._id
                 }
             }
         }).then((usr) => {

@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { AuthData } from '../models/auth-data.model'
-import { Subject } from "rxjs";
-import { Router } from "@angular/router";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthData } from '../models/auth-data.model';
+import { Subject } from 'rxjs';
+import { Router } from '@angular/router';
 import { RequestOptions, Headers } from '@angular/http';
 
 
@@ -25,9 +25,9 @@ export class TreeService {
                 // 'Content-Type': 'application/form-data',
                 'treeID': treeID
             })
-        }
-        console.log(formdata.getAll('image'))
-        return this.http.post('http://localhost:5000/tree/add-photo', formdata, info).toPromise()
+        };
+        console.log(formdata.getAll('image'));
+        return this.http.post('http://localhost:5000/tree/add-photo', formdata, info).toPromise();
 
     }
 
@@ -37,8 +37,8 @@ export class TreeService {
                 // 'Content-Type': 'application/form-data',
                 'treeID': treeID
             })
-        }
-        return this.http.get<Array<Object>>("http://localhost:5000/tree/all-photos", info).toPromise()
+        };
+        return this.http.get<Array<Object>>('http://localhost:5000/tree/all-photos', info).toPromise();
     }
 
 
@@ -74,7 +74,7 @@ export class TreeService {
         };
 
         /* calls /tree/info from the backend*/
-        return this.http.get("http://localhost:5000/tree/info", info).toPromise()
+        return this.http.get('http://localhost:5000/tree/info', info).toPromise();
 
     }
 
@@ -132,7 +132,7 @@ export class TreeService {
             treeName: treeName,
             reason: reason,
             reporter: reporter
-        }
+        };
         const info = {
             headers: new HttpHeaders({
                 'treeid': treeId
@@ -145,16 +145,16 @@ export class TreeService {
         const report = {
             reason: reason,
             userToReport: userToReport
-        }
+        };
         const info = {
             headers: new HttpHeaders({
                 'treeid': treeId
             })
-        }
-        return this.http.post('http://localhost:5000/tree/report-user',report,info).toPromise();
+        };
+        return this.http.post('http://localhost:5000/tree/report-user', report, info).toPromise();
     }
 
-    setPrivateStatus(treeId: string, privateStatus: boolean){
+    setPrivateStatus(treeId: string, privateStatus: boolean) {
         const status = {
             treeID: treeId,
             private: privateStatus,
@@ -163,7 +163,7 @@ export class TreeService {
     }
 
      /* If this doesn't work, tell Julien */
-    banUser(treeId: string, username: string){
+    banUser(treeId: string, username: string) {
         const user = {
             treeID: treeId,
             userToBan: username,
@@ -172,7 +172,7 @@ export class TreeService {
     }
 
      /* If this doesn't work, tell Julien */
-    unbanUser(treeId: string, username: string){
+    unbanUser(treeId: string, username: string) {
         const user = {
             treeID: treeId,
             userToUnban: username,
@@ -181,13 +181,29 @@ export class TreeService {
     }
 
     /* If this doesn't work, tell Julien */
-    getBannedUsers(treeId: string){
+    getBannedUsers(treeId: string) {
         const users = {
             headers: new HttpHeaders({
                 'treeID': treeId
             })
         };
         return this.http.get('http://localhost:5000/tree/display-banned-users', users).toPromise();
+    }
+
+    requestAdminToJoinTree(treeID: string, username: string) {
+        const payload = {
+            treeID: treeID,
+            username: username
+        };
+        return this.http.post('http://localhost:5000/tree/request-admin-to-add-user', payload).toPromise();
+    }
+
+    inviteUser(treeID: string, username: string) {
+        const payload = {
+            treeID: treeID,
+            username: username
+        };
+        return this.http.post('http://localhost:5000/tree/invite-user', payload).toPromise();
     }
 
 }

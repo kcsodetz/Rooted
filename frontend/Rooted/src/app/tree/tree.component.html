@@ -1,13 +1,14 @@
 <div>
-
-
+  <div *ngIf="isPrivate; else elseStatus">
+    <div *ngIf="notMember; else elseStatus">
+      <div class="profileInfo col-8">
+          <h1 class="treeTitle">{{myTree.treeName}}</h1>
+          <h3>You can't view this group vruh</h3>
+      </div>
+    </div>
+  </div>
+  <ng-template #elseStatus>
   <div>
-
-
-
-   
-  
-
     <div class="row">
       <div class="profileInfo col-8">
         <h1 class="treeTitle">{{myTree.treeName}}</h1>
@@ -291,22 +292,15 @@
                     <button (click)="cancel()" type="button"
                       onclick="document.getElementById('id03').style.display='none'" mdbBtn color="success" block="true"
                       class="my-4">Close</button>
+                    </div>
                   </div>
-                </div>
-              </mdb-card-body>
+                </mdb-card-body>
+              </div>
             </div>
           </div>
-
         </div>
       </div>
-
-
     </div>
   </div>
-
-
-
-
-
-
+  </ng-template>
 </div>

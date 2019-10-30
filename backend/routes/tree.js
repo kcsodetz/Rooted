@@ -73,52 +73,40 @@ router.post("/add", authenticate, function (req, res) {
 
 });
 
-router.post('/add-photo', authenticate, upload.single("image"), (req, res) => {
-    if (!req.file.url || !req.file.public_id || !req.headers.treeid) {
-        res.status(400).send({ message: "Bad request" });
-        return;
+router.post('/add-photo', authenticate, upload.single("image"), function (req, res) {
+
+    if (!req.body || !req.body.treeID || !req.body.imageUrl) {
+        res.status(400).send({ message: "Bad Request" })
+        return
     }
-    Tree.findOne({ _id: req.headers.treeid }).then((t) => {
-        if (!t) {
-            res.status(400).send({ message: "Tree does not exist" });
-            return;
+
+    if (!validate(req.body.imageUrl)) {
+        res.status(400).send({ message: "Invalid image, url is not validated" })
+        return
+    }
+
+    Tree.findOneAndUpdate({ _id: req.body.treeID }, {
+        $set: {
+            imageUrl: req.body.imageUrl,
+            hasImage: true
         }
-        Tree.findOneAndUpdate({ _id: req.headers.treeid }, {
-            $push: {
-                treePhotoLibraryImages: {
-                    url: req.file.url,
-                    id: req.file.public_id
-                }
+    }).then((tre) => {
+        Tree.findOne({ _id: req.body.treeID }).then((tree) => {
+            if (tree == null) {
+                res.status(400).send({ message: "Tree does not exist" })
+                return
             }
-        }).then((t) => {
-            res.status(200).send({ message: "Photo successfully uploaded" })
+            res.status(200).send(tree)
             return
         }).catch((err) => {
-            res.send(err);
+            res.send(err)
+            return
         })
     }).catch((err) => {
-        res.send(err);
-    })
-})
-
-router.get('/all-photos', authenticate, (req, res) => {
-    if (!req.headers.treeid) {
-        res.status(400).send({ message: "Bad request" });
-        return;
-    }
-    Tree.findById(req.headers.treeid, (err, t) => {
-
-        if (err) {
-            res.status(400).send({ message: "Could not find tree" });
-            return;
-        }
-        res.status(200).send(t.treePhotoLibraryImages) //returns all circle properties
+        res.status(400).send("Tree does not exist")
         return
-    }).catch((err) => {
-        res.status(400).send(err);
-        return;
     })
-})
+});
 
 router.post('/add-user', authenticate, (req, res) => {
 
@@ -271,19 +259,19 @@ router.post('/delete', authenticate, (req, res) => {
     }
 
     //find specific Tree object by ID
-    Tree.findOneAndDelete({ _id: req.body.treeID }).then((tre) => {
+    Tree.findOneAndDelete({_id: req.body.treeID }).then((tre) => {
         console.log(tre)
         if (tre != null) {
-            res.status(200).json({ message: tre.treeName + " has been deleted." })
+            res.status(200).json({ message: tre.treeName + " has been deleted."})
             return;
         }
         else {
-            res.status(400).json({ message: "Could not find tree" })
+            res.status(400).json({ message: "Could not find tree"})
             return;
         }
     }).catch((err) => {
         console.log(err)
-        res.status(400).json({ message: "Fatal error" })
+        res.status(400).json({ message: "Fatal error"})
         return;
     })
 })
@@ -573,7 +561,6 @@ router.post('/ban-user', authenticate, (req, res) => {
 
 
 
-
 /*
 *   Unban a user
 */
@@ -664,7 +651,6 @@ router.get("/display-banned-users", authenticate, (req, res) => {
 
 })
 
-
 /*
 *   Get report a user
 */
@@ -752,7 +738,9 @@ router.get("/get-all-trees", authenticate, (req, res) => {
  * Set tree to be private or public
  */
 router.post("/set-private-status", authenticate, (req, res) => {
-    if (!req.body.treeID || !req.body.private) {
+    if (!req.body.treeID || req.body.private==null) {
+        console.log("treeid:" + req.body.treeID)
+        console.log("private: " + req.body.private);
         res.status(400).send({ message: "Bad request" });
         return;
     }
@@ -768,167 +756,7 @@ router.post("/set-private-status", authenticate, (req, res) => {
             return;
         }).catch((err) => {
             res.send(err);
-            return;
         })
-})
-
-/**
- * Invites a user to a tree
- */
-router.post("/invite-user", authenticate, (req, res) => {
-    if (!req.body.treeID || !req.body.username) {
-        res.status(400).send({ message: "Bad request" });
-        return;
-    }
-
-    // Find tree to invite the user to
-    Tree.findById(req.body.treeID, (err, tre) => {
-
-        if (err) {
-            res.status(400).send({ message: "Fatal Error" });
-            return;
-        }
-
-        // Check if there was no tree found
-        if (tre == null) {
-            res.status(400).send({ message: "Tree does not exist" });
-            return;
-        }
-
-        // Check if the user has been requested
-        if (!tre.memberRequestedUsers.includes(req.body.username)) {
-            res.status(400).send({ message: "User has not been requested" });
-            return;
-        }
-
-        // Remove user from memberRequestedUsers
-        var n = tre.memberRequestedUsers.indexOf(req.body.username);
-        tre.memberRequestedUsers.splice(n, 1)
-
-        // Add user to pendingUsers
-        tre.pendingUsers.push(req.body.username)
-
-        // Save changes to tree
-        tre.save()
-
-        // Send notification to user that they have been added to a tree
-        User.findOneAndUpdate({ username: req.body.username }, {
-            $push: {
-                notifications: {
-                    sender: tre.treeName,
-                    nType: "Invitation",
-                    body: "You've Been Invited to " + tre.treeName + "!",
-                    meta: tre._id
-                }
-            }
-        }).then((usr) => {
-            console.log(usr)
-            res.status(200).send({ message: "User has been successfully sent an invitation!" });
-            return;
-        }).catch((err) => {
-            console.log(err)
-            res.status(400).send({ message: "Fatal Error" });
-            return;
-        })
-    })
-})
-
-
-/**
- * Member requests an admin to add a user
- */
-router.post("/request-admin-to-add-user", authenticate, (req, res) => {
-    if (!req.body.treeID || !req.body.username) {
-        res.status(400).send({ message: "Bad request" });
-        return;
-    }
-
-    // Find tree object
-    Tree.findById(req.body.treeID, (err, tre) => {
-
-        if (err) {
-            res.status(400).send({ message: "Fatal Error" });
-            return;
-        }
-
-        // Check if tree exists
-        if (tre == null) {
-            res.status(400).send({ message: "Tree does not exist" });
-            return;
-        }
-
-        // Check if user is already in tree or if the user has already been requested / pending join
-        if (tre.members.includes(req.body.username)) {
-            res.status(400).send({ message: "User is already in tree" });
-            return;
-        }
-        else if (tre.memberRequestedUsers.includes(req.body.username)) {
-            res.status(400).send({ message: "User has already been requested" });
-            return;
-        }
-        else if (tre.pendingUsers.includes(req.body.username)) {
-            res.status(400).send({ message: "User has already been approved, waiting for them to join" });
-            return;
-        }
-
-        // Find user and add to memberRequestedUsers
-        User.findOne({ username: req.body.username }).then((user) => {
-
-            if (!user) {
-                res.status(400).send({ message: "Username does not exist" });
-                return;
-            }
-
-            // Update tree
-            Tree.findOneAndUpdate({ _id: req.body.treeID }, {
-                $push: {
-                    memberRequestedUsers: req.body.username,
-                }
-            }).then(() => {
-                res.status(200).send({ message: req.body.username + " has been requested" });
-                return;
-            }).catch((err) => {
-                res.status(400).send(err);
-                return;
-            })
-        }).catch((err) => {
-            res.status(400).send(err);
-            return;
-        })
-    }).catch((err) => {
-        res.status(400).send({ message: "Fatal Error" });
-        return;
-    })
-})
-
-/**
- * Get searched tree
- */
-router.get("/search-tree", authenticate, (req, res) => {
-    // console.log(req.headers);
-
-    if (!req.headers.treename) {
-        // console.log(req.headers.treename);
-        res.status(400).send({ message: "Bad request" });
-        return;
-    }
-
-    Tree.find({ treeName: req.headers.treename }).then((tree) => {
-        console.log(tree);
-        if (tree == null) {
-            console.log("here");
-            res.status(400).send({ message: "Could not find tree" });
-            return;
-        }
-        
-        console.log("omg");
-        res.status(200).send(tree);
-        return;
-       
-    }).catch((err) => {
-        res.status(400).send(err);
-        return;
-    })    
 })
 
 

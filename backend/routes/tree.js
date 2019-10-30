@@ -638,6 +638,8 @@ router.post("/invite-user", authenticate, (req, res) => {
         return;
     }
 
+    //{$push: { pendingUsers: req.body.username }, $pull: { memberRequestedUsers: req.body.username } }
+
     Tree.findById(req.body.treeID, (err, tre) => {
 
         if (err) {
@@ -651,20 +653,31 @@ router.post("/invite-user", authenticate, (req, res) => {
             return;
         }
 
-        if (!tre.memberRequestedUsers.includes) {
+        if (!tre.memberRequestedUsers.includes(req.body.username)) {
             res.status(400).send({ message: "User has not been requested" });
             return;
+        } else {
+            var n = tre.memberRequestedUsers.indexOf(req.body.username);
+
+            if (n > -1) {
+                tre.memberRequestedUsers.splice(n, 1)
+            }
+            else {
+                res.status(400).send({ message: "Fatal Error" });
+                return;
+            }
+            tre.pendingUsers.push(req.body.username)
+
+            tre.save()
         }
 
-        var notification = { sender: tre.treeName, nType: "Invitation", body: "You've Been Invited to " + tre.treeName + "!" }
-
-        User.findOneAndUpdate({ username: req.body.username}, {
+        User.findOneAndUpdate({ username: req.body.username }, {
             $push: {
                 notifications: {
                     sender: tre.treeName,
                     nType: "Invitation",
                     body: "You've Been Invited to " + tre.treeName + "!"
-               }
+                }
             }
         }).then((usr) => {
             console.log(usr)
@@ -690,7 +703,7 @@ router.post("/request-admin-to-add-user", authenticate, (req, res) => {
 
     Tree.findById(req.body.treeID, (err, tre) => {
 
-          if (err) {
+        if (err) {
             res.status(400).send({ message: "Fatal Error" });
             return;
         }

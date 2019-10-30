@@ -238,9 +238,11 @@ export class ProfileComponent implements OnInit {
       console.log('AA');
       this.authService.editProfile(this.account).then((res) => {
           console.log(res);
+          window.alert("Success!")
           this.response = 'complete_editProfile';
         }).catch((error) => {
           console.log(error);
+          window.alert("Failure! :(")
           this.response = 'fatal_error';
 
         });

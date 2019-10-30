@@ -140,13 +140,22 @@
                 <mdb-card-title>
                   <h3>Photos</h3>
                 </mdb-card-title>
-  
+                
+                <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+                  <button type="button" class="btn btn-info" (click)="fileInput.click()">Upload picture <i class="fa fa-camera"></i> </button>
+                <div style="display: flex; flex-wrap: wrap; width: 100%; ">
+                  <div class="spacer" *ngFor="let i of treePhotoLibraryImages">
+                    <img [src]="i.url" />
+                  </div>
+                </div>
+
               </mdb-card-body>
           </mdb-card>
 
           <mdb-card id="MessagesSection"  class="invisible" borderColor="border-success">
               <mdb-card-body>
                 <mdb-card-title>
+                    <h3>Messages</h3>
                 </mdb-card-title>
                 <div class="card notificationCard" name="notificationAcceptReject">
                     <div class="row">

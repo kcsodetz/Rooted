@@ -34,6 +34,9 @@ export class TreeComponent implements OnInit {
   isAdmin: Boolean;
   account: Account;
   username: String;
+  isMember: Boolean;
+  notMember: Boolean;
+  isPrivate: Boolean;
 
   /* variables used in editing tree name*/
   renderComponent: string;
@@ -90,6 +93,17 @@ export class TreeComponent implements OnInit {
 
     this.treeService.getAllTreeInfo(id).then((data) => {
       this.myTree = new Tree(data);
+      this.isPrivate = this.myTree.privateStatus;
+      let len = this.myTree.members.length;
+      let i = 0;
+      for(i;i<len;i++){
+        console.log(this.myTree.members[i]);
+        if(this.username==this.myTree.members[i]){
+          this.isMember = true;
+          return;
+        }
+      }
+      this.notMember = true;
       console.log(data);
     });
 

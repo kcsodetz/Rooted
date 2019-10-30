@@ -304,6 +304,42 @@ router.post("/edit-name", authenticate, (req, res) => {
     })
 })
 
+
+/*
+*   Edit tree about bio
+*/
+
+router.post("/edit-tree-bio", authenticate, (req, res) => {
+    if (!req.body.bio || !req.body.treeID) {
+        res.status(400).send({ message: "Tree bio is incomplete" })
+        return
+    }
+
+    Tree.findOne({ _id: req.body.treeID }).then((tre) => {
+        if (!tre) {
+            res.status(400).json({ message: "Tree does not exist" });
+            return;
+        }
+        Tree.findOneAndUpdate({ _id: req.body.treeID },
+            {
+                $set: {
+                    aboutBio: req.body.bio,
+                }
+            }).then(() => {
+                res.status(200).send({ message: 'Tree bio is updated!' })
+                return
+            }).catch((err) => {
+                res.send(err);
+            })
+    })
+
+})
+
+
+/*
+*   Send messages
+*/
+
 router.post('/add-message', authenticate, (req, res) => {
     if (!req.body || !req.body.message || !req.body.treeID) {
         res.status(400).send({ message: "Bad request" });

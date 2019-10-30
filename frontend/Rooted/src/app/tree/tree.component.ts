@@ -25,6 +25,7 @@ export class TreeComponent implements OnInit {
   myTree: Tree;
   // Add user to tree form
   addUserForm: FormGroup;
+  treePhotoLibraryImages: Array<Object>
   submitted = false;
   show = false;
   response: string = "NULL";
@@ -41,6 +42,8 @@ export class TreeComponent implements OnInit {
   constructor(private route: ActivatedRoute, public userService: UserService,
     private treeService: TreeService,  private formBuilder: FormBuilder, private _router: Router) {
     this.messages = []
+    this.treePhotoLibraryImages = []
+
 
   }
 
@@ -74,6 +77,9 @@ export class TreeComponent implements OnInit {
       this.getTreeInfo();
       this.isUserAdmin();
     });
+
+    this.displayImages()
+
   }
 
    /*
@@ -261,5 +267,32 @@ export class TreeComponent implements OnInit {
    */
   back() { this._router.navigate(['/home']); }
 
+
+  
+
+  onFileChanged(event) {
+    let file = event.target.files[0]
+    let formdata = new FormData()
+    formdata.append('image', file, file.name)
+    this.treeService.uploadPhoto(formdata, this.myTree.ID).then((res) => {
+      window.location.replace("/tree/" + this.myTree.ID);
+    })
+  }
+
+  displayImages() {
+    console.log("HEY MOTHERFUCKER");
+    var id = this.route.snapshot.params['id'];
+    console.log(id);
+    this.treeService.getPhotos(id).then((res) => {
+      console.log("SURPRISE MOTHERFUCKER");
+      var i: number = 0
+      res.forEach(element => {
+        this.treePhotoLibraryImages[i] = element
+        i++
+      });
+    })
+  }
+
+  
 
 }

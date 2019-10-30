@@ -73,40 +73,52 @@ router.post("/add", authenticate, function (req, res) {
 
 });
 
-router.post('/add-photo', authenticate, upload.single("image"), function (req, res) {
-
-    if (!req.body || !req.body.treeID || !req.body.imageUrl) {
-        res.status(400).send({ message: "Bad Request" })
-        return
+router.post('/add-photo', authenticate, upload.single("image"), (req, res) => {
+    if (!req.file.url || !req.file.public_id || !req.headers.treeid) {
+        res.status(400).send({ message: "Bad request" });
+        return;
     }
-
-    if (!validate(req.body.imageUrl)) {
-        res.status(400).send({ message: "Invalid image, url is not validated" })
-        return
-    }
-
-    Tree.findOneAndUpdate({ _id: req.body.treeID }, {
-        $set: {
-            imageUrl: req.body.imageUrl,
-            hasImage: true
+    Tree.findOne({ _id: req.headers.treeid }).then((t) => {
+        if (!t) {
+            res.status(400).send({ message: "Tree does not exist" });
+            return;
         }
-    }).then((tre) => {
-        Tree.findOne({ _id: req.body.treeID }).then((tree) => {
-            if (tree == null) {
-                res.status(400).send({ message: "Tree does not exist" })
-                return
+        Tree.findOneAndUpdate({ _id: req.headers.treeid }, {
+            $push: {
+                treePhotoLibraryImages: {
+                    url: req.file.url,
+                    id: req.file.public_id
+                }
             }
-            res.status(200).send(tree)
+        }).then((t) => {
+            res.status(200).send({ message: "Photo successfully uploaded" })
             return
         }).catch((err) => {
-            res.send(err)
-            return
+            res.send(err);
         })
     }).catch((err) => {
-        res.status(400).send("Tree does not exist")
-        return
+        res.send(err);
     })
-});
+})
+
+router.get('/all-photos', authenticate, (req, res) => {
+    if (!req.headers.treeid) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+    Tree.findById(req.headers.treeid, (err, t) => {
+
+        if (err) {
+            res.status(400).send({ message: "Could not find tree" });
+            return;
+        }
+        res.status(200).send(t.treePhotoLibraryImages) //returns all circle properties
+        return
+    }).catch((err) => {
+        res.status(400).send(err);
+        return;
+    })
+})
 
 router.post('/add-user', authenticate, (req, res) => {
 

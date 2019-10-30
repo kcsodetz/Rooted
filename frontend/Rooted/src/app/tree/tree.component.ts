@@ -20,11 +20,11 @@ export class TreeComponent implements OnInit {
 
   @Input('childTree') tre: Tree;
   @Output() returnToParent = new EventEmitter<string>();
-
   // Tree object
   myTree: Tree;
   // Add user to tree form
   addUserForm: FormGroup;
+  addUserFormEmail: FormGroup;
   treePhotoLibraryImages: Array<Object>
   submitted = false;
   show = false;
@@ -72,11 +72,14 @@ export class TreeComponent implements OnInit {
     });
     this.userService.getAccountInfo().then((res) => {
       this.account = new Account(res);
-      this.username = this.account.username;
       console.log(this.username);
       this.getTreeInfo();
       this.isUserAdmin();
     });
+    this.addUserFormEmail = this.formBuilder.group({
+      email: ['', Validators.required]
+    });
+    
 
     this.displayImages()
 
@@ -293,6 +296,39 @@ export class TreeComponent implements OnInit {
     })
   }
 
-  
+  sendJoinRequest(){
+    this.treeService.requestAdminToJoinTree(this.myTree.ID, this.account.username).then((res) => {
+      console.log(res);
+      window.alert("Successfully Requested to Join Tree!")
+      this.response = 'complete_editProfile';
+    }).catch((error) => {
+      console.log(error);
+      window.alert("Failure! :(")
+      this.response = 'fatal_error';
 
+    });
+  }
+
+  async sendAddRequestUsername(form: NgForm){
+    console.log("HERE: "+form.value.username);
+    this.treeService.requestAdminToJoinTree(this.myTree.ID, form.value.username).then((res) => {
+      console.log(res);
+      window.alert("Success!")
+      this.response = 'complete_editProfile';
+    }).catch((error) => {
+      console.log(error);
+      if(error.error.message=="Bad request")
+      {
+        window.alert("Username cannot be empty.")
+      }
+      else{
+        window.alert(error.error.message+".")
+      }
+      this.response = 'fatal_error';
+
+    });
+  }
+  async sendAddRequestEmail(form: NgForm){
+    
+  }
 }

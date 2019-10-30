@@ -21,8 +21,11 @@
           <button *ngIf="isAdmin" mdbBtn type="button" color="success">
             <a (click)=renderAdminDashboard()> Admin Dashboard <i class="fa fa-shield"> </i></a>
           </button>
-          <button mdbBtn type="button" color="success" mdbWavesEffect (click)=sendJoinRequest() >Request
-            to Join </button>
+          <div *ngIf="isMember; else elseMember"></div>
+          <ng-template #elseMember>
+            <button mdbBtn type="button" color="success" mdbWavesEffect (click)=sendJoinRequest() >Request
+              to Join </button>
+          </ng-template>
          <button mdbBtn type="button" color="success">
             <a href="#" routerLink="/report-group"
               [state]="{ data: {treeID: myTree.ID, treeName: myTree.treeName, reporter: username}}" class="my-4"> Report

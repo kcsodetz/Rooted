@@ -152,7 +152,6 @@ export class TreeComponent implements OnInit {
       var i: number = 0;
       console.log("admins length: " + this.myTree.admins.length);
       this.myTree.admins.forEach(element => {
-        console.log(this.myTree.admins[i]);
         if(this.myTree.admins[i] == this.username){
           this.isAdmin = true;
           console.log("user admin status: " + this.isAdmin);

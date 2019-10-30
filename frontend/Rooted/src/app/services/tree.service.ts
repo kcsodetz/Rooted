@@ -50,6 +50,22 @@ export class TreeService {
         return this.http.post('http://localhost:5000/tree/edit-tree-description', tree);
     }
 
+    editTreeName(treeName: string, treeID: string) {
+        const tree: Object = {
+            treeName: treeName,
+            treeID: treeID,
+        };
+        return this.http.post('http://localhost:5000/tree/edit-name', tree);
+    }
+
+    editTreePhoto(url:string, treeID:string){
+        const options = {
+            imageUrl: url,
+            treeID: treeID,
+        }
+        return this.http.post('http://localhost:5000/tree/edit-photo', options)
+    }
+
     addMessage(message: string, treeID: string) {
         const options = {
             treeID: treeID,
@@ -110,13 +126,7 @@ export class TreeService {
         return this.http.post('http://localhost:5000/tree/delete', chosen).toPromise();
     }
 
-    editTreeName(treeName: string, treeID: string) {
-        const tree: Object = {
-            treeName: treeName,
-            treeID: treeID,
-        };
-        return this.http.post('http://localhost:5000/tree/edit-name', tree);
-    }
+    
 
     createTree(treeName: string, treeDescription: string, imageUrl: string) {
         const tree = {

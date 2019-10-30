@@ -302,7 +302,7 @@ router.post("/edit-name", authenticate, (req, res) => {
             res.status(400).json({ message: "Tree does not exist" });
             return;
         }
-        Tree.findOneAndUpdate({ _id: req.body.treID },
+        Tree.findOneAndUpdate({ _id: req.body.treeID },
             {
                 $set: {
                     treeName: req.body.treeName,
@@ -321,8 +321,8 @@ router.post("/edit-name", authenticate, (req, res) => {
 *   Edit tree about bio
 */
 
-router.post("/edit-tree-bio", authenticate, (req, res) => {
-    if (!req.body.bio || !req.body.treeID) {
+router.post("/edit-about-bio", authenticate, (req, res) => {
+    if (!req.body.aboutBio || !req.body.treeID) {
         res.status(400).send({ message: "Tree bio is incomplete" })
         return
     }
@@ -335,7 +335,7 @@ router.post("/edit-tree-bio", authenticate, (req, res) => {
         Tree.findOneAndUpdate({ _id: req.body.treeID },
             {
                 $set: {
-                    aboutBio: req.body.bio,
+                    aboutBio: req.body.aboutBio,
                 }
             }).then(() => {
                 res.status(200).send({ message: 'Tree bio is updated!' })
@@ -402,6 +402,41 @@ router.post("/edit-tree-description", authenticate, (req, res) => {
             res.send(err);
         })
 })
+
+router.post('/edit-photo', authenticate, upload.single("image"), function (req, res) {
+
+    if (!req.body || !req.body.treeID || !req.body.imageUrl) {
+        res.status(400).send({ message: "Bad Request" })
+        return
+    }
+
+    if (!validate(req.body.imageUrl)) {
+        res.status(400).send({ message: "Invalid image, url is not validated" })
+        return
+    }
+
+    Tree.findOneAndUpdate({ _id: req.body.treeID }, {
+        $set: {
+            imageUrl: req.body.imageUrl,
+            hasImage: true
+        }
+    }).then((tre) => {
+        Tree.findOne({ _id: req.body.treeID }).then((tree) => {
+            if (tree == null) {
+                res.status(400).send({ message: "Tree does not exist" })
+                return
+            }
+            res.status(200).send(tree)
+            return
+        }).catch((err) => {
+            res.send(err)
+            return
+        })
+    }).catch((err) => {
+        res.status(400).send("Tree does not exist")
+        return
+    })
+});
 
 router.post('/leave', authenticate, (req, res) => {
     if (!req.body.treeID) {

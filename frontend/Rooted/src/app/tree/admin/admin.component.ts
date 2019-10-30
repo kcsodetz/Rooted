@@ -13,6 +13,7 @@ import { NgForm, FormGroup, FormBuilder, Validators, Form } from '@angular/forms
 export class AdminComponent implements OnInit {
   bannedUsers: [String];
   users: string;
+  privateStatus: Boolean;
   myTree: Tree = { founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null, chat: null, imageUrl: null, ID: null, description: null, admins: null, privateStatus: false, bannedUsers: null };
 
   constructor(private route: ActivatedRoute, private treeService: TreeService, private _router: Router) { }
@@ -30,6 +31,8 @@ export class AdminComponent implements OnInit {
       console.log(this.myTree);
       this.bannedUsers = this.myTree.bannedUsers;
       this.users = this.myTree.members;
+      this.privateStatus = this.myTree.privateStatus;
+      console.log("this tree's private status: " + this.myTree.privateStatus);
     });
 
 
@@ -66,6 +69,19 @@ export class AdminComponent implements OnInit {
   unbanUser(username: string){
     console.log("unbanned: " + username);
     this.treeService.unbanUser(this.route.snapshot.params['id'],username);
+  }
+
+  changeVisibility(){
+    console.log("visibility: "+this.privateStatus)
+    if(this.privateStatus){
+      this.treeService.setPrivateStatus(this.route.snapshot.params['id'],false);
+      this.privateStatus = false;
+      window.location.replace("/admin/" + this.route.snapshot.params['id']);
+    }else if(!this.myTree.privateStatus){
+      this.treeService.setPrivateStatus(this.route.snapshot.params['id'],true);
+      this.privateStatus = false;
+      window.location.replace("/admin/" + this.route.snapshot.params['id']);
+    }
   }
 
   toggle(SectionName) {

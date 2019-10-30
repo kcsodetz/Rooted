@@ -10,6 +10,12 @@ let userSchema = new mongoose.Schema({
   profilePictureURL: {type: String, default: "https://www.logolynx.com/images/logolynx/3d/3da7e11b86afbaeca92bcd335947e050.gif" },
   verified: Boolean,
   verificationNum: { type: Number, default: 0 },
+  notifications: [{
+    sender: String,
+    nType: String,
+    body: String,
+    meta: String
+  }],
   images: [{
     url: String,
     id: String

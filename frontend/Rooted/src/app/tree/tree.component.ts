@@ -31,9 +31,12 @@ export class TreeComponent implements OnInit {
   response: string = "NULL";
   messages: Array<Object>
   activeTabSection= "Tree";
+  isPrivate: Boolean;
   isAdmin: Boolean;
   account: Account;
   username: String;
+  isMember: Boolean;
+  notMember: Boolean;
 
   /* variables used in editing tree name*/
   renderComponent: string;
@@ -43,7 +46,6 @@ export class TreeComponent implements OnInit {
     private treeService: TreeService,  private formBuilder: FormBuilder, private _router: Router) {
     this.messages = []
     this.treePhotoLibraryImages = []
-
 
   }
 
@@ -73,9 +75,10 @@ export class TreeComponent implements OnInit {
     this.userService.getAccountInfo().then((res) => {
       this.account = new Account(res);
       this.username = this.account.username;
-      console.log(this.username);
+      console.log("current username: " + this.username);
       this.getTreeInfo();
       this.isUserAdmin();
+      //this.treeMember();
     });
 
     this.displayImages()
@@ -90,10 +93,19 @@ export class TreeComponent implements OnInit {
 
     this.treeService.getAllTreeInfo(id).then((data) => {
       this.myTree = new Tree(data);
+      this.isPrivate = this.myTree.privateStatus;
+      let len = this.myTree.members.length;
+      let i = 0;
+      for(i;i<len;i++){
+        console.log(this.myTree.members[i]);
+        if(this.username==this.myTree.members[i]){
+          this.isMember = true;
+          return;
+        }
+      }
+      this.notMember = true;
       console.log(data);
     });
-
-    
   }
   toggle(SectionName){
     console.log(SectionName);

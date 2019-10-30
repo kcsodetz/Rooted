@@ -6,6 +6,10 @@ let treeSchema = new mongoose.Schema({
     treeName: { type: String, required: true},
     dateCreated: { type: Date, default: Date.now },
     numberOfPeople: { type: Number, default: 1 },
+    treePhotoLibraryImages: [{
+        url: String,
+        id: String
+      }],
     chat: [{
         user: String,
         message: String,

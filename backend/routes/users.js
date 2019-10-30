@@ -564,7 +564,9 @@ router.post('/remove-notification', authenticate, (req, res) => {
 })
 
 
-
+/**
+ * Get all photos from a user
+ */
 router.get('/all-photos', authenticate, (req, res) => {
     if (!req.headers.username) {
         res.status(400).send({ message: "Badadfasdfas request" });

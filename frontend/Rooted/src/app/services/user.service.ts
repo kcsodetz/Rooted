@@ -66,10 +66,10 @@ export class UserService {
         return this.http.get<Object>('http://localhost:5000/user/find-user', user).toPromise();
     }
 
-    /* 
+    /*
     *   Accept invitation to join a group
     */
-    acceptInvitation(username: string, treeid: string){
+    acceptInvitation(username: string, treeid: string) {
         const tree = {
             'username' : username,
             'treeID' : treeid,
@@ -77,10 +77,10 @@ export class UserService {
         return this.http.post('http://localhost:5000/user/join-tree', tree).toPromise();
     }
 
-    /* 
+    /*
     *   Decline invitation to join a group
     */
-    declineInvitation(username: string, treeid: string){
+    declineInvitation(username: string, treeid: string) {
         const tree = {
             'username' : username,
             'treeID' : treeid,
@@ -88,4 +88,14 @@ export class UserService {
         return this.http.post('http://localhost:5000/user/decline-invite', tree).toPromise();
     }
 
+    /*
+    *   Decline invitation to join a group
+    */
+    removeNotification(username: string, notifID: string) {
+        const payload = {
+            'username' : username,
+            'notificationID' : notifID,
+        };
+        return this.http.post('http://localhost:5000/user/remove-notification', payload).toPromise();
+    }
 }

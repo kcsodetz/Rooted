@@ -148,7 +148,7 @@
     <mdb-card id="UsersSection"  class="invisible" borderColor="border-success">
         <mdb-card-body>
           <mdb-card-title>
-            <h3>BannedUsers</h3>
+            <h3>Users</h3>
           </mdb-card-title>
           <div *ngFor="let user of users" class="card notificationCard" name="notificationAcceptReject">
               <div class="row">
@@ -157,9 +157,15 @@
                 </div>
                 <div class="col-3">
                   <div class="row" style="width:100%;justify-content: end;">
+                    <div *ngIf="admins.includes(user); else elseAdmin"></div>
+                    <ng-template #elseAdmin>
+                      <div class="spacer">
+                        <button (click)="makeAdmin(user)" class="notificationBtn" type="button" color="success">Make Admin</button>
+                      </div>
+                    </ng-template>
                     <div class="spacer">
-                      <button (click)="banUser(user)" class="notificationBtn" type="button" color="success">Ban</button>
-                    </div>
+                        <button (click)="banUser(user)" class="notificationBtn" type="button" color="success">Ban</button>
+                      </div>
                   </div>
                 </div>
               </div>

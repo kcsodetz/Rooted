@@ -127,6 +127,14 @@ export class TreeService {
         return this.http.post('http://localhost:5000/tree/add-user', info).toPromise();
     }
 
+    addAdmin(treeID: string, username: string) {
+        const info = {
+            treeID: treeID,
+            username: username
+        };
+        return this.http.post('http://localhost:5000/tree/add-admin',info).toPromise();
+    }
+
     deleteChosenTree(treeID: string) {
         const chosen = {
             treeID: treeID

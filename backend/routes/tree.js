@@ -656,15 +656,18 @@ router.post("/invite-user", authenticate, (req, res) => {
             return;
         }
 
-        var notification = { sender: tre.treeName, type: "Invitation", body: "You've Been Invited to " + tre.treeName + "!" }
+        var notification = { sender: tre.treeName, nType: "Invitation", body: "You've Been Invited to " + tre.treeName + "!" }
 
         User.findOneAndUpdate({ username: req.body.username}, {
             $push: {
                 notifications: {
-                    notification
+                    sender: tre.treeName,
+                    nType: "Invitation",
+                    body: "You've Been Invited to " + tre.treeName + "!"
                }
             }
-        }).then(() => {
+        }).then((usr) => {
+            console.log(usr)
             res.status(200).send({ message: "User has been successfully sent an invitation!" });
             return;
         }).catch((err) => {

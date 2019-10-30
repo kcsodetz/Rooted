@@ -102,7 +102,6 @@ export class TreeComponent implements OnInit {
       let len = this.myTree.members.length;
       let i = 0;
       for(i;i<len;i++){
-        //console.log(this.myTree.members[i]);
         if(this.username==this.myTree.members[i]){
           this.isMember = true;
           return;
@@ -161,7 +160,6 @@ export class TreeComponent implements OnInit {
         }
         i++;
       });
-      console.log("after loop");
     });
   }
 

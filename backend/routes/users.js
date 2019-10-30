@@ -34,14 +34,12 @@ router.get("/", function (req, res) {
 router.get("/account", authenticate, (req, res) => {
     // console.log('req.user: ',req.user);
     res.status(200).send(req.user);
-    
 });
 
 /*
  * Register new user
  */
 router.post("/register", (req, res) => {
-    console.log("registerhere");
     if (!req.body.email || !req.body.password || !req.body.username) {
         res.status(400).send({ message: "User data is incomplete" });
         return;
@@ -69,14 +67,14 @@ router.post("/register", (req, res) => {
                 properties: {
                     value: req.body.email,
                     hidden: false
-                },
+                }
             }
         });
 
         var newMemberEmailBody = "Dear " + req.body.username +
             ",\n\nWelcome to Rooted! We ask you to please verify your account with us. Your verification code is:\n" +
             verificatonCode + "\nWe look forward to having you with us!\n\nSincerely, \nThe Rooted Team";
-        var newMemberEmailSubject = "Welcome to Rooted!"
+        var newMemberEmailSubject = "Welcome to Rooted!";
 
         // Add to database with auth
         newUser.save().then(() => {
@@ -424,6 +422,61 @@ router.post('/upload-photo', authenticate, upload.single("image"), (req, res) =>
     })
 })
 
+
+/**
+ * Join a tree from an invitation
+ */
+router.post('/join-tree', authenticate, (req, res) => {
+    console.log("Joining")
+    if (!req.body.username || !req.body.treeID) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+    User.findOne({ username: req.body.username}).then((usr) => {
+        if (!usr) {
+            res.status(400).send({ message: "User does not exist" });
+            return;
+        }
+
+        Tree.findOne({ _id: req.body.treeID }).then((tre) => {
+            console.log(tre)
+
+            // Check if tree is null
+            if (!tre) {
+                res.status(400).send({ message: "The tree you are trying to join cannot be found" });
+                return;
+            }
+
+            // Check if user is already in tree
+            if (tre.members.includes(usr.username)) {
+                res.status(400).send({ message: "You have already accepted this invitation" });
+                return;
+            }
+            // Check if the user is in the pendingUsers array
+            if (!tre.pendingUsers.includes(usr.username)) {
+                res.status(400).send({ message: "User has not been invited" });
+                return;
+            }
+
+            // Remove user from pendingUsers array in the tree
+            var n = tre.pendingUsers.indexOf(usr.username);
+            tre.pendingUsers.splice(n, 1);
+
+            // Add user to the tree's member array
+            tre.members.push(usr.username);
+
+            tre.numberOfPeople = tre.members.length;
+
+            // Save new contents
+            tre.save();
+
+            res.status(200).send({ message: "Succesfully joined " + tre.treeName});
+            return;
+        })
+
+    }).catch((err) => {
+        res.status(400).send({ message: "Fatal Error"});
+
 router.get('/all-photos', authenticate, (req, res) => {
     if (!req.headers.username) {
         res.status(400).send({ message: "Badadfasdfas request" });
@@ -447,7 +500,8 @@ router.get('/all-photos', authenticate, (req, res) => {
     })
 })
 
-/* 
+
+/**
  * Add Profile picture
  */
 // router.post('/add-profile-photo', authenticate, upload.single("image"), function (req, res) {
@@ -528,8 +582,6 @@ router.get("/user-profile", authenticate, (req, res) => {
     }).catch((err) => {
         res.status(400).send(err);
     })
-
-    
 });
 
 

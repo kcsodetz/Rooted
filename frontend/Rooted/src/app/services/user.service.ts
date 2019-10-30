@@ -57,7 +57,6 @@ export class UserService {
         return this.http.get<Array<Object>>("http://localhost:5000/user/all-photos", info).toPromise()
     }
 
-    //may not work 
     getUserProfile(name: string){
         const user = {
             headers: new HttpHeaders({

@@ -5,6 +5,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Account } from '../models/account.model';
 import { Tree } from '../models/tree.model';
 
+import { AuthService } from '../services/auth.service';
+
 @Component({
   selector: 'app-other-profile',
   templateUrl: './other-profile.component.html',
@@ -33,11 +35,22 @@ export class OtherProfileComponent implements OnInit {
   }
   ngOnInit() {
     let user = this.route.snapshot.params['username'];
+  
+    this.userService.getAccountInfo().then((res) => {
+      this.account = new Account(res);
+      if(user==this.account.username)
+      {
+        window.location.replace("/profile");
+        return;
+      }
+    });
     this.getUser(user);
     this.displayGroups();
   }
 
   getUser(user: string) {
+   
+    
     console.log("in getUser: " + user)
     this.userService.getUserProfile(user).then((usr) => {
       console.log(usr);

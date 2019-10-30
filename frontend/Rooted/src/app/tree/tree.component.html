@@ -16,7 +16,7 @@
           <button mdbBtn type="button" color="success" mdbWavesEffect (click)=back()><i class="fa fa-arrow-left"> </i>
             Back
             to Your Trees </button>
-          <button mdbBtn type="button" color="success">
+          <button *ngIf="isAdmin" mdbBtn type="button" color="success">
             <a (click)=renderAdminDashboard()> Admin Dashboard <i class="fa fa-shield"> </i></a>
           </button>
           <button mdbBtn type="button" color="success" mdbWavesEffect (click)=back() routerLink="/photo-library">Request

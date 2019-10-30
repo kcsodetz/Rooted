@@ -3,6 +3,9 @@ import { NgForm, FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { TreeService } from '../services/tree.service';
 import { Tree } from '../models/tree.model';
 import { Router, ActivatedRoute, Params, Data } from '@angular/router';
+import { UserService } from '../services/user.service';
+import { Account } from '../models/account.model';
+
 
 @Component({
   selector: 'app-tree',
@@ -27,12 +30,15 @@ export class TreeComponent implements OnInit {
   response: string = "NULL";
   messages: Array<Object>
   activeTabSection= "Tree";
+  isAdmin: Boolean;
+  account: Account;
+  username: String;
 
   /* variables used in editing tree name*/
   renderComponent: string;
   chosenTree: Tree;
 
-  constructor(private route: ActivatedRoute,
+  constructor(private route: ActivatedRoute, public userService: UserService,
     private treeService: TreeService,  private formBuilder: FormBuilder, private _router: Router) {
     this.messages = []
 
@@ -61,8 +67,13 @@ export class TreeComponent implements OnInit {
     this.addUserForm = this.formBuilder.group({
       username: ['', Validators.required]
     });
-
-    this.getTreeInfo();
+    this.userService.getAccountInfo().then((res) => {
+      this.account = new Account(res);
+      this.username = this.account.username;
+      console.log(this.username);
+      this.getTreeInfo();
+      this.isUserAdmin();
+    });
   }
 
    /*
@@ -105,6 +116,27 @@ export class TreeComponent implements OnInit {
         i++;
       });
       console.log(this.messages)
+    });
+  }
+
+  isUserAdmin(){
+    console.log("in isUserAdmin");
+    var id = this.route.snapshot.params['id'];
+
+    this.treeService.getAllTreeInfo(id).then((data) => {
+      this.myTree = new Tree(data);
+      var admins = [];
+      admins = this.myTree.admins;
+      var i: number = 0;
+      console.log("admins lenght: " + this.myTree.admins.length);
+      this.myTree.admins.forEach(element => {
+        console.log(this.myTree.admins[i]);
+        if(this.myTree.admins[i] == this.username){
+          this.isAdmin = true;
+          console.log("user admin status: " + this.isAdmin);
+          return;
+        }
+      });
     });
   }
 

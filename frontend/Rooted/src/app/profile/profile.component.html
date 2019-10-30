@@ -18,7 +18,7 @@
              <button mdbBtn type="button" color="success"
              mdbWavesEffect routerLink="/photo-library" >View Photo Library</button>
              <button mdbBtn type="button" color="success"
-             mdbWavesEffect (click)="showNotifications()" onclick="document.getElementById('id01').style.display='block'" >View Notifications (INSERT NUMBER)</button>
+             mdbWavesEffect (click)="showNotifications()" onclick="document.getElementById('id02').style.display='block'" >View Notifications (INSERT NUMBER)</button>
         </div>
        
     </div>
@@ -201,10 +201,10 @@
 
 
 
-    <div id="id01" class="w3-modal" style="display: none;">
+    <div id="id02" class="w3-modal" style="display: none;">
         <div class="w3-modal-content w-3-card4">
             <header class="w3-container "> 
-                <span onclick="document.getElementById('id01').style.display='none'" 
+                <span onclick="document.getElementById('id02').style.display='none'" 
                      class="w3-button w3-display-topright">&times;</span>
                 <h2>Notficiations</h2>
           </header>
@@ -242,7 +242,7 @@
                         </div>
                     </div>
                 </div>
-                <button (click)="cancel()" type="button" onclick="document.getElementById('id01').style.display='none'" mdbBtn
+                <button (click)="cancel()" type="button" onclick="document.getElementById('id02').style.display='none'" mdbBtn
                     color="success" block="true" class="my-4">Close</button>
           </div>
         </div>

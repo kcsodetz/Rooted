@@ -215,7 +215,7 @@ router.post("/forgot-password", (req, res) => {
 /**
  * Edit a user's email
  */
- // TOOD: Fix change email, bugs with user schema
+// TOOD: Fix change email, bugs with user schema
 router.post("/change-email", authenticate, (req, res) => {
 
 
@@ -345,14 +345,14 @@ router.post("/edit-profile", authenticate, (req, res) => {
             user.instagram.properties.value = req.body.instagram;
         }
 
-        user.birthYear.properties.hidden =req.body.birthYearHidden
+        user.birthYear.properties.hidden = req.body.birthYearHidden
         user.phoneNumber.properties.hidden = req.body.phoneNumberHidden
         user.facebook.properties.hidden = req.body.facebookHidden
         user.twitter.properties.hidden = req.body.twitterHidden
         user.instagram.properties.hidden = req.body.instagramHidden
-        user.email.properties.hidden=req.body.emailHidden
+        user.email.properties.hidden = req.body.emailHidden
         user.save().then(() => {
-            res.status(200).send({ message: "Information updated"})
+            res.status(200).send({ message: "Information updated" })
         }).catch((err) => {
             console.log(err)
             res.status(400).send({ message: "Information not saved" })
@@ -399,7 +399,7 @@ router.post('/upload-photo', authenticate, upload.single("image"), (req, res) =>
         res.status(400).send({ message: "Bad request" });
         return;
     }
-    User.findOne({ username: req.headers.username}).then((u) => {
+    User.findOne({ username: req.headers.username }).then((u) => {
         if (!u) {
             res.status(400).send({ message: "User does not exist" });
             return;
@@ -427,12 +427,11 @@ router.post('/upload-photo', authenticate, upload.single("image"), (req, res) =>
  * Join a tree from an invitation
  */
 router.post('/join-tree', authenticate, (req, res) => {
-    console.log("Joining")
     if (!req.body.username || !req.body.treeID) {
         res.status(400).send({ message: "Bad request" });
         return;
     }
-    User.findOne({ username: req.body.username}).then((usr) => {
+    User.findOne({ username: req.body.username }).then((usr) => {
         if (!usr) {
             res.status(400).send({ message: "User does not exist" });
             return;
@@ -470,15 +469,69 @@ router.post('/join-tree', authenticate, (req, res) => {
             // Save new contents
             tre.save();
 
-            res.status(200).send({ message: "Succesfully joined " + tre.treeName});
+            res.status(200).send({ message: "Succesfully joined " + tre.treeName });
             return;
         })
 
     }).catch((err) => {
-        res.status(400).send({ message: "Fatal Error"});
+        res.status(400).send({ message: "Fatal Error" });
 
     })
 })
+
+
+/**
+ * Decline invitation to join a tree
+ */
+router.post('/decline-invite', authenticate, (req, res) => {
+    if (!req.body.username || !req.body.treeID) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+    User.findOne({ username: req.body.username }).then((usr) => {
+        if (!usr) {
+            res.status(400).send({ message: "User does not exist" });
+            return;
+        }
+
+        Tree.findOne({ _id: req.body.treeID }).then((tre) => {
+            console.log(tre)
+
+            // Check if tree is null
+            if (!tre) {
+                res.status(400).send({ message: "The tree cannot be found" });
+                return;
+            }
+
+            // Check if user is already in tree
+            if (tre.members.includes(usr.username)) {
+                res.status(400).send({ message: "You have already accepted this invitation. You can leave the tree on the group page." });
+                return;
+            }
+            // Check if the user is in the pendingUsers array
+            if (!tre.pendingUsers.includes(usr.username)) {
+                res.status(400).send({ message: "User has not been invited" });
+                return;
+            }
+
+            // Remove user from pendingUsers array in the tree
+            var n = tre.pendingUsers.indexOf(usr.username);
+            tre.pendingUsers.splice(n, 1);
+
+            // Save new contents
+            tre.save();
+
+            res.status(200).send({ message: "Succesfully rejected invite from " + tre.treeName });
+            return;
+        })
+
+    }).catch((err) => {
+        res.status(400).send({ message: "Fatal Error" });
+
+    })
+})
+
+
 
 router.get('/all-photos', authenticate, (req, res) => {
     if (!req.headers.username) {
@@ -486,19 +539,19 @@ router.get('/all-photos', authenticate, (req, res) => {
         return;
     }
     console.log(req.headers.username);
-    User.findOne({ username: req.headers.username}).then((u) => {
+    User.findOne({ username: req.headers.username }).then((u) => {
 
         if (!u) {
             res.status(400).send({ message: "Could not find user" });
             return;
         }
 
-        res.status(200).send(u.images) 
+        res.status(200).send(u.images)
         return;
 
     }).catch((err) => {
         console.log(err);
-        res.status(400).send({message: "FATAL"});
+        res.status(400).send({ message: "FATAL" });
         return;
     })
 })

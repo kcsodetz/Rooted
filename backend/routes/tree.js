@@ -616,32 +616,32 @@ router.post('/unban-user', authenticate, (req, res) => {
                 }
             }).then(() => {
 
-                    User.findEmailByUsername(req.body.userToUnban).then((email) => {
-                        var emailSubject = "Rooted: You\'ve Been Unbanned in \"" + tre.treeName + "\"!"
-                        var addedToTreeBody = "Dear " + req.body.userToUnban +
-                            ",\n\nYou have been unbanned by one of the admins of " + tre.founder + "\'s tree \"" + tre.treeName + "\". View your profile for more details.\n\n" +
-                            "Sincerely, \n\nThe Rooted Team";
+                User.findEmailByUsername(req.body.userToUnban).then((email) => {
+                    var emailSubject = "Rooted: You\'ve Been Unbanned in \"" + tre.treeName + "\"!"
+                    var addedToTreeBody = "Dear " + req.body.userToUnban +
+                        ",\n\nYou have been unbanned by one of the admins of " + tre.founder + "\'s tree \"" + tre.treeName + "\". View your profile for more details.\n\n" +
+                        "Sincerely, \n\nThe Rooted Team";
 
-                        mailer(email, emailSubject, addedToTreeBody);
+                    mailer(email, emailSubject, addedToTreeBody);
 
-                        res.status(200).send({ message: req.body.userToUnban + " has been unbanned." })
-                    })
-
-                    return
-                }).catch((err) => {
-                    res.status(400).send(err);
-                    return;
+                    res.status(200).send({ message: req.body.userToUnban + " has been unbanned." })
                 })
+
+                return
             }).catch((err) => {
                 res.status(400).send(err);
                 return;
             })
         }).catch((err) => {
-            res.send(err);
+            res.status(400).send(err);
             return;
         })
-
+    }).catch((err) => {
+        res.send(err);
+        return;
     })
+
+})
 
 
 
@@ -835,6 +835,47 @@ router.post("/invite-user", authenticate, (req, res) => {
 
 
 /**
+ * Decline user requested addition to a tree
+ */
+router.post("/decline-user-requested-invite", authenticate, (req, res) => {
+    if (!req.body.treeID || !req.body.username) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+
+    // Find tree
+    Tree.findById(req.body.treeID, (err, tre) => {
+
+        if (err) {
+            res.status(400).send({ message: "Cannot find tree" });
+            return;
+        }
+
+        // Check if there was no tree found
+        if (tre == null) {
+            res.status(400).send({ message: "Tree does not exist" });
+            return;
+        }
+
+        // Check if the user has been requested
+        if (!tre.memberRequestedUsers.includes(req.body.username)) {
+            res.status(400).send({ message: "User has not been requested" });
+            return;
+        }
+
+        // Remove user from memberRequestedUsers
+        var n = tre.memberRequestedUsers.indexOf(req.body.username);
+        tre.memberRequestedUsers.splice(n, 1)
+
+        // Save changes to tree
+        tre.save()
+
+        res.status(200).send({ message: "User has been successfully rejected and removed from potential invites" });
+        return;
+    })
+})
+
+/**
  * Member requests an admin to add a user
  */
 router.post("/request-admin-to-add-user", authenticate, (req, res) => {
@@ -875,7 +916,7 @@ router.post("/request-admin-to-add-user", authenticate, (req, res) => {
         User.findOne({ username: req.body.username }).then((user) => {
 
             if (!user) {
-                res.status(400).send({ message: "Username does not exist" });
+                res.status(400).send({ message: "Username does not exist. Check the spelling or invite user to join ooted by email." });
                 return;
             }
 
@@ -920,15 +961,15 @@ router.get("/search-tree", authenticate, (req, res) => {
             res.status(400).send({ message: "Could not find tree" });
             return;
         }
-        
+
         console.log("omg");
         res.status(200).send(tree);
         return;
-       
+
     }).catch((err) => {
         res.status(400).send(err);
         return;
-    })    
+    })
 })
 
 

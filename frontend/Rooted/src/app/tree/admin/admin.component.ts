@@ -13,11 +13,10 @@ import { NgForm, FormGroup, FormBuilder, Validators, Form } from '@angular/forms
 export class AdminComponent implements OnInit {
   bannedUsers: [String];
   users: string;
-  privateStatus: Boolean;
-  myTree: Tree = { founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null, chat: null, imageUrl: null, ID: null, description: null, admins: null, privateStatus: false, bannedUsers: null };
-
+  myTree: Tree = { founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null, chat: null, imageUrl: null, ID: null, description: null, admins: null, privateStatus: false, bannedUsers: null, aboutBio: null };
+  
   constructor(private route: ActivatedRoute, private treeService: TreeService, private _router: Router) { }
-
+  privateStatus: Boolean;
   editTreeForm: FormGroup;
 
   activeTabSection = 'Tree';

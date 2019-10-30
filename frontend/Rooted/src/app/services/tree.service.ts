@@ -50,6 +50,14 @@ export class TreeService {
         return this.http.post('http://localhost:5000/tree/edit-tree-description', tree);
     }
 
+    editAboutBio(aboutBio: string, treeID: string){
+        const tree: Object = {
+            aboutBio: aboutBio,
+            treeID: treeID,
+        };
+        return this.http.post('http://localhost:5000/tree/edit-about-bio', tree);
+    }
+
     editTreeName(treeName: string, treeID: string) {
         const tree: Object = {
             treeName: treeName,

@@ -14,7 +14,7 @@ export class EditNameComponent implements OnInit {
 
 
 
-  myTree: Tree = { founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null, chat: null, imageUrl: null, ID: null, description: null, admins: null, privateStatus: false, bannedUsers: null };
+  myTree: Tree = { founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null, chat: null, imageUrl: null, ID: null, description: null, admins: null, privateStatus: false, bannedUsers: null, aboutBio: null };
   constructor(private route: ActivatedRoute, private treeService: TreeService, private _router: Router, private formBuilder: FormBuilder) { }
   editTreeForm: FormGroup;
   submitted = false;
@@ -22,6 +22,7 @@ export class EditNameComponent implements OnInit {
   r1: string = "NULL";
   r2: string = "NULL";
   r3: string = "NULL";
+  r4: string = "NULL";
 
   ngOnInit() {
 
@@ -40,12 +41,14 @@ export class EditNameComponent implements OnInit {
       this.editTreeForm.controls.treeName.setValue(this.myTree.treeName);
       this.editTreeForm.controls.imageUrl.setValue(this.myTree.imageUrl);
       this.editTreeForm.controls.treeDescription.setValue(this.myTree.description);
+      this.editTreeForm.controls.aboutBio.setValue(this.myTree.aboutBio);
     });
 
     this.editTreeForm = this.formBuilder.group({
       treeName: [this.myTree.treeName, Validators.required],
       imageUrl: [this.myTree.imageUrl, Validators.required],
-      treeDescription: [this.myTree.description, Validators.required]
+      treeDescription: [this.myTree.description, Validators.required],
+      aboutBio: [this.myTree.aboutBio, Validators.required]
     });
   }
 
@@ -112,7 +115,21 @@ export class EditNameComponent implements OnInit {
       this.r3 = "noEdit";
     }
 
-    if (this.r1 == "noEdit" && this.r2 == "noEdit" && this.r3 == "noEdit") {
+    if (form.value.aboutBio != this.myTree.aboutBio) {
+        this.treeService.editAboutBio(form.value.aboutBio, this.myTree.ID).subscribe((response) => {
+          console.log(response);
+          this.response = "complete";
+        }),
+          (err) => {
+            console.log("err is:" + err);
+            this.response = "fatalError";
+          }
+      }
+      else {
+        this.r4 = "noEdit";
+    }
+
+    if (this.r1 == "noEdit" && this.r2 == "noEdit" && this.r3 == "noEdit" && this.r4 == "noEdit") {
       this.response = "noEdit";
     }
 

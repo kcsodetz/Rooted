@@ -15,6 +15,7 @@ export class Tree{
     admins: [String];
     privateStatus: Boolean;
     bannedUsers: [String];
+    aboutBio: string;
     
     constructor(response: any) {
         this.ID = response._id;
@@ -28,7 +29,8 @@ export class Tree{
         this.description = response.description;
         this.admins = response.admins;
         this.privateStatus = response.privateStatus;
-        this.bannedUsers = response.bannedUsers
+        this.bannedUsers = response.bannedUsers;
+        this.aboutBio = response.aboutBio;
         
     }
 }

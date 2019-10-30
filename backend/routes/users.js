@@ -531,6 +531,38 @@ router.post('/decline-invite', authenticate, (req, res) => {
     })
 })
 
+/**
+ * Decline invitation to join a tree
+ */
+router.post('/remove-notification', authenticate, (req, res) => {
+    if (!req.body.username || !req.body.notificationID) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+
+    // Get user
+    User.findOne({ username: req.body.username }).then((usr) => {
+        if (!usr) {
+            res.status(400).send({ message: "User does not exist" });
+            return;
+        }
+
+        // For each notification, check the ID against the given ID
+        usr.notifications.forEach(element => {
+            if (element._id == req.body.notificationID) {
+                var n = usr.notifications.indexOf(element)
+                usr.notifications.splice(n, 1)
+                usr.save()
+                res.status(200).send({ message: "Notification succesfully removed." });
+                return;
+            }
+        });
+
+        res.status(400).send({ message: "Could not find notification." });
+        return;
+    })
+})
+
 
 
 router.get('/all-photos', authenticate, (req, res) => {

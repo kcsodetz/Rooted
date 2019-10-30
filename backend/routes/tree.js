@@ -321,8 +321,8 @@ router.post("/edit-name", authenticate, (req, res) => {
 *   Edit tree about bio
 */
 
-router.post("/edit-tree-bio", authenticate, (req, res) => {
-    if (!req.body.bio || !req.body.treeID) {
+router.post("/edit-about-bio", authenticate, (req, res) => {
+    if (!req.body.aboutBio || !req.body.treeID) {
         res.status(400).send({ message: "Tree bio is incomplete" })
         return
     }
@@ -335,7 +335,7 @@ router.post("/edit-tree-bio", authenticate, (req, res) => {
         Tree.findOneAndUpdate({ _id: req.body.treeID },
             {
                 $set: {
-                    aboutBio: req.body.bio,
+                    aboutBio: req.body.aboutBio,
                 }
             }).then(() => {
                 res.status(200).send({ message: 'Tree bio is updated!' })

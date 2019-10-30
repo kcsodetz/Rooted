@@ -35,6 +35,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { HomeComponent } from './home/home.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { TreeComponent } from './tree/tree.component';
+import { EditNameComponent } from './tree/admin/edit-name/edit-name.component';
 
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ChangeEmailComponent } from './change-email/change-email.component';
@@ -59,7 +60,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SignUpComponent,
     AuthComponent,
     LoginComponent,
-
+    EditNameComponent,
     HomeComponent,
     ForgotPasswordComponent,
 

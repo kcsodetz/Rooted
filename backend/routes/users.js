@@ -401,12 +401,12 @@ router.post('/upload-photo', authenticate, upload.single("image"), (req, res) =>
         res.status(400).send({ message: "Bad request" });
         return;
     }
-    User.findOne({ _id: req.headers.username}).then((u) => {
+    User.findOne({ username: req.headers.username}).then((u) => {
         if (!u) {
             res.status(400).send({ message: "User does not exist" });
             return;
         }
-        User.findOneAndUpdate({ _id: req.headers.username }, {
+        User.findOneAndUpdate({ username: req.headers.username }, {
             $push: {
                 images: {
                     url: req.file.url,
@@ -426,20 +426,23 @@ router.post('/upload-photo', authenticate, upload.single("image"), (req, res) =>
 
 router.get('/all-photos', authenticate, (req, res) => {
     if (!req.headers.username) {
-        res.status(400).send({ message: "Bad request" });
+        res.status(400).send({ message: "Badadfasdfas request" });
         return;
     }
-    User.findById(req.headers.username, (err, u) => {
+    console.log(req.headers.username);
+    User.findOne({ username: req.headers.username}).then((u) => {
 
-        if (err) {
+        if (!u) {
             res.status(400).send({ message: "Could not find user" });
             return;
         }
+
         res.status(200).send(u.images) 
-        return
-        // console.log(dd.images)
+        return;
+
     }).catch((err) => {
-        res.status(400).send(err);
+        console.log(err);
+        res.status(400).send({message: "FATAL"});
         return;
     })
 })

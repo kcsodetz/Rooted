@@ -13,7 +13,7 @@ let userSchema = new mongoose.Schema({
   images: [{
     url: String,
     id: String
-}],
+  }],
   email: {
     properties:{
       value:{

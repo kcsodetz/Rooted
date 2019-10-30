@@ -65,4 +65,21 @@ export class UserService {
         };
         return this.http.get<Object>('http://localhost:5000/user/find-user', user).toPromise();
     }
+
+    acceptInvitation(username: string, treeid: string){
+        const tree = {
+            'username' : username,
+            'treeID' : treeid,
+        };
+        return this.http.post('http://localhost:5000/user/join-tree', tree).toPromise();
+    }
+
+    declineInvitation(username: string, treeid: string){
+        const tree = {
+            'username' : username,
+            'treeID' : treeid,
+        };
+        return this.http.post('http://localhost:5000/user/decline-invite', tree).toPromise();
+    }
+
 }

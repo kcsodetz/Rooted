@@ -18,9 +18,9 @@
                 <div class="ques" style=" align-self: center;">
                   <button type="button" style="background-color: rgb(255, 28, 47);" color="danger" (click)="deleteTree()" >
                     Delete
-                 </button>
+                  </button>
               </div>
-             
+              
           </mdb-card-body>
       </div>
     </div>
@@ -42,6 +42,9 @@
       </div>
       <div class="spacer">
         <button class="tab " id="PhotosTab" (click)="toggle('Photos')">Photos</button>
+      </div>
+      <div class="spacer">
+          <button class="tab " id="UsersTab" (click)="toggle('Users')">Users</button>
       </div>
       <div class="spacer">
         <button class="tab " id="BannedUsersTab" (click)="toggle('BannedUsers')">Banned Users</button>
@@ -129,20 +132,41 @@
     
         </mdb-card-body>
     </mdb-card>
+    <mdb-card id="UsersSection"  class="invisible" borderColor="border-success">
+        <mdb-card-body>
+          <mdb-card-title>
+            <h3>BannedUsers</h3>
+          </mdb-card-title>
+          <div *ngFor="let user of users" class="card notificationCard" name="notificationAcceptReject">
+              <div class="row">
+                <div class="col-9">
+                  <label style="float:left">{{user}}</label>
+                </div>
+                <div class="col-3">
+                  <div class="row" style="width:100%;justify-content: end;">
+                    <div class="spacer">
+                      <button (click)="banUser(user)" class="notificationBtn" type="button" color="success">Ban</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </mdb-card-body>
+      </mdb-card>
     <mdb-card id="BannedUsersSection"  class="invisible" borderColor="border-success">
       <mdb-card-body>
         <mdb-card-title>
           <h3>BannedUsers</h3>
         </mdb-card-title>
-        <div class="card notificationCard" name="notificationAcceptReject">
+        <div *ngFor="let user of bannedUsers" class="card notificationCard" name="notificationAcceptReject">
             <div class="row">
               <div class="col-9">
-                <label style="float:left">User:</label>
+                <label style="float:left">{{user}}</label>
               </div>
               <div class="col-3">
                 <div class="row" style="width:100%;justify-content: end;">
                   <div class="spacer">
-                    <button class="notificationBtn" type="button" color="success">Unban</button>
+                    <button (click)="unbanUser(user)"class="notificationBtn" type="button" color="success">Unban</button>
                   </div>
                 </div>
               </div>
@@ -152,3 +176,4 @@
     </mdb-card>
   </div>
 </div>
+  

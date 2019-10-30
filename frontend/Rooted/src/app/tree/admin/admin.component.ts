@@ -11,7 +11,8 @@ import { NgForm, FormGroup, FormBuilder, Validators, Form } from '@angular/forms
 
 })
 export class AdminComponent implements OnInit {
-
+  bannedUsers: [String];
+  users: string;
   myTree: Tree = { founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null, chat: null, imageUrl: null, ID: null, description: null, admins: null, privateStatus: false, bannedUsers: null };
 
   constructor(private route: ActivatedRoute, private treeService: TreeService, private _router: Router) { }
@@ -27,6 +28,8 @@ export class AdminComponent implements OnInit {
     this.treeService.getAllTreeInfo(id).then((data) => {
       this.myTree = new Tree(data);
       console.log(this.myTree);
+      this.bannedUsers = this.myTree.bannedUsers;
+      this.users = this.myTree.members;
     });
 
 
@@ -53,6 +56,16 @@ export class AdminComponent implements OnInit {
       // navigate back to page
       this._router.navigate(['/home']);
     });
+  }
+
+  banUser(username: string){
+    console.log("banned: " + username);
+    this.treeService.banUser(this.route.snapshot.params['id'],username);
+  }
+
+  unbanUser(username: string){
+    console.log("unbanned: " + username);
+    this.treeService.unbanUser(this.route.snapshot.params['id'],username);
   }
 
   toggle(SectionName) {

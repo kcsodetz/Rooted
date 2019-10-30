@@ -901,5 +901,35 @@ router.post("/request-admin-to-add-user", authenticate, (req, res) => {
     })
 })
 
+/**
+ * Get searched tree
+ */
+router.get("/search-tree", authenticate, (req, res) => {
+    // console.log(req.headers);
+
+    if (!req.headers.treename) {
+        // console.log(req.headers.treename);
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+
+    Tree.find({ treeName: req.headers.treename }).then((tree) => {
+        console.log(tree);
+        if (tree == null) {
+            console.log("here");
+            res.status(400).send({ message: "Could not find tree" });
+            return;
+        }
+        
+        console.log("omg");
+        res.status(200).send(tree);
+        return;
+       
+    }).catch((err) => {
+        res.status(400).send(err);
+        return;
+    })    
+})
+
 
 module.exports = router;

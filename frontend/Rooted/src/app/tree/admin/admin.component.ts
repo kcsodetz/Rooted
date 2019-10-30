@@ -2,33 +2,85 @@ import { Component, OnInit } from '@angular/core';
 import { TreeService } from '../../services/tree.service';
 import { Tree } from '../../models/tree.model';
 import { Router, ActivatedRoute, Params, Data } from '@angular/router';
-import { NgForm, FormGroup, FormBuilder, Validators, Form } from "@angular/forms";
+import { NgForm, FormGroup, FormBuilder, Validators, Form } from '@angular/forms';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
+
 })
 export class AdminComponent implements OnInit {
-
-  myTree: Tree = { founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null, chat: null, imageUrl: null, ID: null, description: null };
+  bannedUsers: [String];
+  users: string;
+  myTree: Tree = { founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null, chat: null, imageUrl: null, ID: null, description: null, admins: null, privateStatus: false, bannedUsers: null };
 
   constructor(private route: ActivatedRoute, private treeService: TreeService, private _router: Router) { }
 
 
+  activeTabSection = 'Tree';
+
 
   ngOnInit() {
-    var id = this.route.snapshot.params['id'];
+    const id = this.route.snapshot.params['id'];
 
 
     this.treeService.getAllTreeInfo(id).then((data) => {
       this.myTree = new Tree(data);
       console.log(this.myTree);
+      this.bannedUsers = this.myTree.bannedUsers;
+      this.users = this.myTree.members;
     });
 
-    
+
 
   }
-  get tree() { return this.myTree }
+  get tree() { return this.myTree; }
 
+
+  /**
+   * Method that deletes a tree and redirects back to the homepage
+   * @param tree Tree to be deleted
+   */
+  delTre(tree: Tree) {
+
+    // call delete method from service
+    const confirm = window.confirm('Are you sure you want to remove this tree? This action cannot be undone');
+    if (confirm === false) {
+      return;
+    }
+    const id = this.route.snapshot.params['id'];
+    this.treeService.deleteChosenTree(id).then((data) => {
+      this.myTree = new Tree(data);
+      console.log('Deleting Tree');
+      // navigate back to page
+      this._router.navigate(['/home']);
+    });
+  }
+
+  banUser(username: string){
+    console.log("banned: " + username);
+    this.treeService.banUser(this.route.snapshot.params['id'],username);
+  }
+
+  unbanUser(username: string){
+    console.log("unbanned: " + username);
+    this.treeService.unbanUser(this.route.snapshot.params['id'],username);
+  }
+
+  toggle(SectionName) {
+    console.log(SectionName);
+    if (this.activeTabSection === SectionName) {
+      return;
+    }
+    document.getElementById(this.activeTabSection + 'Tab').classList.toggle('active');
+    document.getElementById(this.activeTabSection + 'Section').classList.toggle('invisible');
+    document.getElementById(SectionName + 'Tab').classList.toggle('active');
+    document.getElementById(SectionName + 'Section').classList.toggle('invisible');
+    this.activeTabSection = SectionName;
+  }
+
+  deleteTree() {
+    this.treeService.deleteChosenTree(this.route.snapshot.params['id']);
+  }
 }

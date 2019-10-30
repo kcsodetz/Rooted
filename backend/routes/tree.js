@@ -73,40 +73,52 @@ router.post("/add", authenticate, function (req, res) {
 
 });
 
-router.post('/add-photo', authenticate, upload.single("image"), function (req, res) {
-
-    if (!req.body || !req.body.treeID || !req.body.imageUrl) {
-        res.status(400).send({ message: "Bad Request" })
-        return
+router.post('/add-photo', authenticate, upload.single("image"), (req, res) => {
+    if (!req.file.url || !req.file.public_id || !req.headers.treeid) {
+        res.status(400).send({ message: "Bad request" });
+        return;
     }
-
-    if (!validate(req.body.imageUrl)) {
-        res.status(400).send({ message: "Invalid image, url is not validated" })
-        return
-    }
-
-    Tree.findOneAndUpdate({ _id: req.body.treeID }, {
-        $set: {
-            imageUrl: req.body.imageUrl,
-            hasImage: true
+    Tree.findOne({ _id: req.headers.treeid }).then((t) => {
+        if (!t) {
+            res.status(400).send({ message: "Tree does not exist" });
+            return;
         }
-    }).then((tre) => {
-        Tree.findOne({ _id: req.body.treeID }).then((tree) => {
-            if (tree == null) {
-                res.status(400).send({ message: "Tree does not exist" })
-                return
+        Tree.findOneAndUpdate({ _id: req.headers.treeid }, {
+            $push: {
+                treePhotoLibraryImages: {
+                    url: req.file.url,
+                    id: req.file.public_id
+                }
             }
-            res.status(200).send(tree)
+        }).then((t) => {
+            res.status(200).send({ message: "Photo successfully uploaded" })
             return
         }).catch((err) => {
-            res.send(err)
-            return
+            res.send(err);
         })
     }).catch((err) => {
-        res.status(400).send("Tree does not exist")
-        return
+        res.send(err);
     })
-});
+})
+
+router.get('/all-photos', authenticate, (req, res) => {
+    if (!req.headers.treeid) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+    Tree.findById(req.headers.treeid, (err, t) => {
+
+        if (err) {
+            res.status(400).send({ message: "Could not find tree" });
+            return;
+        }
+        res.status(200).send(t.treePhotoLibraryImages) //returns all circle properties
+        return
+    }).catch((err) => {
+        res.status(400).send(err);
+        return;
+    })
+})
 
 router.post('/add-user', authenticate, (req, res) => {
 
@@ -304,6 +316,42 @@ router.post("/edit-name", authenticate, (req, res) => {
     })
 })
 
+
+/*
+*   Edit tree about bio
+*/
+
+router.post("/edit-tree-bio", authenticate, (req, res) => {
+    if (!req.body.bio || !req.body.treeID) {
+        res.status(400).send({ message: "Tree bio is incomplete" })
+        return
+    }
+
+    Tree.findOne({ _id: req.body.treeID }).then((tre) => {
+        if (!tre) {
+            res.status(400).json({ message: "Tree does not exist" });
+            return;
+        }
+        Tree.findOneAndUpdate({ _id: req.body.treeID },
+            {
+                $set: {
+                    aboutBio: req.body.bio,
+                }
+            }).then(() => {
+                res.status(200).send({ message: 'Tree bio is updated!' })
+                return
+            }).catch((err) => {
+                res.send(err);
+            })
+    })
+
+})
+
+
+/*
+*   Send messages
+*/
+
 router.post('/add-message', authenticate, (req, res) => {
     if (!req.body || !req.body.message || !req.body.treeID) {
         res.status(400).send({ message: "Bad request" });
@@ -381,6 +429,7 @@ router.post('/leave', authenticate, (req, res) => {
         return
     })
 })
+
 
 /*
 *   Get all members in a tree
@@ -521,6 +570,100 @@ router.post('/ban-user', authenticate, (req, res) => {
 
     })
 })
+
+
+
+
+/*
+*   Unban a user
+*/
+router.post('/unban-user', authenticate, (req, res) => {
+
+    if (!req.body.userToUnban || !req.body.treeID) {
+        res.status(400).send("Bad request")
+        return
+    }
+
+
+    Tree.findById(req.body.treeID, (err, tre) => {
+
+        if (err) {
+            res.status(400).send({ message: "Tree does not exist" })
+            return;
+        }
+
+        if (!tre.admins.includes(req.user.username)) {
+            res.status(401).send({ message: "Not authorized to make changes" });
+            return;
+        }
+
+        // can't find user to unban in banned users
+        if (!tre.bannedUsers.includes(req.body.userToUnban)) {
+            res.status(400).send({ message: "User is not banned" });
+            return;
+        }
+
+        User.findOne({ username: req.body.userToUnban }).then((user) => {
+
+            if (!user) {
+                res.status(400).send({ message: "Username does not exist" });
+                return;
+            }
+
+            Tree.findOneAndUpdate({ _id: req.body.treeID }, {
+                $pull: {
+                    bannedUsers: req.body.userToUnban,
+                }
+            }).then(() => {
+
+                    User.findEmailByUsername(req.body.userToUnban).then((email) => {
+                        var emailSubject = "Rooted: You\'ve Been Unbanned in \"" + tre.treeName + "\"!"
+                        var addedToTreeBody = "Dear " + req.body.userToUnban +
+                            ",\n\nYou have been unbanned by one of the admins of " + tre.founder + "\'s tree \"" + tre.treeName + "\". View your profile for more details.\n\n" +
+                            "Sincerely, \n\nThe Rooted Team";
+
+                        mailer(email, emailSubject, addedToTreeBody);
+
+                        res.status(200).send({ message: req.body.userToUnban + " has been unbanned." })
+                    })
+
+                    return
+                }).catch((err) => {
+                    res.status(400).send(err);
+                    return;
+                })
+            }).catch((err) => {
+                res.status(400).send(err);
+                return;
+            })
+        }).catch((err) => {
+            res.send(err);
+            return;
+        })
+
+    })
+
+
+
+/*
+*   Display banned users
+*/
+router.get("/display-banned-users", authenticate, (req, res) => {
+    if (!req.body || !req.headers.treeID) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+
+    Tree.findById(req.headers.treeID, (err, tre) => {
+        res.status(200).send(tre.bannedUsers)
+    }).catch((err) => {
+        res.status(400).send({ message: "Could not find tree" });
+        return;
+    })
+
+
+})
+
 
 /*
 *   Get report a user

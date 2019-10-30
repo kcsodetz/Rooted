@@ -19,13 +19,28 @@ export class TreeService {
     constructor(private http: HttpClient, private _router: Router) {}
     TreeUrl: string;
 
-    uploadPhoto(url: string, treeID: string) {
-        const options = {
-            imageUrl: url,
-            treeID: treeID,
-        };
-        return this.http.post('http://localhost:5000/tree/add-photo', options);
+    uploadPhoto(formdata: FormData, treeID: string) {
+        const info = {
+            headers: new HttpHeaders({
+                // 'Content-Type': 'application/form-data',
+                'treeID': treeID
+            })
+        }
+        console.log(formdata.getAll('image'))
+        return this.http.post('http://localhost:5000/tree/add-photo', formdata, info).toPromise()
+
     }
+
+    getPhotos(treeID: string) {
+        const info = {
+            headers: new HttpHeaders({
+                // 'Content-Type': 'application/form-data',
+                'treeID': treeID
+            })
+        }
+        return this.http.get<Array<Object>>("http://localhost:5000/tree/all-photos", info).toPromise()
+    }
+
 
     editTreeDescription(treeDescription: string, treeID: string) {
         const tree: Object = {
@@ -145,6 +160,34 @@ export class TreeService {
             private: privateStatus,
         };
         return this.http.post('http://localhost:5000/tree/set-private-status', status).toPromise();
+    }
+
+     /* If this doesn't work, tell Julien */
+    banUser(treeId: string, username: string){
+        const user = {
+            treeID: treeId,
+            userToBan: username,
+        };
+        return this.http.post('http://localhost:5000/tree/ban-user', user).toPromise();
+    }
+
+     /* If this doesn't work, tell Julien */
+    unbanUser(treeId: string, username: string){
+        const user = {
+            treeID: treeId,
+            userToUnban: username,
+        };
+        return this.http.post('http://localhost:5000/tree/unban-user', user).toPromise();
+    }
+
+    /* If this doesn't work, tell Julien */
+    getBannedUsers(treeId: string){
+        const users = {
+            headers: new HttpHeaders({
+                'treeID': treeId
+            })
+        };
+        return this.http.get('http://localhost:5000/tree/display-banned-users', users).toPromise();
     }
 
 }

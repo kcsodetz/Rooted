@@ -366,25 +366,32 @@ router.post("/edit-profile", authenticate, (req, res) => {
 
 })
 
-router.get('/all-photos', authenticate, (req, res) => {
-    if (!req.headers.username) {
-        res.status(400).send({ message: "Bad request" });
+router.post("/edit-profile-picture", authenticate, (req, res) => {
+    if (!req.body.profilePictureURL || !req.body.username) {
+        res.status(400).json({ message: "Profile picture change is incomplete" });
         return;
     }
-    User.findById(req.headers.username, (err, u) => {
 
-        if (err) {
-            res.status(400).send({ message: "Could not find user" });
+    User.findOne({ username: req.body.username }).then((u) => {
+        console.log(u);
+        if (!u) {
+            res.status(400).send({ message: "User does not exist" });
             return;
         }
-        res.status(200).send(u.images)
-        return
-        
-    }).catch((err) => {
-        res.status(400).send(err);
-        return;
+        User.findOneAndUpdate({ username: req.body.username },
+            {
+                $set: {
+                    profilePictureURL: req.body.profilePictureURL,
+                }
+            }).then(() => {
+                res.status(200).send({ message: 'Profile picture updated!' })
+                return
+            }).catch((err) => {
+                res.send(err);
+            })
     })
 })
+
 
 router.post('/upload-photo', authenticate, upload.single("image"), (req, res) => {
     // console.log(req)
@@ -392,12 +399,12 @@ router.post('/upload-photo', authenticate, upload.single("image"), (req, res) =>
         res.status(400).send({ message: "Bad request" });
         return;
     }
-    User.findOne({ _id: req.headers.username}).then((u) => {
+    User.findOne({ username: req.headers.username}).then((u) => {
         if (!u) {
             res.status(400).send({ message: "User does not exist" });
             return;
         }
-        User.findOneAndUpdate({ _id: req.headers.username }, {
+        User.findOneAndUpdate({ username: req.headers.username }, {
             $push: {
                 images: {
                     url: req.file.url,
@@ -414,6 +421,7 @@ router.post('/upload-photo', authenticate, upload.single("image"), (req, res) =>
         res.send(err);
     })
 })
+
 
 /**
  * Join a tree from an invitation
@@ -468,9 +476,30 @@ router.post('/join-tree', authenticate, (req, res) => {
 
     }).catch((err) => {
         res.status(400).send({ message: "Fatal Error"});
+
+router.get('/all-photos', authenticate, (req, res) => {
+    if (!req.headers.username) {
+        res.status(400).send({ message: "Badadfasdfas request" });
+        return;
+    }
+    console.log(req.headers.username);
+    User.findOne({ username: req.headers.username}).then((u) => {
+
+        if (!u) {
+            res.status(400).send({ message: "Could not find user" });
+            return;
+        }
+
+        res.status(200).send(u.images) 
+        return;
+
+    }).catch((err) => {
+        console.log(err);
+        res.status(400).send({message: "FATAL"});
         return;
     })
 })
+
 
 /**
  * Add Profile picture

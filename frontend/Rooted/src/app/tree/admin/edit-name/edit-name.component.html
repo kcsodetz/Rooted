@@ -1,5 +1,7 @@
 <div class="p-2 profile animated fadeInUp">
     <h1>Edit: {{myTree.treeName}}</h1>
+
+
     <mdb-card class="outerCard">
         <mdb-card-body>
             <form (submit)="sendEdits(f)" #f="ngForm" [formGroup]="editTreeForm">
@@ -33,7 +35,7 @@
                     A Fatal Error Has Occoured. PLease Try Again Later.
                 </div>
                 <div *ngIf="response_msg === 'invalidURL'" class="alert alert-danger" role="alert">
-                    Invalid IRL. Please check your image link.
+                    Invalid URL. Please check your image link.
                 </div>
                 <div *ngIf="response_msg === 'noEdit'" class="alert alert-info" role="alert">
                     No Changes Applied

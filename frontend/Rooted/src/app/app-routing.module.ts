@@ -7,6 +7,7 @@ import { HomeComponent } from './home/home.component';
 import { TreeComponent } from './tree/tree.component'
 import { ProfileComponent } from './profile/profile.component';
 import { AdminComponent } from './tree/admin/admin.component';
+import { EditNameComponent } from './tree/admin/edit-name/edit-name.component'
 import { PhotoLibraryComponent } from './photo-library/photo-library.component'
 import { OtherProfileComponent } from './other-profile/other-profile.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
@@ -92,6 +93,11 @@ const routes: Routes = [
     data: {
       type: 'tree'
     }
+  },
+  {
+    path: 'edit-name/:id',
+    component: EditNameComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'photo-library',

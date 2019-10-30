@@ -17,9 +17,14 @@ export class AdminComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private treeService: TreeService, private _router: Router) { }
 
+  editTreeForm: FormGroup;
 
   activeTabSection = 'Tree';
-
+  submitted = false;
+  response: string = "NULL";
+  r1: string = "NULL";
+  r2: string = "NULL";
+  r3: string = "NULL";
 
   ngOnInit() {
     const id = this.route.snapshot.params['id'];
@@ -82,5 +87,9 @@ export class AdminComponent implements OnInit {
 
   deleteTree() {
     this.treeService.deleteChosenTree(this.route.snapshot.params['id']);
+  }
+
+  renderEditTree(){
+    this._router.navigate(['/edit-name/' + this.myTree.ID]);
   }
 }

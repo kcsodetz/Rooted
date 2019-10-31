@@ -19,11 +19,9 @@ export class AuthGuard implements CanActivate {
     // }
     if (this.authService.getAuthenticationStatus() == true) {
       // console.log(this.authService.getAuthenticationStatus())
-      console.log('here')
       return true;
     }
-    console.log(this.authService.getAuthenticationStatus())
-    console.log('here')
+//    console.log(this.authService.getAuthenticationStatus())
     this._router.navigate(['/login']);
     // you can save redirect url so after authing we can move them back to the page they requested
     return false;

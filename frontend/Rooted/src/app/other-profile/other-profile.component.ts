@@ -52,15 +52,15 @@ export class OtherProfileComponent implements OnInit {
   getUser(user: string) {
    
     
-    console.log("in getUser: " + user)
+  //  console.log("in getUser: " + user)
     this.userService.getUserProfile(user).then((usr) => {
-      console.log(usr);
+    //  console.log(usr);
       this.account = new Account(usr);
       this.profilePicture = this.account.profilePictureURL;
       this.username = this.account.username;
       this.email = this.account.email;
       this.emailHidden = this.account.emailHidden;
-      console.log(this.emailHidden);
+      //console.log(this.emailHidden);
       this.birthYear = this.account.birthYear;
       this.birthYearHidden = this.account.birthYearHidden;
       this.phoneNumber = this.account.phoneNumber;

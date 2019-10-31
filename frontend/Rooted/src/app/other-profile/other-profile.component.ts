@@ -29,6 +29,7 @@ export class OtherProfileComponent implements OnInit {
   twitterHidden: Boolean;
   username: string;
   myTrees: Tree[];
+  profilePicture: string;
   submitted = false;
   constructor(private route: ActivatedRoute, private userService: UserService, private formBuilder: FormBuilder, private _router: Router) {
 
@@ -55,6 +56,7 @@ export class OtherProfileComponent implements OnInit {
     this.userService.getUserProfile(user).then((usr) => {
       console.log(usr);
       this.account = new Account(usr);
+      this.profilePicture = this.account.profilePictureURL;
       this.username = this.account.username;
       this.email = this.account.email;
       this.emailHidden = this.account.emailHidden;

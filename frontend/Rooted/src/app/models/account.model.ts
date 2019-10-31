@@ -14,6 +14,7 @@ export class Account {
     phoneNumberHidden: boolean;
     twitterHidden: boolean;
     myPhotos: string[];
+    notifications: Object[];
    
 
     constructor(response: any) {
@@ -21,6 +22,7 @@ export class Account {
         this.profilePictureURL = response.profilePictureURL;
         this.email = response.email.properties.value;
         this.emailHidden=response.email.properties.hidden;
+        this.notifications=response.notifications;
 
         this.birthYear=response.birthYear.properties.value;
         this.birthYearHidden=response.birthYear.properties.hidden;

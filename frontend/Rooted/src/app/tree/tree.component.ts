@@ -20,20 +20,23 @@ export class TreeComponent implements OnInit {
 
   @Input('childTree') tre: Tree;
   @Output() returnToParent = new EventEmitter<string>();
-
   // Tree object
   myTree: Tree;
   // Add user to tree form
   addUserForm: FormGroup;
+  addUserFormEmail: FormGroup;
   treePhotoLibraryImages: Array<Object>
   submitted = false;
   show = false;
   response: string = "NULL";
   messages: Array<Object>
   activeTabSection= "Tree";
+  isPrivate: Boolean;
   isAdmin: Boolean;
   account: Account;
   username: String;
+  isMember: Boolean;
+  notMember: Boolean;
 
   /* variables used in editing tree name*/
   renderComponent: string;
@@ -43,7 +46,6 @@ export class TreeComponent implements OnInit {
     private treeService: TreeService,  private formBuilder: FormBuilder, private _router: Router) {
     this.messages = []
     this.treePhotoLibraryImages = []
-
 
   }
 
@@ -72,11 +74,17 @@ export class TreeComponent implements OnInit {
     });
     this.userService.getAccountInfo().then((res) => {
       this.account = new Account(res);
+     // console.log(this.username);
       this.username = this.account.username;
-      console.log(this.username);
+     // console.log("current username: " + this.username);
       this.getTreeInfo();
       this.isUserAdmin();
+      //this.treeMember();
     });
+    this.addUserFormEmail = this.formBuilder.group({
+      email: ['', Validators.required]
+    });
+    
 
     this.displayImages()
 
@@ -90,13 +98,21 @@ export class TreeComponent implements OnInit {
 
     this.treeService.getAllTreeInfo(id).then((data) => {
       this.myTree = new Tree(data);
-      console.log(data);
+      this.isPrivate = this.myTree.privateStatus;
+      let len = this.myTree.members.length;
+      let i = 0;
+      for(i;i<len;i++){
+        if(this.username==this.myTree.members[i]){
+          this.isMember = true;
+          return;
+        }
+      }
+      this.notMember = true;
+   //   console.log(data);
     });
-
-    
   }
   toggle(SectionName){
-    console.log(SectionName);
+   // console.log(SectionName);
     if(this.activeTabSection==SectionName)
     {
       return;
@@ -117,16 +133,16 @@ export class TreeComponent implements OnInit {
       console.log(messages)
       var i: number = 0
       messages.forEach(element => {
-        console.log(element)
+     //   console.log(element)
         this.messages[i] = element
         i++;
       });
-      console.log(this.messages)
+      //console.log(this.messages)
     });
   }
 
   isUserAdmin(){
-    console.log("in isUserAdmin");
+    //console.log("in isUserAdmin");
     var id = this.route.snapshot.params['id'];
 
     this.treeService.getAllTreeInfo(id).then((data) => {
@@ -134,14 +150,14 @@ export class TreeComponent implements OnInit {
       var admins = [];
       admins = this.myTree.admins;
       var i: number = 0;
-      console.log("admins lenght: " + this.myTree.admins.length);
+      //console.log("admins length: " + this.myTree.admins.length);
       this.myTree.admins.forEach(element => {
-        console.log(this.myTree.admins[i]);
         if(this.myTree.admins[i] == this.username){
           this.isAdmin = true;
-          console.log("user admin status: " + this.isAdmin);
+        //  console.log("user admin status: " + this.isAdmin);
           return;
         }
+        i++;
       });
     });
   }
@@ -229,18 +245,18 @@ export class TreeComponent implements OnInit {
     this.submitted = true;
     // Check if form is missing values. If true, then return.
     if (this.addUserForm.invalid) {
-      console.log(event);
+   //  console.log(event);
       return;
     }
 
     // Backend api call
     this.treeService.addUser(this.myTree.ID, event.value.username).then(() => {
       this.treeService.getAllTreeInfo(this.myTree.ID).then((c) => {
-        console.log(c);
+     //   console.log(c);
         window.location.replace("/tree/" + this.myTree.ID);
       })
     }).catch(e => {
-      console.log(e.error.message);
+      //console.log(e.error.message);
       // Duplicate user
       if (e.error.message == "User is already in tree") {
         this.response = "Dup";
@@ -280,11 +296,9 @@ export class TreeComponent implements OnInit {
   }
 
   displayImages() {
-    console.log("HEY MOTHERFUCKER");
     var id = this.route.snapshot.params['id'];
-    console.log(id);
+//    console.log(id);
     this.treeService.getPhotos(id).then((res) => {
-      console.log("SURPRISE MOTHERFUCKER");
       var i: number = 0
       res.forEach(element => {
         this.treePhotoLibraryImages[i] = element
@@ -293,6 +307,60 @@ export class TreeComponent implements OnInit {
     })
   }
 
-  
+  sendJoinRequest(){
+    this.treeService.requestAdminToJoinTree(this.myTree.ID, this.account.username).then((res) => {
+  //    console.log(res);
+      window.alert("Successfully Requested to Join Tree!")
+      this.response = 'complete_editProfile';
+    }).catch((error) => {
+    //  console.log(error);
+      window.alert("Failure! :(")
+      this.response = 'fatal_error';
 
+    });
+  }
+
+  async sendAddRequestUsername(form: NgForm){
+    if(this.isAdmin)
+    {
+      this.treeService.inviteUser(this.myTree.ID, form.value.username).then((res) => {
+        //      console.log(res);
+              window.alert("Success!")
+              this.response = 'complete_editProfile';
+            }).catch((error) => {
+          //    console.log(error);
+              if(error.error.message=="Bad request")
+              {
+                window.alert("Username cannot be empty.")
+              }
+              else{
+                window.alert(error.error.message+".")
+              }
+              this.response = 'fatal_error';
+        
+            });
+    }
+    else{
+      this.treeService.requestAdminToJoinTree(this.myTree.ID, form.value.username).then((res) => {
+        //      console.log(res);
+              window.alert("Success!")
+              this.response = 'complete_editProfile';
+            }).catch((error) => {
+          //    console.log(error);
+              if(error.error.message=="Bad request")
+              {
+                window.alert("Username cannot be empty.")
+              }
+              else{
+                window.alert(error.error.message+".")
+              }
+              this.response = 'fatal_error';
+        
+            });
+    }
+    
+  }
+  async sendAddRequestEmail(form: NgForm){
+    
+  }
 }

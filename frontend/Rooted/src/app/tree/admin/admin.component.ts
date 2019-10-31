@@ -13,13 +13,19 @@ import { NgForm, FormGroup, FormBuilder, Validators, Form } from '@angular/forms
 export class AdminComponent implements OnInit {
   bannedUsers: [String];
   users: string;
-  myTree: Tree = { founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null, chat: null, imageUrl: null, ID: null, description: null, admins: null, privateStatus: false, bannedUsers: null };
-
+  myTree: Tree = { founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null, chat: null, imageUrl: null, ID: null, description: null, admins: null, privateStatus: false, bannedUsers: null, aboutBio: null };
+  
   constructor(private route: ActivatedRoute, private treeService: TreeService, private _router: Router) { }
-
+  privateStatus: Boolean;
+  editTreeForm: FormGroup;
+  admins = [];
 
   activeTabSection = 'Tree';
-
+  submitted = false;
+  response: string = "NULL";
+  r1: string = "NULL";
+  r2: string = "NULL";
+  r3: string = "NULL";
 
   ngOnInit() {
     const id = this.route.snapshot.params['id'];
@@ -30,6 +36,9 @@ export class AdminComponent implements OnInit {
       console.log(this.myTree);
       this.bannedUsers = this.myTree.bannedUsers;
       this.users = this.myTree.members;
+      this.privateStatus = this.myTree.privateStatus;
+      this.admins = this.myTree.admins;
+      console.log("this tree's private status: " + this.myTree.privateStatus);
     });
 
 
@@ -68,6 +77,25 @@ export class AdminComponent implements OnInit {
     this.treeService.unbanUser(this.route.snapshot.params['id'],username);
   }
 
+  makeAdmin(username: string){
+    console.log("making admin: "+username);
+    this.treeService.addAdmin(this.route.snapshot.params['id'],username);
+    window.location.replace("/admin/" + this.route.snapshot.params['id']);
+  }
+
+  changeVisibility(){
+    console.log("visibility: "+this.privateStatus)
+    if(this.privateStatus){
+      this.treeService.setPrivateStatus(this.route.snapshot.params['id'],false);
+      this.privateStatus = false;
+      window.location.replace("/admin/" + this.route.snapshot.params['id']);
+    }else if(!this.myTree.privateStatus){
+      this.treeService.setPrivateStatus(this.route.snapshot.params['id'],true);
+      this.privateStatus = false;
+      window.location.replace("/admin/" + this.route.snapshot.params['id']);
+    }
+  }
+
   toggle(SectionName) {
     console.log(SectionName);
     if (this.activeTabSection === SectionName) {
@@ -82,5 +110,9 @@ export class AdminComponent implements OnInit {
 
   deleteTree() {
     this.treeService.deleteChosenTree(this.route.snapshot.params['id']);
+  }
+
+  renderEditTree(){
+    this._router.navigate(['/edit-name/' + this.myTree.ID]);
   }
 }

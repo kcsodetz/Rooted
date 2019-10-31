@@ -66,6 +66,7 @@ export class UserService {
         return this.http.get<Object>('http://localhost:5000/user/find-user', user).toPromise();
     }
 
+
     /*
     *   Accept invitation to join a group
     */
@@ -97,5 +98,14 @@ export class UserService {
             'notificationID' : notifID,
         };
         return this.http.post('http://localhost:5000/user/remove-notification', payload).toPromise();
+    }
+  
+    joinTree(name: string, treeID: string){
+        const tree = {
+            username: name,
+            treeID: treeID,
+        };
+        return this.http.post('http://localhost:5000/tree/join-tree', tree).toPromise();
+
     }
 }

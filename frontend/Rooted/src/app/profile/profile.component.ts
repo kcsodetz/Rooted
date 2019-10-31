@@ -24,7 +24,7 @@ export class ProfileComponent implements OnInit {
   profilePicture: string;
   username = 'User';
   emaill = '';
-
+  notifications: Array<Object>;
   private loggedIn = new BehaviorSubject<boolean>(false);
   editProfileForm: FormGroup;
   response: string;
@@ -62,10 +62,12 @@ export class ProfileComponent implements OnInit {
       this.account = new Account(res);
       this.rspp = res;
       // console.log(this.rspp);
+      this.notifications=this.account.notifications;
+     // console.log("LEN"+this.notifications.length);
       this.username = this.account.username;
       this.profilePicture = this.account.profilePictureURL;
       this.emaill = this.account.email;
-      console.log('account: ', this.account);
+    // console.log('account: ', this.account);
       // console.log(this.account.twitter.valu)
       // console.log("Email: "+ this.account.email);
       // console.log("Email hidden: "+ this.account.emailHidden);
@@ -119,7 +121,7 @@ export class ProfileComponent implements OnInit {
     });
   }
   showNotifications() {
-
+    
   }
   renderTree(tree: Tree) {
     /* Navigate to /tree/id  */
@@ -135,25 +137,25 @@ export class ProfileComponent implements OnInit {
 
   submitProfilePictureFile(form: NgForm) {
 
-    console.log(form.value.profilePictureURL);
+   // console.log(form.value.profilePictureURL);
     if (this.profilePictureFileForm.invalid) {
-      console.log('edit: ' + form.value.profilePictureURL);
+     // console.log('edit: ' + form.value.profilePictureURL);
       return;
     }
 
     if (form.value.profilePictureURL != this.account.profilePictureURL) {
-      console.log(form.value.profilePictureURL);
+      //console.log(form.value.profilePictureURL);
       this.userService.editUserProfilePicture(form.value.profilePictureURL, this.account.username).subscribe((response) => {
-        console.log(response);
+        //console.log(response);
         this.response = 'complete';
       },
         (err) => {
-          console.log(err);
+          //console.log(err);
           this.response = 'fatalError';
         });
     } else {
       this.response = 'noEdit';
-      console.log('else');
+      //console.log('else');
     }
 
     window.location.replace('/profile');
@@ -189,10 +191,10 @@ export class ProfileComponent implements OnInit {
 
      if (this.account.email != '' && this.account.email != undefined && this.account.email != this.emaill) {
         this.authService.changeEmail(this.account.email).then((res) => {
-          console.log(res);
+         // console.log(res);
           this.response = 'complete_email';
         }).catch((error) => {
-          console.log(error);
+         // console.log(error);
           this.response = 'fatal_error';
 
         });
@@ -204,7 +206,7 @@ export class ProfileComponent implements OnInit {
       this.account.phoneNumber = form.value.phoneNumber;
       this.account.phoneNumberHidden = form.value.phoneNumberHidden;
 
-      console.log('hide: ' + form.value.emailHidden);
+      //console.log('hide: ' + form.value.emailHidden);
 
       this.account.facebook = form.value.facebook;
       this.account.facebookHidden = form.value.facebookHidden;
@@ -212,17 +214,16 @@ export class ProfileComponent implements OnInit {
       this.account.instagramHidden = form.value.instagramHidden;
       this.account.twitter = form.value.twitter;
       this.account.twitterHidden = form.value.twitterHidden;
-      console.log('AA');
       this.authService.editProfile(this.account).then((res) => {
-          console.log(res);
-          window.alert("Success!")
+      //console.log(res);
+      window.alert("Success!")
           this.response = 'complete_editProfile';
-        }).catch((error) => {
-          console.log(error);
+      }).catch((error) => {
+        //  console.log(error);
           window.alert("Failure! :(")
           this.response = 'fatal_error';
 
-        });
+      });
 
   }
 }

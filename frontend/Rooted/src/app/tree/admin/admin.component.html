@@ -1,13 +1,26 @@
 <div class="col" style="display: flex; align-content: center; width:100%;">
   <div class="row">
-    <h1>Admin page for: {{myTree.treeName}}</h1>
+    <h1>{{myTree.treeName}} Admin Dashboard</h1>
+
+    <button mdbBtn type="button" color="success"
+              mdbWavesEffect (click)=renderEditTree()>Edit Tree <i class="fa fa-edit"> </i></button>
+
+
+
     <div class="spacer" style="float: right; align-self: right;">
       <button (click)="cancel()" onclick="document.getElementById('userinfo').style.display='block'" type="button"
       block="true">Delete This Tree</button>
     </div>
   </div>
 </div>
-  
+<div class="custom-control custom-switch">
+  <input *ngIf="this.privateStatus; else elseStatus" type="checkbox" class="custom-control-input" id="customSwitches" checked>
+  <ng-template #elseStatus>
+      <input type="checkbox" class="custom-control-input" id="customSwitches">
+  </ng-template>
+  <label (click)="changeVisibility()" class="custom-control-label" for="customSwitches">Toggle Group Privacy. Currently: {{this.myTree.privateStatus}}</label>
+</div>
+
   <div id="userinfo" class="w3-modal">
     <div class="w3-modal-content">
       <div class="w3-container">
@@ -135,7 +148,7 @@
     <mdb-card id="UsersSection"  class="invisible" borderColor="border-success">
         <mdb-card-body>
           <mdb-card-title>
-            <h3>BannedUsers</h3>
+            <h3>Users</h3>
           </mdb-card-title>
           <div *ngFor="let user of users" class="card notificationCard" name="notificationAcceptReject">
               <div class="row">
@@ -144,9 +157,15 @@
                 </div>
                 <div class="col-3">
                   <div class="row" style="width:100%;justify-content: end;">
+                    <div *ngIf="admins.includes(user); else elseAdmin"></div>
+                    <ng-template #elseAdmin>
+                      <div class="spacer">
+                        <button (click)="makeAdmin(user)" class="notificationBtn" type="button" color="success">Make Admin</button>
+                      </div>
+                    </ng-template>
                     <div class="spacer">
-                      <button (click)="banUser(user)" class="notificationBtn" type="button" color="success">Ban</button>
-                    </div>
+                        <button (click)="banUser(user)" class="notificationBtn" type="button" color="success">Ban</button>
+                      </div>
                   </div>
                 </div>
               </div>

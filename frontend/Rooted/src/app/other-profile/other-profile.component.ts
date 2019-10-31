@@ -29,6 +29,7 @@ export class OtherProfileComponent implements OnInit {
   twitterHidden: Boolean;
   username: string;
   myTrees: Tree[];
+  profilePicture: string;
   submitted = false;
   constructor(private route: ActivatedRoute, private userService: UserService, private formBuilder: FormBuilder, private _router: Router) {
 
@@ -51,14 +52,15 @@ export class OtherProfileComponent implements OnInit {
   getUser(user: string) {
    
     
-    console.log("in getUser: " + user)
+  //  console.log("in getUser: " + user)
     this.userService.getUserProfile(user).then((usr) => {
-      console.log(usr);
+    //  console.log(usr);
       this.account = new Account(usr);
+      this.profilePicture = this.account.profilePictureURL;
       this.username = this.account.username;
       this.email = this.account.email;
       this.emailHidden = this.account.emailHidden;
-      console.log(this.emailHidden);
+      //console.log(this.emailHidden);
       this.birthYear = this.account.birthYear;
       this.birthYearHidden = this.account.birthYearHidden;
       this.phoneNumber = this.account.phoneNumber;
@@ -75,14 +77,10 @@ export class OtherProfileComponent implements OnInit {
 
   displayGroups(){
     this.userService.getUserTrees().then((data) => {
-
       let i: number;
-
       let response = [];
       response.push(data);
-
       this.myTrees = new Array(response[0].length)
-
       for (i = 0; i < response[0].length; i += 1) {
         let tree = new Tree(response[0][i])
         if (tree.treeName.length > 18) {

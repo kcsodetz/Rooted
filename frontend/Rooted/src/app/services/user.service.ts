@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthData } from '../models/auth-data.model';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
-import { Tree } from "../models/tree.model"
+import { Tree } from '../models/tree.model';
 
 
 const httpOptions = {
@@ -31,8 +31,8 @@ export class UserService {
         const user: Object = {
             profilePictureURL: profilePictureURL,
             username: username,
-        }
-        return this.http.post("http://localhost:5000/user/edit-profile-picture", user)
+        };
+        return this.http.post('http://localhost:5000/user/edit-profile-picture', user);
     }
 
 
@@ -42,9 +42,9 @@ export class UserService {
                 // 'Content-Type': 'application/form-data',
                 'username': username
             })
-        }
-        console.log(formdata.getAll('image'))
-        return this.http.post("http://localhost:5000/user/upload-photo", formdata, info).toPromise()
+        };
+        console.log(formdata.getAll('image'));
+        return this.http.post('http://localhost:5000/user/upload-photo', formdata, info).toPromise();
     }
 
     getPhotos(username: string) {
@@ -53,24 +53,59 @@ export class UserService {
                 // 'Content-Type': 'application/form-data',
                 'username': username
             })
-        }
-        return this.http.get<Array<Object>>("http://localhost:5000/user/all-photos", info).toPromise()
+        };
+        return this.http.get<Array<Object>>('http://localhost:5000/user/all-photos', info).toPromise();
     }
 
-    getUserProfile(name: string){
+    getUserProfile(name: string) {
         const user = {
             headers: new HttpHeaders({
                 'username': name
             })
-        }
+        };
         return this.http.get<Object>('http://localhost:5000/user/find-user', user).toPromise();
     }
 
+
+    /*
+    *   Accept invitation to join a group
+    */
+    acceptInvitation(username: string, treeid: string) {
+        const tree = {
+            'username' : username,
+            'treeID' : treeid,
+        };
+        return this.http.post('http://localhost:5000/user/join-tree', tree).toPromise();
+    }
+
+    /*
+    *   Decline invitation to join a group
+    */
+    declineInvitation(username: string, treeid: string) {
+        const tree = {
+            'username' : username,
+            'treeID' : treeid,
+        };
+        return this.http.post('http://localhost:5000/user/decline-invite', tree).toPromise();
+    }
+
+    /*
+    *   Decline invitation to join a group
+    */
+    removeNotification(username: string, notifID: string) {
+        const payload = {
+            'username' : username,
+            'notificationID' : notifID,
+        };
+        return this.http.post('http://localhost:5000/user/remove-notification', payload).toPromise();
+    }
+  
     joinTree(name: string, treeID: string){
         const tree = {
             username: name,
             treeID: treeID,
         };
         return this.http.post('http://localhost:5000/tree/join-tree', tree).toPromise();
+
     }
 }

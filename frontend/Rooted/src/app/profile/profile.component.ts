@@ -24,7 +24,7 @@ export class ProfileComponent implements OnInit {
   profilePicture: string;
   username = 'User';
   emaill = '';
-
+  notifications: Array<Object>;
   private loggedIn = new BehaviorSubject<boolean>(false);
   editProfileForm: FormGroup;
   response: string;
@@ -62,10 +62,12 @@ export class ProfileComponent implements OnInit {
       this.account = new Account(res);
       this.rspp = res;
       // console.log(this.rspp);
+      this.notifications=this.account.notifications;
+     // console.log("LEN"+this.notifications.length);
       this.username = this.account.username;
       this.profilePicture = this.account.profilePictureURL;
       this.emaill = this.account.email;
-      console.log('account: ', this.account);
+    // console.log('account: ', this.account);
       // console.log(this.account.twitter.valu)
       // console.log("Email: "+ this.account.email);
       // console.log("Email hidden: "+ this.account.emailHidden);
@@ -119,7 +121,7 @@ export class ProfileComponent implements OnInit {
     });
   }
   showNotifications() {
-
+    
   }
   renderTree(tree: Tree) {
     /* Navigate to /tree/id  */

@@ -74,9 +74,9 @@ export class TreeComponent implements OnInit {
     });
     this.userService.getAccountInfo().then((res) => {
       this.account = new Account(res);
-      console.log(this.username);
+     // console.log(this.username);
       this.username = this.account.username;
-      console.log("current username: " + this.username);
+     // console.log("current username: " + this.username);
       this.getTreeInfo();
       this.isUserAdmin();
       //this.treeMember();

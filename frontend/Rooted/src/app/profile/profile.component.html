@@ -208,11 +208,16 @@
                      class="w3-button w3-display-topright">&times;</span>
                 <h2>Notficiations</h2>
           </header>
-          <div class="w3-container col" >
+         
+          <div  *ngFor="let n of notifications" class="w3-container col" >
 
                 <div class="card notificationCard" name="notificationAcceptReject">
                     <div class="row">
                         <div class="col-9">
+                                {{n.sender}}
+                                {{n.nType}}
+                                {{n.body}}
+                                {{n.meta}}
                             Notification description (if accept/reject notification)
                         </div>
                         <div class="col-3">

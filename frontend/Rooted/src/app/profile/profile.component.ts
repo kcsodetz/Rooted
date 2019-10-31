@@ -63,7 +63,6 @@ export class ProfileComponent implements OnInit {
       this.rspp = res;
       // console.log(this.rspp);
       this.notifications=this.account.notifications;
-      //whileThereAreSome =new Notification();
      // console.log("LEN"+this.notifications.length);
       this.username = this.account.username;
       this.profilePicture = this.account.profilePictureURL;

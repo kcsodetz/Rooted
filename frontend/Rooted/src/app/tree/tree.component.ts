@@ -321,22 +321,44 @@ export class TreeComponent implements OnInit {
   }
 
   async sendAddRequestUsername(form: NgForm){
-    this.treeService.requestAdminToJoinTree(this.myTree.ID, form.value.username).then((res) => {
-//      console.log(res);
-      window.alert("Success!")
-      this.response = 'complete_editProfile';
-    }).catch((error) => {
-  //    console.log(error);
-      if(error.error.message=="Bad request")
-      {
-        window.alert("Username cannot be empty.")
-      }
-      else{
-        window.alert(error.error.message+".")
-      }
-      this.response = 'fatal_error';
-
-    });
+    if(this.isAdmin)
+    {
+      this.treeService.inviteUser(this.myTree.ID, form.value.username).then((res) => {
+        //      console.log(res);
+              window.alert("Success!")
+              this.response = 'complete_editProfile';
+            }).catch((error) => {
+          //    console.log(error);
+              if(error.error.message=="Bad request")
+              {
+                window.alert("Username cannot be empty.")
+              }
+              else{
+                window.alert(error.error.message+".")
+              }
+              this.response = 'fatal_error';
+        
+            });
+    }
+    else{
+      this.treeService.requestAdminToJoinTree(this.myTree.ID, form.value.username).then((res) => {
+        //      console.log(res);
+              window.alert("Success!")
+              this.response = 'complete_editProfile';
+            }).catch((error) => {
+          //    console.log(error);
+              if(error.error.message=="Bad request")
+              {
+                window.alert("Username cannot be empty.")
+              }
+              else{
+                window.alert(error.error.message+".")
+              }
+              this.response = 'fatal_error';
+        
+            });
+    }
+    
   }
   async sendAddRequestEmail(form: NgForm){
     

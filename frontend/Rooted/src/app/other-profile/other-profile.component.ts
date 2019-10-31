@@ -77,14 +77,10 @@ export class OtherProfileComponent implements OnInit {
 
   displayGroups(){
     this.userService.getUserTrees().then((data) => {
-
       let i: number;
-
       let response = [];
       response.push(data);
-
       this.myTrees = new Array(response[0].length)
-
       for (i = 0; i < response[0].length; i += 1) {
         let tree = new Tree(response[0][i])
         if (tree.treeName.length > 18) {

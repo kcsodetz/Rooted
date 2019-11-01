@@ -226,4 +226,14 @@ export class ProfileComponent implements OnInit {
       });
 
   }
+
+  accept(sender, meta)
+  {
+
+  };
+
+  reject(sender, meta)
+  {
+
+  };
 }

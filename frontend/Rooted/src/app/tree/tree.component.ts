@@ -67,7 +67,7 @@ export class TreeComponent implements OnInit {
       
     // });
 
-
+    
     // Form values and validators for create new DayDream
     this.addUserForm = this.formBuilder.group({
       username: ['', Validators.required]
@@ -84,7 +84,6 @@ export class TreeComponent implements OnInit {
     this.addUserFormEmail = this.formBuilder.group({
       email: ['', Validators.required]
     });
-    
 
     this.displayImages()
 
@@ -110,6 +109,8 @@ export class TreeComponent implements OnInit {
       this.notMember = true;
    //   console.log(data);
     });
+   
+
   }
   toggle(SectionName){
    // console.log(SectionName);
@@ -323,10 +324,10 @@ export class TreeComponent implements OnInit {
   async sendAddRequestUsername(form: NgForm){
     if(this.isAdmin)
     {
+      console.log(this.myTree.ID+" "+form.value.username);
       this.treeService.inviteUser(this.myTree.ID, form.value.username).then((res) => {
-        //      console.log(res);
+              console.log(res);
               window.alert("Success!")
-              this.response = 'complete_editProfile';
             }).catch((error) => {
           //    console.log(error);
               if(error.error.message=="Bad request")

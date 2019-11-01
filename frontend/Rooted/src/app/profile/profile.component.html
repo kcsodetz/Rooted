@@ -208,48 +208,41 @@
                      class="w3-button w3-display-topright">&times;</span>
                 <h2>Notficiations</h2>
           </header>
-         
           <div  *ngFor="let n of notifications" class="w3-container col" >
 
                 <div class="card notificationCard" name="notificationAcceptReject">
                     <div class="row">
-                        <div class="col-9">
-                                {{n.sender}}
-                                {{n.nType}}
+                        <div class="col-9" >
+                               
+                                From:{{n.sender}}
+                                <br>
                                 {{n.body}}
+                                <br>
                                 {{n.meta}}
                             Notification description (if accept/reject notification)
                         </div>
                         <div class="col-3">
-                            <div class="row" style="width:100%;justify-content: end;" >
+                            <div class="row" style="width:100%;justify-content: end;" *ngIf="n.nType=='Request to add'"  >
                                     <div class="spacer">
-                                        <button class="notificationBtn"  type="button" color="success" >Accept</button>
+                                        <button class="notificationBtn"  type="button" color="success" onclick="accept(n.sender, n.meta)" >Accept</button>
                                     </div>
                                     <div class="spacer">
-                                        <button class="notificationBtn"  type="button" color="success" >Reject</button>
+                                        <button class="notificationBtn"  type="button" color="success" onclick="reject(n.sender, n.meta)">Reject</button>
                                     </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <div class="card notificationCard" name="notificationAcknowledge">
-                    <div class="row">
-                        <div class="col-9">
-                                Notification description
-                        </div>
-                        <div class="col-3" style="padding:0;">
-                            <div class="row" style="width:100%;justify-content: end; padding: 0; " >
-                                    <div class="spacer">
+                            <div class="row" style="width:100%;justify-content: end;" *ngIf="n.nType!='Request to add'"  >
+                                <div class="spacer">
                                     <button class="notificationBtn" type="button" color="success" >x</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <button (click)="cancel()" type="button" onclick="document.getElementById('id02').style.display='none'" mdbBtn
-                    color="success" block="true" class="my-4">Close</button>
+                <br>
+               
           </div>
+          <button (click)="cancel()" type="button" onclick="document.getElementById('id02').style.display='none'" mdbBtn
+          color="success" block="true" class="my-4">Close</button>
         </div>
       </div>
 

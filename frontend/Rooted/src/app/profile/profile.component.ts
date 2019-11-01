@@ -227,13 +227,34 @@ export class ProfileComponent implements OnInit {
 
   }
 
-  accept(sender, meta)
+  accept(n)
   {
-
+    if(n.type=="Invitation")
+    {
+      this.userService.acceptInvitation(this.username, n.id).then((response) => {
+        console.log(response);
+        this.response = 'complete';
+      },
+        (err) => {
+          console.log(err);
+          this.response = 'fatalError';
+        });
+    } 
+    
   };
 
-  reject(sender, meta)
+  reject(n)
   {
-
+    if(n.type=="Invitation")
+    {
+      this.userService.declineInvitation(this.username, n.id).then((response) => {
+        console.log(response);
+        this.response = 'complete';
+      },
+        (err) => {
+          console.log(err);
+          this.response = 'fatalError';
+        });
+    } 
   };
 }

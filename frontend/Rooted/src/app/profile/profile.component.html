@@ -216,15 +216,15 @@
                                 {{n.body}}
                         </div>
                         <div class="col-3">
-                            <div class="row" style="width:100%;justify-content: end;" *ngIf="n.nType=='Request to add'"  >
+                            <div class="row" style="width:100%;justify-content: end;" *ngIf="n.nType=='Invitation'"  >
                                     <div class="spacer">
-                                        <button class="notificationBtn"  type="button" color="success" onclick="accept(n.sender, n.meta)" >Accept</button>
+                                        <button class="notificationBtn"  type="button" color="success" onclick="accept(n)" >Accept</button>
                                     </div>
                                     <div class="spacer">
-                                        <button class="notificationBtn"  type="button" color="success" onclick="reject(n.sender, n.meta)">Reject</button>
+                                        <button class="notificationBtn"  type="button" color="success" onclick="reject(n)">Reject</button>
                                     </div>
                             </div>
-                            <div class="row" style="width:100%;justify-content: end;" *ngIf="n.nType!='Request to add'"  >
+                            <div class="row" style="width:100%;justify-content: end;" *ngIf="n.nType!='Invitation'"  >
                                 <div class="spacer">
                                     <button class="notificationBtn" type="button" color="success" >x</button>
                                 </div>

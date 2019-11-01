@@ -69,6 +69,8 @@ export class AdminComponent implements OnInit {
       // navigate back to page
       this._router.navigate(['/home']);
     });
+
+
   }
 
   banUser(username: string){
@@ -136,8 +138,11 @@ export class AdminComponent implements OnInit {
       this.response = 'fatal_error';
 
     });
+    location.reload();
+
   }
   rejectUser(us){
+   
     //delete user from array
   }
   acceptUserRequest(n){
@@ -156,9 +161,28 @@ export class AdminComponent implements OnInit {
       this.response = 'fatal_error';
 
     });
+    location.reload();
+
     //need to delete user from array      
   }
   rejectUserRequest(n){
+    this.treeService.declineRequestedUser(this.myTree.ID, n).then((res) => {
+      console.log(res);
+      window.alert("Success!")
+    }).catch((error) => {
+  //    console.log(error);
+      if(error.error.message=="Bad request")
+      {
+        window.alert("Username cannot be empty.")
+      }
+      else{
+        window.alert(error.error.message+".")
+      }
+      this.response = 'fatal_error';
+
+    });
+    location.reload();
+
     //need to delete user from array
   }
 }

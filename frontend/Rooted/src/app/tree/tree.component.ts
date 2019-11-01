@@ -75,7 +75,7 @@ export class TreeComponent implements OnInit {
     this.userService.getAccountInfo().then((res) => {
       this.account = new Account(res);
      // console.log(this.username);
-      this.username = this.account.username;
+      //this.username = this.account.username;
      // console.log("current username: " + this.username);
       this.getTreeInfo();
       this.isUserAdmin();
@@ -319,6 +319,7 @@ export class TreeComponent implements OnInit {
       this.response = 'fatal_error';
 
     });
+ 
   }
 
   async sendAddRequestUsername(form: NgForm){
@@ -340,6 +341,8 @@ export class TreeComponent implements OnInit {
               this.response = 'fatal_error';
         
             });
+            location.reload();
+
     }
     else{
       this.treeService.requestAdminToJoinTree(this.myTree.ID, form.value.username).then((res) => {
@@ -358,6 +361,8 @@ export class TreeComponent implements OnInit {
               this.response = 'fatal_error';
         
             });
+            location.reload();
+
     }
     
   }

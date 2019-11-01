@@ -226,7 +226,7 @@
                             </div>
                             <div class="row" style="width:100%;justify-content: end;" *ngIf="n.nType!='Invitation'"  >
                                 <div class="spacer">
-                                    <button class="notificationBtn" type="button" color="success" >x</button>
+                                    <button class="notificationBtn" type="button" color="success" (click)="deleteNotif(n)" >x</button>
                                 </div>
                             </div>
                         </div>

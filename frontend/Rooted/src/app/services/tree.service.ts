@@ -232,4 +232,11 @@ export class TreeService {
         return this.http.post('http://localhost:5000/tree/invite-user', payload).toPromise();
     }
 
+    declineRequestedUser(treeID: string, username: string) {
+        const payload = {
+            treeID: treeID,
+            username: username
+        };
+        return this.http.post('http://localhost:5000/tree/decline-user-requested-invite', payload).toPromise();
+    }
 }

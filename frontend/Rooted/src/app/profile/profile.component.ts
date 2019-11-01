@@ -239,12 +239,25 @@ export class ProfileComponent implements OnInit {
           this.response = 'fatalError';
         });
     
+        location.reload();
     
   };
 
   reject(n)
   {
       this.userService.declineInvitation(this.username, n.meta).then((response) => {
+        console.log(response);
+        this.response = 'complete';
+      },
+        (err) => {
+          console.log(err);
+          this.response = 'fatalError';
+        });
+    location.reload();
+  };
+  deleteNotif(n)
+  {
+      this.userService.removeNotification(this.username, n.meta).then((response) => {
         console.log(response);
         this.response = 'complete';
       },

@@ -325,7 +325,7 @@ export class TreeComponent implements OnInit {
     if(this.isAdmin)
     {
       console.log(this.myTree.ID+" "+form.value.username);
-      this.treeService.addUser(this.myTree.ID, form.value.username).then((res) => {
+      this.treeService.inviteUser(this.myTree.ID, form.value.username).then((res) => {
               console.log(res);
               window.alert("Success!")
             }).catch((error) => {

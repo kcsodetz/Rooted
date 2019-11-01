@@ -452,10 +452,10 @@ router.post('/join-tree', authenticate, (req, res) => {
                 return;
             }
             // Check if the user is in the pendingUsers array
-            if (!tre.pendingUsers.includes(usr.username)) {
+          /*  if (!tre.pendingUsers.includes(usr.username)) {
                 res.status(400).send({ message: "User has not been invited" });
                 return;
-            }
+            }*/
 
             // Remove user from pendingUsers array in the tree
             var n = tre.pendingUsers.indexOf(usr.username);

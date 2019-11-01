@@ -831,10 +831,10 @@ router.post("/invite-user", authenticate, (req, res) => {
         }
 
         // Check if the user has been requested
-        if (!tre.memberRequestedUsers.includes(req.body.username)) {
+/*        if (!tre.memberRequestedUsers.includes(req.body.username)) {
             res.status(400).send({ message: "User has not been requested" });
             return;
-        }
+        }*/
 
         // Remove user from memberRequestedUsers
         var n = tre.memberRequestedUsers.indexOf(req.body.username);

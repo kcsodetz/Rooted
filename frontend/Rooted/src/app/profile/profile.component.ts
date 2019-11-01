@@ -229,8 +229,7 @@ export class ProfileComponent implements OnInit {
 
   accept(n)
   {
-    if(n.type=="Invitation")
-    {
+    
       this.userService.acceptInvitation(this.username, n.id).then((response) => {
         console.log(response);
         this.response = 'complete';
@@ -239,14 +238,13 @@ export class ProfileComponent implements OnInit {
           console.log(err);
           this.response = 'fatalError';
         });
-    } 
+    
     
   };
 
   reject(n)
   {
-    if(n.type=="Invitation")
-    {
+    
       this.userService.declineInvitation(this.username, n.id).then((response) => {
         console.log(response);
         this.response = 'complete';
@@ -255,6 +253,6 @@ export class ProfileComponent implements OnInit {
           console.log(err);
           this.response = 'fatalError';
         });
-    } 
+    
   };
 }

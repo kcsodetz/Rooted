@@ -18,7 +18,7 @@
              <button mdbBtn type="button" color="success"
              mdbWavesEffect routerLink="/photo-library" >View Photo Library</button>
              <button mdbBtn type="button" color="success"
-             mdbWavesEffect (click)="showNotifications()" onclick="document.getElementById('id02').style.display='block'" >View Notifications (INSERT NUMBER)</button>
+             mdbWavesEffect (click)="showNotifications()" onclick="document.getElementById('id02').style.display='block'" >View Notifications ({{notifications.length}})</button>
         </div>
        
     </div>
@@ -218,10 +218,10 @@
                         <div class="col-3">
                             <div class="row" style="width:100%;justify-content: end;" *ngIf="n.nType=='Invitation'"  >
                                     <div class="spacer">
-                                        <button class="notificationBtn"  type="button" color="success" onclick="accept(n)" >Accept</button>
+                                        <button class="notificationBtn"  type="button" color="success" (click)="accept(n)" >Accept</button>
                                     </div>
                                     <div class="spacer">
-                                        <button class="notificationBtn"  type="button" color="success" onclick="reject(n)">Reject</button>
+                                        <button class="notificationBtn"  type="button" color="success" (click)="reject(n)">Reject</button>
                                     </div>
                             </div>
                             <div class="row" style="width:100%;justify-content: end;" *ngIf="n.nType!='Invitation'"  >

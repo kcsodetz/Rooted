@@ -841,7 +841,7 @@ router.post("/invite-user", authenticate, (req, res) => {
         tre.memberRequestedUsers.splice(n, 1)
 
         // Add user to pendingUsers
-        tre.pendingUsers.push(req.body.username)
+      //  tre.pendingUsers.push(req.body.username)
 
         // Save changes to tree
         tre.save()

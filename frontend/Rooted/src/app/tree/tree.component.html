@@ -13,7 +13,10 @@
   <div>
     <div class="row">
       <div class="profileInfo col-8">
-        <h1 class="treeTitle">{{myTree.treeName}}</h1>
+        <h1 *ngIf="this.isPrivate; else elsePriv" class="treeTitle">{{myTree.treeName}} - Private</h1>
+        <ng-template #elsePriv>
+          <h1 class="treeTitle">{{myTree.treeName}} - Public</h1>
+        </ng-template>
       </div>
       <div class="profileInfo col">
         <div class="row" style="justify-content: right;">
@@ -136,6 +139,7 @@
               <mdb-card-body>
                 <mdb-card-title>
                   <h3>About</h3>
+                  <h4>{{myTree.aboutBio}}</h4>
                 </mdb-card-title>
   
               </mdb-card-body>

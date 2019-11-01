@@ -787,7 +787,7 @@ router.get("/get-all-trees", authenticate, (req, res) => {
  * Set tree to be private or public
  */
 router.post("/set-private-status", authenticate, (req, res) => {
-    if (!req.body.treeID || !req.body.private) {
+    if (!req.body.treeID || req.body.private==null) {
         res.status(400).send({ message: "Bad request" });
         return;
     }

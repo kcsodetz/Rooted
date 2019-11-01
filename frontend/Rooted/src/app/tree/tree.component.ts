@@ -75,7 +75,7 @@ export class TreeComponent implements OnInit {
     this.userService.getAccountInfo().then((res) => {
       this.account = new Account(res);
      // console.log(this.username);
-      //this.username = this.account.username;
+      this.username = this.account.username;
      // console.log("current username: " + this.username);
       this.getTreeInfo();
       this.isUserAdmin();
@@ -151,11 +151,11 @@ export class TreeComponent implements OnInit {
       var admins = [];
       admins = this.myTree.admins;
       var i: number = 0;
-      //console.log("admins length: " + this.myTree.admins.length);
+      console.log("admins length: " + this.myTree.admins.length);
       this.myTree.admins.forEach(element => {
         if(this.myTree.admins[i] == this.username){
           this.isAdmin = true;
-        //  console.log("user admin status: " + this.isAdmin);
+          console.log("user admin status: " + this.isAdmin);
           return;
         }
         i++;

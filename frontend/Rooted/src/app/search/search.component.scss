@@ -1,0 +1,45 @@
+.marginTop{
+    margin-top: 20px;
+}
+
+.hideOverflow{
+    overflow: hidden;
+}
+
+.center{
+  text-align:center;
+  margin-left: 53px;
+}
+.imgSize{
+    height: 300px;
+    width: 300px;
+    margin-top: 11px;
+    border-radius: 50%;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    padding: 10px;
+  }
+  .grid-item {
+    text-align: center;
+    margin-left: 50px;
+    overflow: hidden;
+  }
+
+  .header{
+    font-size:50px;
+    margin-top: 35px;
+    color: rgb(0, 176, 255);
+  
+}
+
+#circles{
+  transition-duration: 2s ease-in-out;
+}
+
+#circles:hover{
+  transform: scale(1.05);
+  cursor: pointer;
+}

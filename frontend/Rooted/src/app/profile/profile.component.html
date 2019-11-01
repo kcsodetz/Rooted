@@ -213,13 +213,7 @@
                 <div class="card notificationCard" name="notificationAcceptReject">
                     <div class="row">
                         <div class="col-9" >
-                               
-                                From:{{n.sender}}
-                                <br>
                                 {{n.body}}
-                                <br>
-                                {{n.meta}}
-                            Notification description (if accept/reject notification)
                         </div>
                         <div class="col-3">
                             <div class="row" style="width:100%;justify-content: end;" *ngIf="n.nType=='Request to add'"  >

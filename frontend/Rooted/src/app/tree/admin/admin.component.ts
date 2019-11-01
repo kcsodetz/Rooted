@@ -11,15 +11,17 @@ import { NgForm, FormGroup, FormBuilder, Validators, Form } from '@angular/forms
 
 })
 export class AdminComponent implements OnInit {
+  requestedUsersArray: [String];
+  pendingUsersArray: [String];
   bannedUsers: [String];
   users: string;
-  myTree: Tree = { founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null, chat: null, imageUrl: null, ID: null, description: null, admins: null, privateStatus: false, bannedUsers: null, aboutBio: null };
+  myTree: Tree = { memberRequestedUsers:null, pendingUsers:null ,founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null, chat: null, imageUrl: null, ID: null, description: null, admins: null, privateStatus: false, bannedUsers: null, aboutBio: null };
   
   constructor(private route: ActivatedRoute, private treeService: TreeService, private _router: Router) { }
   privateStatus: Boolean;
   editTreeForm: FormGroup;
   admins = [];
-
+ 
   activeTabSection = 'Tree';
   submitted = false;
   response: string = "NULL";
@@ -38,6 +40,8 @@ export class AdminComponent implements OnInit {
       this.users = this.myTree.members;
       this.privateStatus = this.myTree.privateStatus;
       this.admins = this.myTree.admins;
+      this.pendingUsersArray=this.myTree.pendingUsers;
+      this.requestedUsersArray= this.myTree.memberRequestedUsers;
       console.log("this tree's private status: " + this.myTree.privateStatus);
     });
 
@@ -114,5 +118,47 @@ export class AdminComponent implements OnInit {
 
   renderEditTree(){
     this._router.navigate(['/edit-name/' + this.myTree.ID]);
+  }
+
+  acceptUser(us){
+    this.treeService.addUser(this.myTree.ID, us).then((res) => {
+      console.log(res);
+      window.alert("Success!")
+    }).catch((error) => {
+  //    console.log(error);
+      if(error.error.message=="Bad request")
+      {
+        window.alert("Username cannot be empty.")
+      }
+      else{
+        window.alert(error.error.message+".")
+      }
+      this.response = 'fatal_error';
+
+    });
+  }
+  rejectUser(us){
+    //delete user from array
+  }
+  acceptUserRequest(n){
+    this.treeService.inviteUser(this.myTree.ID, n).then((res) => {
+      console.log(res);
+      window.alert("Success!")
+    }).catch((error) => {
+  //    console.log(error);
+      if(error.error.message=="Bad request")
+      {
+        window.alert("Username cannot be empty.")
+      }
+      else{
+        window.alert(error.error.message+".")
+      }
+      this.response = 'fatal_error';
+
+    });
+    //need to delete user from array      
+  }
+  rejectUserRequest(n){
+    //need to delete user from array
   }
 }

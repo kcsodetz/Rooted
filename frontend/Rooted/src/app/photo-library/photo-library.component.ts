@@ -48,7 +48,10 @@ export class PhotoLibraryComponent implements OnInit {
     const formdata = new FormData();
     formdata.append('image', file, file.name);
 
+    console.log("heyheyhey");
+
     this.userService.uploadPhoto(formdata, this.account.username).then((res) => {
+      console.log("hi");
       // console.log(res)
       window.location.replace('/photo-library/');
     });

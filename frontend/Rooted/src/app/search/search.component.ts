@@ -47,5 +47,13 @@ export class SearchComponent implements OnInit {
       }
     });
   }
+  /**
+   * Navigates to a tree 
+   * @param tree Tree to navigate to
+   */
+  renderTree(tree: Tree) {
+    /* Navigate to /tree/id  */
+    this._router.navigate(['/tree/' + tree.ID]);
+  }
 
 }

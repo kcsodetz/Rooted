@@ -230,7 +230,7 @@ export class ProfileComponent implements OnInit {
   accept(n)
   {
     
-      this.userService.acceptInvitation(this.username, n.id).then((response) => {
+      this.userService.acceptInvitation(this.username, n.meta).then((response) => {
         console.log(response);
         this.response = 'complete';
       },

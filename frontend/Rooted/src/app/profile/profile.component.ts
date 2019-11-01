@@ -244,8 +244,7 @@ export class ProfileComponent implements OnInit {
 
   reject(n)
   {
-    
-      this.userService.declineInvitation(this.username, n.id).then((response) => {
+      this.userService.declineInvitation(this.username, n.meta).then((response) => {
         console.log(response);
         this.response = 'complete';
       },

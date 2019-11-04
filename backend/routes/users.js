@@ -1,16 +1,15 @@
 var express = require('express');
 var router = express.Router();
-let mongoose = require('mongoose');
-var encrypt = require('../middleware/encrypt')
-var bcrypt = require('bcrypt')
-var authenticate = require('../middleware/authenticate')
-var mailer = require('../middleware/mailer')
-var validate_email = require('../middleware/validate_email')
-var upload = require('../middleware/photo_upload')
-var validate = require('../middleware/validate_url')
+var mongoose = require('mongoose');
+var encrypt = require('../middleware/encrypt');
+var bcrypt = require('bcrypt');
+var authenticate = require('../middleware/authenticate');
+var mailer = require('../middleware/mailer');
+var validate_email = require('../middleware/validate_email');
+var upload = require('../middleware/photo_upload');
+var validate = require('../middleware/validate_url');
 
 mongoose.connect(process.env.MONGODB_HOST, { useNewUrlParser: true });
-console.log(process.env.MONGODB_HOST)
 mongoose.set('useCreateIndex', true);
 
 mongoose.Promise = global.Promise;
@@ -35,14 +34,12 @@ router.get("/", function (req, res) {
 router.get("/account", authenticate, (req, res) => {
     // console.log('req.user: ',req.user);
     res.status(200).send(req.user);
-    
 });
 
 /*
- * Register new user 
+ * Register new user
  */
 router.post("/register", (req, res) => {
-    console.log("registerhere");
     if (!req.body.email || !req.body.password || !req.body.username) {
         res.status(400).send({ message: "User data is incomplete" });
         return;
@@ -50,7 +47,7 @@ router.post("/register", (req, res) => {
 
     // Create a verification code between 1000 and 9999
     var verificatonCode = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
-    console.log(req.body.password)
+    console.log(req.body.password);
     encrypt(req.body.password).then((password) => {
         // User Data
         // var newUser = new User({
@@ -70,14 +67,14 @@ router.post("/register", (req, res) => {
                 properties: {
                     value: req.body.email,
                     hidden: false
-                },
+                }
             }
         });
 
         var newMemberEmailBody = "Dear " + req.body.username +
             ",\n\nWelcome to Rooted! We ask you to please verify your account with us. Your verification code is:\n" +
             verificatonCode + "\nWe look forward to having you with us!\n\nSincerely, \nThe Rooted Team";
-        var newMemberEmailSubject = "Welcome to Rooted!"
+        var newMemberEmailSubject = "Welcome to Rooted!";
 
         // Add to database with auth
         newUser.save().then(() => {
@@ -218,7 +215,10 @@ router.post("/forgot-password", (req, res) => {
 /**
  * Edit a user's email
  */
+// TOOD: Fix change email, bugs with user schema
 router.post("/change-email", authenticate, (req, res) => {
+
+
     if (!req.body || !req.body.email) {
         res.status(400).send({ message: "User data is incomplete" });
         return;
@@ -228,6 +228,7 @@ router.post("/change-email", authenticate, (req, res) => {
         res.status(400).send({ message: "Invalid email" });
         return;
     }
+
 
     User.findOneAndUpdate({ username: req.user.username },
         {
@@ -242,8 +243,15 @@ router.post("/change-email", authenticate, (req, res) => {
         }).then(() => {
             res.status(200).send({ message: 'User email successfully updated' })
         }).catch((err) => {
-            res.status(400).send({ message: "Error changing email" });
-            res.send(err);
+            console.log(err.codeName)
+
+            if (err.codeName == "DuplicateKey") {
+                res.status(400).send({ message: "Duplicate Found" });
+            }
+            else {
+                res.status(400).send({ message: "Fatal Error" });
+            }
+            return;
         })
 
     var email_subject = "Rooted Reset Email";
@@ -290,16 +298,18 @@ router.post("/change-password", authenticate, (req, res) => {
  */
 router.get("/find-user", (req, res) => {
     console.log('finding someone');
-    if (!req.body || !req.body.username) {
+    if (!req.body || !req.headers.username) {
         res.status(400).send({ message: 'Error retrieving user' })
-        return
+        return;
     }
 
-    User.findOne({ username: req.body.username }).then((user) => {
+    User.findOne({ username: req.headers.username }).then((user) => {
         // console.log('user: ',user)
         res.status(200).send(user);
+        return;
     }).catch((err) => {
         res.status(400).send(err);
+        return;
     })
 })
 
@@ -335,26 +345,12 @@ router.post("/edit-profile", authenticate, (req, res) => {
             user.instagram.properties.value = req.body.instagram;
         }
 
-        if (req.body.birthYearHidden) {
-            user.birthYear.properties.hidden = req.body.birthYearHidden;
-        }
-
-        if (req.body.phoneNumberHidden) {
-            user.phoneNumber.properties.hidden = req.body.phoneNumberHidden;
-        }
-
-        if (req.body.facebookHidden) {
-            user.facebook.properties.hidden = req.body.facebookHidden
-        }
-
-        if (req.body.twitterHidden) {
-            user.twitter.properties.hidden = req.body.twitterHidden
-        }
-
-        if (req.body.instagramHidden) {
-            user.instagram.properties.hidden = req.body.instagramHidden
-        }
-
+        user.birthYear.properties.hidden = req.body.birthYearHidden
+        user.phoneNumber.properties.hidden = req.body.phoneNumberHidden
+        user.facebook.properties.hidden = req.body.facebookHidden
+        user.twitter.properties.hidden = req.body.twitterHidden
+        user.instagram.properties.hidden = req.body.instagramHidden
+        user.email.properties.hidden = req.body.emailHidden
         user.save().then(() => {
             res.status(200).send({ message: "Information updated" })
         }).catch((err) => {
@@ -370,25 +366,32 @@ router.post("/edit-profile", authenticate, (req, res) => {
 
 })
 
-router.get('/all-photos', authenticate, (req, res) => {
-    if (!req.headers.username) {
-        res.status(400).send({ message: "Bad request" });
+router.post("/edit-profile-picture", authenticate, (req, res) => {
+    if (!req.body.profilePictureURL || !req.body.username) {
+        res.status(400).json({ message: "Profile picture change is incomplete" });
         return;
     }
-    User.findById(req.headers.username, (err, u) => {
 
-        if (err) {
-            res.status(400).send({ message: "Could not find user" });
+    User.findOne({ username: req.body.username }).then((u) => {
+        console.log(u);
+        if (!u) {
+            res.status(400).send({ message: "User does not exist" });
             return;
         }
-        res.status(200).send(u.images)
-        return
-        
-    }).catch((err) => {
-        res.status(400).send(err);
-        return;
+        User.findOneAndUpdate({ username: req.body.username },
+            {
+                $set: {
+                    profilePictureURL: req.body.profilePictureURL,
+                }
+            }).then(() => {
+                res.status(200).send({ message: 'Profile picture updated!' })
+                return
+            }).catch((err) => {
+                res.send(err);
+            })
     })
 })
+
 
 router.post('/upload-photo', authenticate, upload.single("image"), (req, res) => {
     // console.log(req)
@@ -396,12 +399,12 @@ router.post('/upload-photo', authenticate, upload.single("image"), (req, res) =>
         res.status(400).send({ message: "Bad request" });
         return;
     }
-    User.findOne({ _id: req.headers.username}).then((u) => {
+    User.findOne({ username: req.headers.username }).then((u) => {
         if (!u) {
             res.status(400).send({ message: "User does not exist" });
             return;
         }
-        User.findOneAndUpdate({ _id: req.headers.username }, {
+        User.findOneAndUpdate({ username: req.headers.username }, {
             $push: {
                 images: {
                     url: req.file.url,
@@ -419,7 +422,176 @@ router.post('/upload-photo', authenticate, upload.single("image"), (req, res) =>
     })
 })
 
-/* 
+
+/**
+ * Join a tree from an invitation
+ */
+router.post('/join-tree', authenticate, (req, res) => {
+    if (!req.body.username || !req.body.treeID) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+    User.findOne({ username: req.body.username }).then((usr) => {
+        if (!usr) {
+            res.status(400).send({ message: "User does not exist" });
+            return;
+        }
+
+        Tree.findOne({ _id: req.body.treeID }).then((tre) => {
+            console.log(tre)
+
+            // Check if tree is null
+            if (!tre) {
+                res.status(400).send({ message: "The tree you are trying to join cannot be found" });
+                return;
+            }
+
+            // Check if user is already in tree
+            if (tre.members.includes(usr.username)) {
+                res.status(400).send({ message: "You have already accepted this invitation" });
+                return;
+            }
+            // Check if the user is in the pendingUsers array
+          /*  if (!tre.pendingUsers.includes(usr.username)) {
+                res.status(400).send({ message: "User has not been invited" });
+                return;
+            }*/
+
+            // Remove user from pendingUsers array in the tree
+            var n = tre.pendingUsers.indexOf(usr.username);
+            tre.pendingUsers.splice(n, 1);
+
+            // Add user to the tree's member array
+            tre.members.push(usr.username);
+
+            tre.numberOfPeople = tre.members.length;
+
+            // Save new contents
+            tre.save();
+
+            res.status(200).send({ message: "Succesfully joined " + tre.treeName });
+            return;
+        })
+
+    }).catch((err) => {
+        res.status(400).send({ message: "Fatal Error" });
+
+    })
+})
+
+
+/**
+ * Decline invitation to join a tree
+ */
+router.post('/decline-invite', authenticate, (req, res) => {
+    if (!req.body.username || !req.body.treeID) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+    User.findOne({ username: req.body.username }).then((usr) => {
+        if (!usr) {
+            res.status(400).send({ message: "User does not exist" });
+            return;
+        }
+
+        Tree.findOne({ _id: req.body.treeID }).then((tre) => {
+            console.log(tre)
+
+            // Check if tree is null
+            if (!tre) {
+                res.status(400).send({ message: "The tree cannot be found" });
+                return;
+            }
+
+            // Check if user is already in tree
+            if (tre.members.includes(usr.username)) {
+                res.status(400).send({ message: "You have already accepted this invitation. You can leave the tree on the group page." });
+                return;
+            }
+            // Check if the user is in the pendingUsers array
+         /*   if (!tre.pendingUsers.includes(usr.username)) {
+                res.status(400).send({ message: "User has not been invited" });
+                return;
+            }*/
+
+            // Remove user from pendingUsers array in the tree
+            var n = tre.pendingUsers.indexOf(usr.username);
+            tre.pendingUsers.splice(n, 1);
+
+            // Save new contents
+            tre.save();
+
+            res.status(200).send({ message: "Succesfully rejected invite from " + tre.treeName });
+            return;
+        })
+
+    }).catch((err) => {
+        res.status(400).send({ message: "Fatal Error" });
+
+    })
+})
+
+/**
+ * Decline invitation to join a tree
+ */
+router.post('/remove-notification', authenticate, (req, res) => {
+    if (!req.body.username || !req.body.notificationID) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+
+    // Get user
+    User.findOne({ username: req.body.username }).then((usr) => {
+        if (!usr) {
+            res.status(400).send({ message: "User does not exist" });
+            return;
+        }
+
+        // For each notification, check the ID against the given ID
+        usr.notifications.forEach(element => {
+            if (element._id == req.body.notificationID) {
+                var n = usr.notifications.indexOf(element)
+                usr.notifications.splice(n, 1)
+                usr.save()
+                res.status(200).send({ message: "Notification succesfully removed." });
+                return;
+            }
+        });
+
+        res.status(400).send({ message: "Could not find notification." });
+        return;
+    })
+})
+
+
+/**
+ * Get all photos from a user
+ */
+router.get('/all-photos', authenticate, (req, res) => {
+    if (!req.headers.username) {
+        res.status(400).send({ message: "Badadfasdfas request" });
+        return;
+    }
+    console.log(req.headers.username);
+    User.findOne({ username: req.headers.username }).then((u) => {
+
+        if (!u) {
+            res.status(400).send({ message: "Could not find user" });
+            return;
+        }
+
+        res.status(200).send(u.images)
+        return;
+
+    }).catch((err) => {
+        console.log(err);
+        res.status(400).send({ message: "FATAL" });
+        return;
+    })
+})
+
+
+/**
  * Add Profile picture
  */
 // router.post('/add-profile-photo', authenticate, upload.single("image"), function (req, res) {
@@ -473,6 +645,35 @@ router.get('/all-trees', authenticate, (req, res) => {
         res.status(400).send(err)
     })
 })
+
+
+/**
+ * Get all users
+ */
+router.get("/get-all-users", authenticate, (req, res) => {
+    User.find({}).then((usr) => {
+        // console.log(usr.user.username);
+        res.send(usr);
+    }).catch((err) => {
+        res.status(400).send(err);
+    })
+})
+
+
+router.get("/user-profile", authenticate, (req, res) => {
+    if (!req.body || !req.body.username) {
+        res.status(400).send({ message: 'Error retrieving user' })
+        return
+    }
+
+    User.findOne({ username: req.body.username }).then((user) => {
+        // console.log('user: ',user)
+        res.status(200).send(user);
+    }).catch((err) => {
+        res.status(400).send(err);
+    })
+});
+
 
 // router.get('/photo-library', authenticate, (req, res) => {
 

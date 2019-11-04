@@ -1,29 +1,38 @@
 <div class="p-2 profile animated fadeInUp">
     <h1>Edit: {{myTree.treeName}}</h1>
+
+
     <mdb-card class="outerCard">
         <mdb-card-body>
             <form (submit)="sendEdits(f)" #f="ngForm" [formGroup]="editTreeForm">
                 <div class="form-group">
 
-                    <h5 class="header">Edit Tree Name</h5>
+                    <h2 class="header">Edit Tree Name</h2>
                     <input type="text" class="form-control" formControlName="treeName" value={{myTree.treeName}}
                         [ngClass]="{ 'is-invalid': submitted && form.treeName.errors }" />
                     <div *ngIf="submitted && form.treeName.errors" class="invalid-feedback">
                         <div *ngIf="form.treeName.errors.required">Tree Name is required</div>
                     </div>
 
-                    <h5 class="header">Edit Tree Photo URL</h5>
+                    <h2 class="header">Edit Tree Photo URL</h2>
                     <input type="text" class="form-control" formControlName="imageUrl" value={{myTree.imageUrl}}
                         [ngClass]="{ 'is-invalid': submitted && form.imageUrl.errors }" />
                     <div *ngIf="submitted && form.imageUrl.errors" class="invalid-feedback">
                         <div *ngIf="form.imageUrl.errors.required">Tree Image URL is required</div>
                     </div>
 
-                    <h5 class="header">Edit Tree Description</h5>
+                    <h2 class="header">Edit Tree Description</h2>
                     <input type="text" class="form-control" formControlName="treeDescription" value={{myTree.description}}
                         [ngClass]="{ 'is-invalid': submitted && form.treeDescription.errors }" />
                     <div *ngIf="submitted && form.treeDescription.errors" class="invalid-feedback">
                         <div *ngIf="form.treeDescription.errors.required">Tree Description is required</div>
+                    </div>
+
+                    <h2 class="header">Edit Tree Bio</h2>
+                    <input type="text" class="form-control" formControlName="aboutBio" value={{myTree.aboutBio}}
+                        [ngClass]="{ 'is-invalid': submitted && form.aboutBio.errors }" />
+                    <div *ngIf="submitted && form.aboutBio.errors" class="invalid-feedback">
+                        <div *ngIf="form.aboutBio.errors.required">Tree Bio is required</div>
                     </div>
 
                 </div>
@@ -33,7 +42,7 @@
                     A Fatal Error Has Occoured. PLease Try Again Later.
                 </div>
                 <div *ngIf="response_msg === 'invalidURL'" class="alert alert-danger" role="alert">
-                    Invalid IRL. Please check your image link.
+                    Invalid URL. Please check your image link.
                 </div>
                 <div *ngIf="response_msg === 'noEdit'" class="alert alert-info" role="alert">
                     No Changes Applied
@@ -42,13 +51,13 @@
                     Tree Edits Successfully Applied
                 </div>
 
-                <button mdbBtn color="info" block="true" class="my-4" type="submit">Submit</button>
+                <button mdbBtn color="success" block="true" class="my-4" type="submit">Submit</button>
 
                 <div *ngIf="submitted">
-                    <button mdbBtn (click)="cancelEdits()" color="info" outline="true" mdbWavesEffect block="true">Done</button>
+                    <button mdbBtn (click)="cancelEdits()" color="success" outline="true" mdbWavesEffect block="true">Done</button>
                 </div>
                 <div *ngIf="!submitted">
-                    <button mdbBtn (click)="cancelEdits()" color="danger" outline="true" mdbWavesEffect block="true">Cancel</button>
+                    <button mdbBtn (click)="cancelEdits()" color="danger"  mdbWavesEffect block="true">Cancel</button>
                 </div>
 
 

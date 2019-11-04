@@ -1,5 +1,6 @@
 export class Account {
     username: string;
+    profilePictureURL: string;
     email: string;
     birthYear: string;
     facebook: string;
@@ -13,12 +14,15 @@ export class Account {
     phoneNumberHidden: boolean;
     twitterHidden: boolean;
     myPhotos: string[];
+    notifications: Object[];
    
 
     constructor(response: any) {
         this.username = response.username;
+        this.profilePictureURL = response.profilePictureURL;
         this.email = response.email.properties.value;
-        this.emailHidden=false;
+        this.emailHidden=response.email.properties.hidden;
+        this.notifications=response.notifications;
 
         this.birthYear=response.birthYear.properties.value;
         this.birthYearHidden=response.birthYear.properties.hidden;

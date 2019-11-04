@@ -7,12 +7,19 @@ const bcrypt = require('bcrypt');
 let userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true, minlength: 6, trim: true },
   password: { type: String, required: true, minlength: 8 },
+  profilePictureURL: {type: String, default: "https://www.logolynx.com/images/logolynx/3d/3da7e11b86afbaeca92bcd335947e050.gif" },
   verified: Boolean,
   verificationNum: { type: Number, default: 0 },
+  notifications: [{
+    sender: String,
+    nType: String,
+    body: String,
+    meta: String
+  }],
   images: [{
     url: String,
     id: String
-}],
+  }],
   email: {
     properties:{
       value:{
@@ -186,7 +193,7 @@ userSchema.statics.findByUsername = function(username) {
 
 /* Function to prevent too much information from being returned on request when the response is the object */
 userSchema.methods.toJSON = function () {
-  return ld.pick(this.toObject(), ['_id', 'username', 'email', 'verified', 'birthYear','phoneNumber', 'facebook', 'instagram', 'twitter'  ])
+  return ld.pick(this.toObject(), ['_id', 'username', 'email', 'profilePictureURL', 'verified', 'birthYear','phoneNumber', 'facebook', 'instagram', 'twitter', 'notifications'  ])
 }
 
 /* Creating the user model from the schema and giving it to Mongoose */

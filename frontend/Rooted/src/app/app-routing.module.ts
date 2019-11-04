@@ -6,6 +6,8 @@ import { LoginComponent } from './auth/login/login.component';
 import { HomeComponent } from './home/home.component';
 import { TreeComponent } from './tree/tree.component'
 import { ProfileComponent } from './profile/profile.component';
+import { AdminComponent } from './tree/admin/admin.component';
+import { EditNameComponent } from './tree/admin/edit-name/edit-name.component'
 import { PhotoLibraryComponent } from './photo-library/photo-library.component'
 import { OtherProfileComponent } from './other-profile/other-profile.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
@@ -15,6 +17,7 @@ import { AboutComponent } from './about/about.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ReportuserComponent } from './reportuser/reportuser.component';
 import { ReportgroupComponent } from './reportgroup/reportgroup.component';
+import { SearchComponent } from './search/search.component';
 
 
 
@@ -36,11 +39,19 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'other-profile',
+    path: 'other-profile/:username',
     component: OtherProfileComponent,
     canActivate: [AuthGuard]
   },
-
+  {
+    path: 'admin/:id',
+    component: AdminComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'search',
+    component: SearchComponent
+  },
   {
     path: 'login',
     component: LoginComponent
@@ -82,6 +93,11 @@ const routes: Routes = [
     data: {
       type: 'tree'
     }
+  },
+  {
+    path: 'edit-name/:id',
+    component: EditNameComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'photo-library',

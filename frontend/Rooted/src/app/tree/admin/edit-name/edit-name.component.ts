@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { TreeService } from '../../services/tree.service';
-import { Tree} from '../../models/tree.model';
+import { TreeService } from '../../../services/tree.service';
+import { Tree} from '../../../models/tree.model';
 import { Router, ActivatedRoute, Params, Data } from '@angular/router';
 import { NgForm, FormGroup, FormBuilder, Validators, Form } from "@angular/forms";
 
@@ -14,7 +14,7 @@ export class EditNameComponent implements OnInit {
 
 
 
-  myTree: Tree = { founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null,  chat: null, imageUrl: null, ID: null, description: null };
+  myTree: Tree = { memberRequestedUsers:null, pendingUsers:null ,founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null, chat: null, imageUrl: null, ID: null, description: null, admins: null, privateStatus: false, bannedUsers: null, aboutBio: null };
   constructor(private route: ActivatedRoute, private treeService: TreeService, private _router: Router, private formBuilder: FormBuilder) { }
   editTreeForm: FormGroup;
   submitted = false;
@@ -22,6 +22,7 @@ export class EditNameComponent implements OnInit {
   r1: string = "NULL";
   r2: string = "NULL";
   r3: string = "NULL";
+  r4: string = "NULL";
 
   ngOnInit() {
 
@@ -40,12 +41,14 @@ export class EditNameComponent implements OnInit {
       this.editTreeForm.controls.treeName.setValue(this.myTree.treeName);
       this.editTreeForm.controls.imageUrl.setValue(this.myTree.imageUrl);
       this.editTreeForm.controls.treeDescription.setValue(this.myTree.description);
+      this.editTreeForm.controls.aboutBio.setValue(this.myTree.aboutBio);
     });
 
     this.editTreeForm = this.formBuilder.group({
       treeName: [this.myTree.treeName, Validators.required],
       imageUrl: [this.myTree.imageUrl, Validators.required],
-      treeDescription: [this.myTree.description, Validators.required]
+      treeDescription: [this.myTree.description, Validators.required],
+      aboutBio: [this.myTree.aboutBio, Validators.required]
     });
   }
 
@@ -79,7 +82,7 @@ export class EditNameComponent implements OnInit {
     }
 
     if (form.value.imageUrl != this.myTree.imageUrl) {
-      this.treeService.uploadPhoto(form.value.imageUrl, this.myTree.ID).subscribe((response) => {
+      this.treeService.editTreePhoto(form.value.imageUrl, this.myTree.ID).subscribe((response) => {
         console.log(response);
         this.response = "complete";
       },
@@ -112,12 +115,26 @@ export class EditNameComponent implements OnInit {
       this.r3 = "noEdit";
     }
 
-    if (this.r1 == "noEdit" && this.r2 == "noEdit" && this.r3 == "noEdit") {
+    if (form.value.aboutBio != this.myTree.aboutBio) {
+        this.treeService.editAboutBio(form.value.aboutBio, this.myTree.ID).subscribe((response) => {
+          console.log(response);
+          this.response = "complete";
+        }),
+          (err) => {
+            console.log("err is:" + err);
+            this.response = "fatalError";
+          }
+      }
+      else {
+        this.r4 = "noEdit";
+    }
+
+    if (this.r1 == "noEdit" && this.r2 == "noEdit" && this.r3 == "noEdit" && this.r4 == "noEdit") {
       this.response = "noEdit";
     }
 
    
-  }
+}
 
   cancelEdits() {
     var id = this.route.snapshot.params['id'];
@@ -125,3 +142,4 @@ export class EditNameComponent implements OnInit {
     // this.returnToParent.emit('dash');
   }
 }
+

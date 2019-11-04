@@ -5,12 +5,7 @@
 .hideOverflow{
     overflow: hidden;
 }
-img{
-  height: 300px;
-}
-.spacer{
-  padding: 3%;
-}
+
 .center{
   text-align:center;
   margin-left: 53px;
@@ -24,12 +19,12 @@ img{
 
 .grid-container {
     display: grid;
-    grid-template-columns: auto auto auto auto auto auto;
-    padding: 5px;
+    grid-template-columns: auto auto auto auto;
+    padding: 10px;
   }
   .grid-item {
     text-align: center;
-    margin-left: 25px;
+    margin-left: 50px;
     overflow: hidden;
   }
 
@@ -47,15 +42,4 @@ img{
 #circles:hover{
   transform: scale(1.05);
   cursor: pointer;
-}
-
-.photoCardProperties{
-    margin-top: 20px;
-    border: 3px solid rgb(27, 172, 59);
-    padding: 25px; 
-    height: 20em;
-    width: 20em;
-    overflow: hidden;
-    background-color: white;
-
 }

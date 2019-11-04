@@ -8,9 +8,9 @@
     border:solid;
 }
 .croppedImg {
-    width: 400px;
-    height: 300px;
-    margin: -75px 0 0 -75px;
+    height: 140px;
+    width: 140px;
+    border-radius: 50%;
 }
 
 .profileInfo{
@@ -60,4 +60,47 @@ h3{
 }
 p {
     margin-bottom: 0;
+}
+.marginTop{
+    margin-top: 20px;
+}
+
+.hideOverflow{
+    overflow: hidden;
+}
+grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    padding: 10px;
+  }
+  .grid-item {
+    text-align: center;
+    margin-left: 50px;
+    overflow: hidden;
+  }
+
+  .header{
+    font-size:50px;
+    margin-top: 35px;
+    color: rgb(0, 176, 255);
+  
+}
+.notificationCard{
+    padding: 2%;
+    font-size: 12px;
+}
+.notificationBtn{
+    font-size: 12px;
+}
+.spacer{
+    padding-left: 1%;
+}
+
+#circles{
+  transition-duration: 2s ease-in-out;
+}
+
+#circles:hover{
+  transform: scale(1.05);
+  cursor: pointer;
 }

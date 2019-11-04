@@ -1,74 +1,97 @@
 <div>
-  <div class="row">
-      <div class="profileInfo col-9">
+<div class="row">
+    <div class="profileInfo col-9">
             <div class="row">
                     <div class="cropImg">
                         <div class="croppedImg">
-                            <img src="img_girl.jpg" alt=""> 
+                            <img [src]="profilePicture" alt=""> 
                         </div>
                     </div>
                     <div class="profileInfo" >
-                            <h1 style="line-height: 150px">UserName</h1>
+                            <h1 style="line-height: 150px">{{username}}</h1>
                     </div>
             </div>
-      </div>
-      <div class="profileInfo col">
-           <button data-toggle="modal" data-target="#photoModal">View Photo Library</button>
-      </div>
-  </div>
-
-  
-  <div class="row profileInfoRow" style="padding-left:3%; padding-right: 3%;">
-      <div class="profileInfo col line">
-        <h3>Info</h3>
-        <div class="row">
-            <div class="col-9">
-                <label>Birth Year:</label>
-               <label id="birthYearEntry"></label>
-            </div>
+    </div>
+    <div class="profileInfo col">
+            <button data-toggle="modal" data-target="#photoModal">View Photo Library</button>
+            <br>
+            <button type="button" color="danger">
+            <a href="#" routerLink="/report-user" [state]="{ data: {treeID: '5d959a7a1aa9f8004e028ecf', userToReport: username}}">Report This User!</a>
+            </button>
         </div>
-        <div class="row">
+
+</div>
+
+
+<div class="row profileInfoRow" style="padding-left:3%; padding-right: 3%;">
+    <div class="profileInfo col line">
+        <h3>Info</h3>
+        <div *ngIf="birthYearHidden; else elseBirth"></div>
+        <ng-template #elseBirth>
+            <div class="row">
                 <div class="col-9">
-                    <label>Email</label>
+                    <label>Birth Year: {{birthYear}}</label>
+                    <label id="birthYearEntry"></label>
+                </div>
+            </div>
+        </ng-template>
+        <div *ngIf="emailHidden; else elseEmail"></div>
+        <ng-template #elseEmail>
+            <div class="row">
+                <div class="col-9">
+                    <label>Email: {{email}}</label>
                     <label id="emailEntry"></label>
                 </div>
-        </div>
-        <div class="row">
+            </div>
+        </ng-template>
+        <div *ngIf="phoneNumberHidden; else elsePhone"></div>
+        <ng-template #elsePhone>
+            <div class="row">
                 <div class="col-9">
-                    <label>Phone Number</label>
+                    <label>Phone Number: {{phoneNumber}}</label>
                     <label id="phoneNumberEntry"></label>   
                 </div>
-        </div>
-      </div>
-      <div class="profileInfo col line">
+            </div>
+        </ng-template>
+    </div>
+    <div class="profileInfo col line">
         <h3>Social Media</h3>
-        <div class="row">
+        <div *ngIf="facebookHidden; else elseFB"></div>
+        <ng-template #elseFB>
+            <div class="row">
                 <div class="col-9">
-                    <label>Facebook</label>
+                    <label>Facebook: {{facebook}}</label>
                     <label id="facebookEntry"></label>
                 </div>
-        </div>
-        <div class="row">
+            </div>
+        </ng-template>
+        <div *ngIf="instagramHidden; else elseIG"></div>
+        <ng-template #elseIG>
+            <div class="row">
                 <div class="col-9">
-                    <label>Instagram</label>
+                    <label>Instagram: {{instagram}}</label>
                     <label id="instagramEntry"></label>
                 </div>
-        </div>
-        <div class="row">
+            </div>
+        </ng-template>
+        <div *ngIf="twitterHidden; else elseTwit"></div>
+        <ng-template #elseTwit>
+            <div class="row">
                 <div class="col-9">
-                    <label>Twitter</label>
+                    <label>Twitter: {{twitter}}</label>
                     <label id="twitterEntry"></label>  
                 </div>
+            </div>
+        </ng-template>
+    </div>
+    <div class="profileInfo col" >
+        <h3>Groups</h3>
+        <div *ngFor="let t of myTrees">
+            <h5 style="font-weight:bold" routerLink='/about' (click)="renderTree(t)">{{t.treeName}}</h5>
         </div>
-      </div>
-      <div class="profileInfo col" >
-          <h3>Groups</h3>
-          <div *ngFor="let user of user">
-              <a href="">Groupname</a>
-          </div>
-      </div>
-  </div>
+    </div>
+</div>
 </div>
 <div>
-       
+        
 </div>

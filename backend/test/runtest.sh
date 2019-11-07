@@ -20,3 +20,6 @@ mocha test/tree/test_delete_tree.js --exit
 mocha test/tree/test_edit_tree.js --exit
 mocha test/tree/test_toggle_privacy.js --exit
 mocha test/tree/test_ban_unban.js --exit
+mocha test/tree/test_invite_user.js --exit
+mocha test/tree/test_search.js --exit
+

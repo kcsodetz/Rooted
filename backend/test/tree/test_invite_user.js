@@ -19,7 +19,7 @@ var badID = mongoose.Types.ObjectId();
 var usr = "testing_ken"
 
 describe('Test Inviting User to Tree', () => {
-
+    // Preprocessing (Register, login, and create tree)
     before((done) => {
         var info = {
             username: uname,
@@ -51,6 +51,7 @@ describe('Test Inviting User to Tree', () => {
                     })
             })
 
+        // Postprocessing (delete user and tree)
         after((done) => {
             User.deleteOne({ username: uname }).then(() => {
                 Tree.deleteOne({ treeName: 'UNIT_TEST_TREE' }).then(() => {
@@ -64,7 +65,7 @@ describe('Test Inviting User to Tree', () => {
     describe('Invite user without tree ID', () => {
         it('Should return 400', (done) => {
             User.findOne({ username: uname }).then((user) => {
-                //do the get request here 
+                // Request with payload
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
                     .post('/tree/invite-user')
@@ -87,7 +88,7 @@ describe('Test Inviting User to Tree', () => {
     describe('Invite user with bad authentication', () => {
         it('Should return 401', (done) => {
             User.findOne({ username: uname }).then((user) => {
-                //do the get request here 
+                // Request with payload
                 chai.request(server)
                     .post('/tree/invite-user')
                     .set('content-type', 'application/x-www-form-urlencoded')
@@ -107,7 +108,7 @@ describe('Test Inviting User to Tree', () => {
  describe('Invite user with bad tree ID', () => {
         it('Should return 400', (done) => {
             User.findOne({ username: uname }).then((user) => {
-                //do the get request here 
+                // Request with payload
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
                     .post('/tree/invite-user')

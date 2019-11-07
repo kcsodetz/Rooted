@@ -492,8 +492,6 @@ router.post('/decline-invite', authenticate, (req, res) => {
         }
 
         Tree.findOne({ _id: req.body.treeID }).then((tre) => {
-            console.log(tre)
-
             // Check if tree is null
             if (!tre) {
                 res.status(400).send({ message: "The tree cannot be found" });

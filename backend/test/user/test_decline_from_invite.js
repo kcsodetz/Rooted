@@ -18,7 +18,7 @@ var treeID;
 var badID = mongoose.Types.ObjectId();
 var usr = "testing_ken"
 
-describe('Test Join Tree from Invite', () => {
+describe('Test Decline Invite', () => {
     // Preprocessing (Register, login, and create tree)
     before((done) => {
         var info = {
@@ -62,13 +62,13 @@ describe('Test Join Tree from Invite', () => {
 
     })
 
-    describe('Join tree without tree ID', () => {
+    describe('Decline Invite without tree ID', () => {
         it('Should return 400', (done) => {
             User.findOne({ username: uname }).then((user) => {
                 // Request with payload
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
-                    .post('/user/join-tree')
+                    .post('/user/decline-invite')
                     .set('content-type', 'application/x-www-form-urlencoded')
                     .set('token', token)
                     .send(info)
@@ -85,13 +85,13 @@ describe('Test Join Tree from Invite', () => {
         })
     })
 
-    describe('Join tree without username', () => {
+    describe('Decline Invite without username', () => {
         it('Should return 400', (done) => {
             User.findOne({ username: uname }).then((user) => {
                 // Request with payload
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
-                    .post('/user/join-tree')
+                    .post('/user/decline-invite')
                     .set('content-type', 'application/x-www-form-urlencoded')
                     .set('token', token)
                     .send(info)
@@ -108,12 +108,12 @@ describe('Test Join Tree from Invite', () => {
         })
     })
 
-    describe('Join tree with bad authentication', () => {
+    describe('Decline invite with bad authentication', () => {
         it('Should return 401', (done) => {
             User.findOne({ username: uname }).then((user) => {
                 // Request with payload
                 chai.request(server)
-                    .post('/user/join-tree')
+                    .post('/user/decline-invite')
                     .set('content-type', 'application/x-www-form-urlencoded')
                     .set('token', 'bad auth')
                     .send(info)
@@ -129,13 +129,13 @@ describe('Test Join Tree from Invite', () => {
         })
     })
 
-    describe('Join tree with bad tree ID', () => {
+    describe('Decline invite with bad tree ID', () => {
         it('Should return 400', (done) => {
             User.findOne({ username: uname }).then((user) => {
                 // Request with payload
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
-                    .post('/user/join-tree')
+                    .post('/user/decline-invite')
                     .set('content-type', 'application/x-www-form-urlencoded')
                     .set('token', token)
                     .send(info)
@@ -153,13 +153,13 @@ describe('Test Join Tree from Invite', () => {
         })
     })
 
-    describe('Join tree as user who does not exist', () => {
+    describe('Decline invite as user who does not exist', () => {
         it('Should return 400', (done) => {
             User.findOne({ username: uname }).then((user) => {
                 //do the get request here 
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
-                    .post('/user/join-tree')
+                    .post('/user/decline-invite')
                     .set('content-type', 'application/x-www-form-urlencoded')
                     .set('token', token)
                     .send(info)
@@ -177,13 +177,13 @@ describe('Test Join Tree from Invite', () => {
         })
     })
 
-    describe('Join tree with correct info', () => {
+    describe('Decline invite with correct info', () => {
         it('Should return 200', (done) => {
             User.findOne({ username: uname }).then((user) => {
                 //do the get request here 
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
-                    .post('/user/join-tree')
+                    .post('/user/decline-invite')
                     .set('content-type', 'application/x-www-form-urlencoded')
                     .set('token', token)
                     .send(info)

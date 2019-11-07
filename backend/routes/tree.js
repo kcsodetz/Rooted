@@ -997,14 +997,11 @@ router.get("/search-tree", authenticate, (req, res) => {
     }
 
     Tree.find({ treeName: req.headers.treename }).then((tree) => {
-        console.log(tree);
-        if (tree == null) {
-            console.log("here");
+        if (!tree[0]) {
             res.status(400).send({ message: "Could not find tree" });
             return;
         }
 
-        console.log("omg");
         res.status(200).send(tree);
         return;
 

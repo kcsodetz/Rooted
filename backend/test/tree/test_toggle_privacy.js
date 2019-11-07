@@ -77,7 +77,6 @@ describe('Test Toggle Privacy', () => {
 
             })
             var info = {
-                treeID: 12345,
                 private: true
             }
         })

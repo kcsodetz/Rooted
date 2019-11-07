@@ -792,7 +792,6 @@ router.post("/set-private-status", authenticate, (req, res) => {
         return;
     }
 
-    console.log("private value: ", req.body.private);
     Tree.findByIdAndUpdate({ _id: req.body.treeID },
         {
             $set: {
@@ -802,7 +801,7 @@ router.post("/set-private-status", authenticate, (req, res) => {
             res.status(200).send({ message: 'Tree private status updated!' })
             return;
         }).catch((err) => {
-            res.send(err);
+            res.status(400).send(err);
             return;
         })
 })

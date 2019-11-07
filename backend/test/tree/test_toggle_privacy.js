@@ -16,7 +16,7 @@ var treeID;
 
 
 
-describe('Test Delete Tree', () => {
+describe('Test Toggle Privacy', () => {
 
     before((done) => {
         var info = {
@@ -59,16 +59,16 @@ describe('Test Delete Tree', () => {
 
     })
 
-    describe('Delete tree without tree ID', () => {
+    describe('Toggle privacy without tree ID', () => {
         it('Should return 400', (done) => {
             User.findOne({ username: uname }).then((user) => {
                 //do the get request here 
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
-                    .post('/tree/delete')
+                    .post('/tree/set-private-status')
                     .set('content-type', 'application/x-www-form-urlencoded')
                     .set('token', token)
-                    .send()
+                    .send(info)
                     .end((err, res) => {
                         res.should.have.status(400)
                         done()
@@ -76,15 +76,19 @@ describe('Test Delete Tree', () => {
             }).catch((err) => {
 
             })
+            var info = {
+                treeID: 12345,
+                private: true
+            }
         })
     })
 
-    describe('Delete tree with bad authentication', () => {
+    describe('Toggle privacy with bad authentication', () => {
         it('Should return 401', (done) => {
             User.findOne({ username: uname }).then((user) => {
                 //do the get request here 
                 chai.request(server)
-                    .post('/tree/delete')
+                    .post('/tree/set-private-status')
                     .set('content-type', 'application/x-www-form-urlencoded')
                     .set('token', 'bad auth')
                     .send(info)
@@ -94,18 +98,19 @@ describe('Test Delete Tree', () => {
                     })
             })
             var info = {
-                treeID: treeID
+                treeID: treeID,
+                private: true
             }
         })
     })
 
-    describe('Delete tree with correct info', () => {
+    describe('Set privacy to true', () => {
         it('Should return 200', (done) => {
             User.findOne({ username: uname }).then((user) => {
                 //do the get request here 
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
-                    .post('/tree/delete')
+                    .post('/tree/set-private-status')
                     .set('content-type', 'application/x-www-form-urlencoded')
                     .set('token', token)
                     .send(info)
@@ -115,7 +120,31 @@ describe('Test Delete Tree', () => {
                     })
             })
             var info = {
-                treeID: treeID
+                treeID: treeID,
+                private: true
+            }
+        })
+    })
+
+
+    describe('Set privacy to false', () => {
+        it('Should return 200', (done) => {
+            User.findOne({ username: uname }).then((user) => {
+                //do the get request here 
+                var token = user['tokens'][0]['token'][0]
+                chai.request(server)
+                    .post('/tree/set-private-status')
+                    .set('content-type', 'application/x-www-form-urlencoded')
+                    .set('token', token)
+                    .send(info)
+                    .end((err, res) => {
+                        res.should.have.status(200)
+                        done()
+                    })
+            })
+            var info = {
+                treeID: treeID,
+                private: false
             }
         })
     })

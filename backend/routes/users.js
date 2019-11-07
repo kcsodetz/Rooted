@@ -47,7 +47,6 @@ router.post("/register", (req, res) => {
 
     // Create a verification code between 1000 and 9999
     var verificatonCode = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
-    console.log(req.body.password);
     encrypt(req.body.password).then((password) => {
         // User Data
         // var newUser = new User({
@@ -89,7 +88,6 @@ router.post("/register", (req, res) => {
                 res.status(400).send({ message: "User already exists" })
                 return
             }
-            console.log(err);
             res.status(400).send(err)
             return;
         })
@@ -204,6 +202,7 @@ router.post("/forgot-password", (req, res) => {
             mailer(usr.email, email_subject, email_body);
             res.status(200).send({ message: 'Password has successfully been reset.' });
         }).catch((err) => {
+            console.log(err)
             res.status(400).send({ message: "Email does not exist in our records." });
             console.log(err)
             return;

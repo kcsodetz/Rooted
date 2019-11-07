@@ -8,9 +8,9 @@ var expect = require('chai').expect();
 chai.use(chaiHttp);
 
 
-var uname = process.env.UNIT_TEST_USERNAME
-var pword = process.env.UNIT_TEST_PASSWORD
-var mail = process.env.UNIT_TEST_EMAIL
+var uname = process.env.TEST_USERNAME
+var pword = process.env.TEST_PASSWORD
+var mail = process.env.TEST_EMAIL
 
 describe('Test Register', () => {
 
@@ -52,7 +52,6 @@ describe('Test Register', () => {
                 .set('content-type', 'application/x-www-form-urlencoded')
                 .send(info)
                 .end((err, res) => {
-                    // console.log(res)
                     res.should.have.status(400);
                     done();
                 });
@@ -131,7 +130,6 @@ describe('Test Register', () => {
                 .set('content-type', 'application/x-www-form-urlencoded')
                 .send(info)
                 .end((err, res) => {
-                    // console.log(res)
                     res.body.should.have.property('_id')
                     res.body.should.have.property('username')
                     res.body.should.have.property('email')

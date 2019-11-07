@@ -27,9 +27,8 @@ function mailer(to, subject, body) {
         text: body
     };
 
-    console.log(process.env.EMAIL_PASS)
     // verify connection configuration
-    console.log("Verifying...")
+    // console.log("Verifying...")
     transporter.verify(function(error, success) {
         if (error) {
              console.log(error);
@@ -38,7 +37,6 @@ function mailer(to, subject, body) {
         }
     });
 
-    console.log("Sending to: " + to)
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             console.error(error);

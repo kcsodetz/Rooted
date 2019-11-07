@@ -1,7 +1,7 @@
 var chai = require('chai');
 var chaiHttp = require('chai-http');
 var server = require('../../app');
-var User = require('../../model/user');
+var User = require('../../model/tree');
 var should = require('chai').should();
 
 
@@ -127,4 +127,4 @@ describe('Test Login', () => {
                 })
         })
     })
-});
+})

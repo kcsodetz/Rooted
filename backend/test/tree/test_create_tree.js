@@ -94,7 +94,6 @@ describe('Test Add Tree', () => {
                     .set('token', token)
                     .send(info)
                     .end((err, res) => {
-                        console.log(res.body._id)
                         res.should.have.status(200)
                         done()
                     })

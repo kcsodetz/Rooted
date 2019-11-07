@@ -289,7 +289,7 @@ router.post('/delete', authenticate, (req, res) => {
 })
 
 /*
-*   Edit existing tree
+*   Edit existing tree name
 */
 router.post("/edit-name", authenticate, (req, res) => {
     if (!req.body.treeName || !req.body.treeID) {
@@ -616,7 +616,7 @@ router.post('/unban-user', authenticate, (req, res) => {
 
     if (!req.body.userToUnban || !req.body.treeID) {
         res.status(400).send("Bad request")
-        return
+        return;
     }
 
 
@@ -662,17 +662,20 @@ router.post('/unban-user', authenticate, (req, res) => {
                     res.status(200).send({ message: req.body.userToUnban + " has been unbanned." })
                 })
 
-                return
+                return;
             }).catch((err) => {
-                res.status(400).send(err);
+                console.log(err)
+                res.status(400).send({message: "issue"});
                 return;
             })
         }).catch((err) => {
-            res.status(400).send(err);
+            console.log(err)
+            res.status(400).send({message: "issue2"});
             return;
         })
     }).catch((err) => {
-        res.send(err);
+        console.log(err)
+        res.status(400).send({message: "issue3"});
         return;
     })
 

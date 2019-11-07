@@ -202,7 +202,6 @@ router.post("/forgot-password", (req, res) => {
             mailer(usr.email, email_subject, email_body);
             res.status(200).send({ message: 'Password has successfully been reset.' });
         }).catch((err) => {
-            console.log(err)
             res.status(400).send({ message: "Email does not exist in our records." });
             console.log(err)
             return;
@@ -437,7 +436,6 @@ router.post('/join-tree', authenticate, (req, res) => {
         }
 
         Tree.findOne({ _id: req.body.treeID }).then((tre) => {
-            console.log(tre)
 
             // Check if tree is null
             if (!tre) {

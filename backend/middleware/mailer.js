@@ -33,7 +33,7 @@ function mailer(to, subject, body) {
         if (error) {
              console.log(error);
         } else {
-            console.log('Server is ready to take our messages');
+            // console.log('Server is ready to take our messages');
         }
     });
 

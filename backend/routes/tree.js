@@ -665,17 +665,17 @@ router.post('/unban-user', authenticate, (req, res) => {
                 return;
             }).catch((err) => {
                 console.log(err)
-                res.status(400).send({message: "issue"});
+                res.status(400).send({ message: "issue" });
                 return;
             })
         }).catch((err) => {
             console.log(err)
-            res.status(400).send({message: "issue2"});
+            res.status(400).send({ message: "issue2" });
             return;
         })
     }).catch((err) => {
         console.log(err)
-        res.status(400).send({message: "issue3"});
+        res.status(400).send({ message: "issue3" });
         return;
     })
 
@@ -790,7 +790,7 @@ router.get("/get-all-trees", authenticate, (req, res) => {
  * Set tree to be private or public
  */
 router.post("/set-private-status", authenticate, (req, res) => {
-    if (!req.body.treeID || req.body.private==null) {
+    if (!req.body.treeID || req.body.private == null) {
         res.status(400).send({ message: "Bad request" });
         return;
     }
@@ -833,17 +833,17 @@ router.post("/invite-user", authenticate, (req, res) => {
         }
 
         // Check if the user has been requested
-/*        if (!tre.memberRequestedUsers.includes(req.body.username)) {
-            res.status(400).send({ message: "User has not been requested" });
-            return;
-        }*/
+        /*        if (!tre.memberRequestedUsers.includes(req.body.username)) {
+                    res.status(400).send({ message: "User has not been requested" });
+                    return;
+                }*/
 
         // Remove user from memberRequestedUsers
         var n = tre.memberRequestedUsers.indexOf(req.body.username);
         tre.memberRequestedUsers.splice(n, 1)
 
         // Add user to pendingUsers
-      //  tre.pendingUsers.push(req.body.username)
+        //  tre.pendingUsers.push(req.body.username)
 
         // Save changes to tree
         tre.save()
@@ -859,9 +859,14 @@ router.post("/invite-user", authenticate, (req, res) => {
                 }
             }
         }).then((usr) => {
-            console.log(usr)
-            res.status(200).send({ message: "User has been successfully sent an invitation!" });
-            return;
+            if (!usr) {
+                res.status(400).send({ message: "User does not exist" });
+                return;
+            }
+            else {
+                res.status(200).send({ message: "User has been successfully sent an invitation!" });
+                return;
+            }
         }).catch((err) => {
             console.log(err)
             res.status(400).send({ message: "Fatal Error" });

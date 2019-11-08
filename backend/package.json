@@ -1,12 +1,12 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "DayDreams backend",
+  "description": "Rooted backend",
   "main": "app.js",
   "scripts": {
     "test": "./test/runtest.sh"
   },
-  "author": "Connor Todd",
+  "author": "Ken Sodetz",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^3.0.6",

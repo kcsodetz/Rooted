@@ -2,6 +2,7 @@ var chai = require('chai');
 var chaiHttp = require('chai-http');
 var server = require('../../app');
 var User = require('../../model/user');
+var Tree = require('../../model/tree')
 var should = require('chai').should();
 
 chai.use(chaiHttp);
@@ -11,8 +12,10 @@ var uname = process.env.TEST_USERNAME
 var pword = process.env.TEST_PASSWORD
 var mail = process.env.TEST_EMAIL
 
-describe('Test Change Email', () => {
+var testTreeName = "UNIT_TEST_TREE"
 
+describe('Test Search', () => {
+    // Preprocessing (Register, login, and create tree)
     before((done) => {
         var info = {
             username: uname,
@@ -28,30 +31,42 @@ describe('Test Change Email', () => {
                     .set('content-type', 'application/x-www-form-urlencoded')
                     .send(info)
                     .then((res) => {
-                        done()
+                        var treeInfo = {
+                            treeName: testTreeName
+                        }
+                        var token = res.header.token
+                        chai.request(server)
+                            .post('/tree/add')
+                            .set('content-type', 'application/x-www-form-urlencoded')
+                            .set('token', token)
+                            .send(treeInfo)
+                            .then((res) => {
+                                treeID = res.body._id
+                                done()
+                            })
                     })
             })
-    })
 
-    after(() => {
-        User.deleteOne({ username: uname }).then(() => {
-
+        // Postprocessing (delete user and tree)
+        after((done) => {
+            User.deleteOne({ username: uname }).then(() => {
+                Tree.deleteOne({ treeName: testTreeName }).then(() => {
+                    done()
+                })
+            })
         })
+
     })
 
-    describe('Change email without email', () => {
+    describe('Search for tree without treename', () => {
         it('Should return 400', (done) => {
-            var info = {
-                email: mail
-            }
             User.findOne({ username: uname }).then((user) => {
-                //do the get request here 
+                // Request with payload
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
-                    .post('/user/change-email')
+                    .get('/tree/search-tree')
                     .set('content-type', 'application/x-www-form-urlencoded')
                     .set('token', token)
-                    .send()
                     .end((err, res) => {
                         res.should.have.status(400)
                         done()
@@ -62,74 +77,59 @@ describe('Test Change Email', () => {
         })
     })
 
-    describe('Change email with invalid email', () => {
-        it('Should return 400', (done) => {
-            var info = {
-                email: 'invalid email'
-            }
-            User.findOne({ username: uname }, (err, user) => {
-                //do the get request here 
-
-                var token = user['tokens'][0]['token'][0]
-
-                chai.request(server)
-                    .post('/user/change-email')
-                    .set('content-type', 'application/x-www-form-urlencoded')
-                    .set('token', token)
-                    .send(info)
-                    .end((err, res) => {
-                        res.should.have.status(400)
-                        done()
-                    })
-            });
-        })
-    })
-
-    describe('Change email with invalid auth', () => {
+    describe('Search for tree with bad authentication', () => {
         it('Should return 401', (done) => {
-            var info = {
-                email: mail
-            }
-            User.findOne({ username: uname }, (err, user) => {
-                //do the get request here 
-
-                var token = user['tokens'][0]['token'][0]
-
+            User.findOne({ username: uname }).then((user) => {
+                // Request with payload
                 chai.request(server)
-                    .post('/user/change-email')
+                    .get('/tree/search-tree')
                     .set('content-type', 'application/x-www-form-urlencoded')
                     .set('token', 'bad auth')
-                    .send(info)
                     .end((err, res) => {
                         res.should.have.status(401)
                         done()
                     })
-            });
+            })
         })
     })
 
-    describe('Change email with correct info', () => {
-        it('Should return 200', (done) => {
-            var info = {
-                email: mail
-            }
-            User.findOne({ username: uname }, (err, user) => {
-                //do the get request here 
-
+ describe('Search for tree that does not return results', () => {
+        it('Should return 400', (done) => {
+            User.findOne({ username: uname }).then((user) => {
+                // Request with payload
                 var token = user['tokens'][0]['token'][0]
-
                 chai.request(server)
-                    .post('/user/change-email')
+                    .get('/tree/search-tree')
                     .set('content-type', 'application/x-www-form-urlencoded')
                     .set('token', token)
-                    .send(info)
+                    .set('treename', "DOES NOT EXIST")
                     .end((err, res) => {
-                        res.body.should.have.property('message', "User email successfully updated")
+                        res.should.have.status(400)
+                        done()
+                    })
+            }).catch((err) => {
+
+            })
+        })
+    })
+
+ describe('Search for tree that returns results', () => {
+        it('Should return 200', (done) => {
+            User.findOne({ username: uname }).then((user) => {
+                // Request with payload
+                var token = user['tokens'][0]['token'][0]
+                chai.request(server)
+                    .get('/tree/search-tree')
+                    .set('content-type', 'application/x-www-form-urlencoded')
+                    .set('token', token)
+                    .set('treename', testTreeName)
+                    .end((err, res) => {
                         res.should.have.status(200)
                         done()
                     })
-            });
+            }).catch((err) => {
+
+            })
         })
     })
-
 })

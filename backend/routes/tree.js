@@ -272,7 +272,6 @@ router.post('/delete', authenticate, (req, res) => {
 
     //find specific Tree object by ID
     Tree.findOneAndDelete({ _id: req.body.treeID }).then((tre) => {
-        console.log(tre)
         if (tre != null) {
             res.status(200).json({ message: tre.treeName + " has been deleted." })
             return;
@@ -289,7 +288,7 @@ router.post('/delete', authenticate, (req, res) => {
 })
 
 /*
-*   Edit existing tree
+*   Edit existing tree name
 */
 router.post("/edit-name", authenticate, (req, res) => {
     if (!req.body.treeName || !req.body.treeID) {
@@ -606,9 +605,6 @@ router.post('/ban-user', authenticate, (req, res) => {
     })
 })
 
-
-
-
 /*
 *   Unban a user
 */
@@ -616,7 +612,7 @@ router.post('/unban-user', authenticate, (req, res) => {
 
     if (!req.body.userToUnban || !req.body.treeID) {
         res.status(400).send("Bad request")
-        return
+        return;
     }
 
 
@@ -662,17 +658,20 @@ router.post('/unban-user', authenticate, (req, res) => {
                     res.status(200).send({ message: req.body.userToUnban + " has been unbanned." })
                 })
 
-                return
+                return;
             }).catch((err) => {
-                res.status(400).send(err);
+                console.log(err)
+                res.status(400).send({ message: "issue" });
                 return;
             })
         }).catch((err) => {
-            res.status(400).send(err);
+            console.log(err)
+            res.status(400).send({ message: "issue2" });
             return;
         })
     }).catch((err) => {
-        res.send(err);
+        console.log(err)
+        res.status(400).send({ message: "issue3" });
         return;
     })
 
@@ -787,12 +786,11 @@ router.get("/get-all-trees", authenticate, (req, res) => {
  * Set tree to be private or public
  */
 router.post("/set-private-status", authenticate, (req, res) => {
-    if (!req.body.treeID || req.body.private==null) {
+    if (!req.body.treeID || req.body.private == null) {
         res.status(400).send({ message: "Bad request" });
         return;
     }
 
-    console.log("private value: ", req.body.private);
     Tree.findByIdAndUpdate({ _id: req.body.treeID },
         {
             $set: {
@@ -802,7 +800,7 @@ router.post("/set-private-status", authenticate, (req, res) => {
             res.status(200).send({ message: 'Tree private status updated!' })
             return;
         }).catch((err) => {
-            res.send(err);
+            res.status(400).send(err);
             return;
         })
 })
@@ -831,17 +829,17 @@ router.post("/invite-user", authenticate, (req, res) => {
         }
 
         // Check if the user has been requested
-/*        if (!tre.memberRequestedUsers.includes(req.body.username)) {
-            res.status(400).send({ message: "User has not been requested" });
-            return;
-        }*/
+        /*        if (!tre.memberRequestedUsers.includes(req.body.username)) {
+                    res.status(400).send({ message: "User has not been requested" });
+                    return;
+                }*/
 
         // Remove user from memberRequestedUsers
         var n = tre.memberRequestedUsers.indexOf(req.body.username);
         tre.memberRequestedUsers.splice(n, 1)
 
         // Add user to pendingUsers
-      //  tre.pendingUsers.push(req.body.username)
+        //  tre.pendingUsers.push(req.body.username)
 
         // Save changes to tree
         tre.save()
@@ -857,9 +855,14 @@ router.post("/invite-user", authenticate, (req, res) => {
                 }
             }
         }).then((usr) => {
-            console.log(usr)
-            res.status(200).send({ message: "User has been successfully sent an invitation!" });
-            return;
+            if (!usr) {
+                res.status(400).send({ message: "User does not exist" });
+                return;
+            }
+            else {
+                res.status(200).send({ message: "User has been successfully sent an invitation!" });
+                return;
+            }
         }).catch((err) => {
             console.log(err)
             res.status(400).send({ message: "Fatal Error" });
@@ -978,26 +981,21 @@ router.post("/request-admin-to-add-user", authenticate, (req, res) => {
 })
 
 /**
- * Get searched tree
+ * Get array of searched trees
  */
 router.get("/search-tree", authenticate, (req, res) => {
-    // console.log(req.headers);
 
     if (!req.headers.treename) {
-        // console.log(req.headers.treename);
         res.status(400).send({ message: "Bad request" });
         return;
     }
 
     Tree.find({ treeName: req.headers.treename }).then((tree) => {
-        console.log(tree);
-        if (tree == null) {
-            console.log("here");
+        if (!tree[0]) {
             res.status(400).send({ message: "Could not find tree" });
             return;
         }
 
-        console.log("omg");
         res.status(200).send(tree);
         return;
 

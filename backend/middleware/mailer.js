@@ -27,18 +27,16 @@ function mailer(to, subject, body) {
         text: body
     };
 
-    console.log(process.env.EMAIL_PASS)
     // verify connection configuration
-    console.log("Verifying...")
+    // console.log("Verifying...")
     transporter.verify(function(error, success) {
         if (error) {
              console.log(error);
         } else {
-            console.log('Server is ready to take our messages');
+            // console.log('Server is ready to take our messages');
         }
     });
 
-    console.log("Sending to: " + to)
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             console.error(error);

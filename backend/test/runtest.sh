@@ -8,6 +8,8 @@ mocha test/user/test_register.js --exit
 mocha test/user/test_login.js --exit
 mocha test/user/test_change_email.js --exit
 mocha test/user/test_forgot_password.js --exit
+mocha test/user/test_join_from_invite.js --exit
+mocha test/user/test_decline_from_invite.js --exit
 
 sleep 2
 

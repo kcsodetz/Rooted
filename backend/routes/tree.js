@@ -272,7 +272,6 @@ router.post('/delete', authenticate, (req, res) => {
 
     //find specific Tree object by ID
     Tree.findOneAndDelete({ _id: req.body.treeID }).then((tre) => {
-        console.log(tre)
         if (tre != null) {
             res.status(200).json({ message: tre.treeName + " has been deleted." })
             return;
@@ -605,9 +604,6 @@ router.post('/ban-user', authenticate, (req, res) => {
 
     })
 })
-
-
-
 
 /*
 *   Unban a user
@@ -985,13 +981,11 @@ router.post("/request-admin-to-add-user", authenticate, (req, res) => {
 })
 
 /**
- * Get searched tree
+ * Get array of searched trees
  */
 router.get("/search-tree", authenticate, (req, res) => {
-    // console.log(req.headers);
 
     if (!req.headers.treename) {
-        // console.log(req.headers.treename);
         res.status(400).send({ message: "Bad request" });
         return;
     }

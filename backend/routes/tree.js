@@ -1007,5 +1007,60 @@ router.get("/search-tree", authenticate, (req, res) => {
     })
 })
 
+/**
+ * Add annoucements to a tree
+ */
+router.post("/add-annoucements", authenticate, (req, res) => {
+    if (!req.body.treeID || !req.body.username || !req.body.annoucement) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+
+    // Find tree object
+    Tree.findById(req.body.treeID, (err, tre) => {
+
+        if (err) {
+            res.status(400).send({ message: "Fatal Error" });
+            return;
+        }
+
+        // Check if tree exists
+        if (tre == null) {
+            res.status(400).send({ message: "Tree does not exist" });
+            return;
+        }
+
+        // Find user 
+        User.findOne({ username: req.body.username }).then((user) => {
+
+            if (!user) {
+                res.status(400).send({ message: "Username does not exist." });
+                return;
+            }
+
+            // Update tree
+            Tree.findOneAndUpdate({ _id: req.body.treeID }, {
+                $push: {
+                    treeAnnoucements: {
+                        user: req.body.username,
+                        annoucement: req.body.annoucement,
+                    }
+                }
+            }).then(() => {
+                res.status(200).send({ message: "An annoucement has been requested" });
+                return;
+            }).catch((err) => {
+                res.status(400).send(err);
+                return;
+            })
+        }).catch((err) => {
+            res.status(400).send(err);
+            return;
+        })
+    }).catch((err) => {
+        res.status(400).send({ message: "Fatal Error" });
+        return;
+    })
+})
 
 module.exports = router;

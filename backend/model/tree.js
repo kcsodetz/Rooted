@@ -28,6 +28,10 @@ let treeSchema = new mongoose.Schema({
     memberRequestedUsers: {type: [String]},
     pendingUsers: {type: [String]},
     aboutBio: {type: String, default: "No bio created yet."},
+    treeAnnoucements: [{
+        user: String,
+        annoucement: String,
+    }],
 
 })
 

@@ -1,15 +1,15 @@
 var express = require('express');
 var router = express.Router();
-let mongoose = require('mongoose');
-var encrypt = require('../middleware/encrypt')
-var bcrypt = require('bcrypt')
-var authenticate = require('../middleware/authenticate')
+var mongoose = require('mongoose');
+var encrypt = require('../middleware/encrypt');
+var bcrypt = require('bcrypt');
+var authenticate = require('../middleware/authenticate');
 var multer = require("multer");
 var cloudinary = require("cloudinary");
 var cloudinaryStorage = require("multer-storage-cloudinary");
-var upload = require('../middleware/photo_upload')
-var validate = require('../middleware/validate_url')
-var mailer = require('../middleware/mailer')
+var upload = require('../middleware/photo_upload');
+var validate = require('../middleware/validate_url');
+var mailer = require('../middleware/mailer');
 
 
 mongoose.connect(process.env.MONGODB_HOST, { useNewUrlParser: true });
@@ -63,9 +63,9 @@ router.post("/add", authenticate, function (req, res) {
             }
         }).then((tree) => {
             res.status(200).send(tree);
-            return
+            return;
         }).catch((err) => {
-            console.log(err)
+            console.log(err);
             res.status(400).send({ message: "Error: Could not create tree" });
             return
         })

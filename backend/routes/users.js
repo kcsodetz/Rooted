@@ -81,30 +81,30 @@ router.post("/register", (req, res) => {
 
                 res.header('verificationNum', verificatonCode).send(newUser);
                 mailer(req.body.email, newMemberEmailSubject, newMemberEmailBody);
-                return
+                return;
             });
         }).catch((err) => {
             if (err.code == 11000) {
-                res.status(400).send({ message: "User already exists" })
-                return
+                res.status(400).send({ message: "User already exists" });
+                return;
             }
-            res.status(400).send(err)
+            res.status(400).send(err);
             return;
-        })
-    })
+        });
+    });
 });
 
 router.post('/login', (req, res) => {
     if (!req.body.username || !req.body.password) {
-        res.status(400).send({ message: "Bad request" })
+        res.status(400).send({ message: "Bad request" });
         return;
     }
 
     User.findOne({ username: req.body.username }).then((user) => {
 
         if (!user) {
-            res.status(400).send({ message: "Error: User does not exist, register before logging in" })
-            return
+            res.status(400).send({ message: "Error: User does not exist, register before logging in" });
+            return;
         }
         // if (!user.verified) {
         //     res.status(401).send({ message: "User is not verified" })
@@ -112,26 +112,25 @@ router.post('/login', (req, res) => {
         // }
         bcrypt.compare(req.body.password, user.password, function (err, comp) {
             encrypt(req.body.password).then((p) => {
-            })
+            });
             if (comp == false) {
-                res.status(400).send({ message: "Error: Password is incorrect" })
-                return
-            }
-            else {
+                res.status(400).send({ message: "Error: Password is incorrect" });
+                return;
+            } else {
                 user.generateAuth().then((token) => {
-                    res.status(200).header('token', token).send(user)
-                    return
+                    res.status(200).header('token', token).send(user);
+                    return;
                 }).catch((err) => {
-                    res.status(400).send(err)
-                    return
-                })
+                    res.status(400).send(err);
+                    return;
+                });
             }
-        })
+        });
     }).catch((err) => {
-        res.status(400).send(err)
-        return
-    })
-})
+        res.status(400).send(err);
+        return;
+    });
+});
 
 
 /**
@@ -189,7 +188,7 @@ router.post("/forgot-password", (req, res) => {
                 "reset. Your new temporary password is:\n\n" +
                 tempPassword + "\n\nSincerely, \n\nThe Rooted Team";
             // find user by email and set temp password
-            encrypt(tempPassword).then(encryptedPassword => {
+            encrypt(tempPassword).then((encryptedPassword) => {
                 User.findOneAndUpdate({ email: usr.email }, { $set: { password: encryptedPassword } }).then(() => {
                 }).catch((err) => {
                     res.status(400).send({ message: "New password not set." });
@@ -202,8 +201,8 @@ router.post("/forgot-password", (req, res) => {
             mailer(usr.email, email_subject, email_body);
             res.status(200).send({ message: 'Password has successfully been reset.' });
         }).catch((err) => {
+            console.log("err is " + err);
             res.status(400).send({ message: "Email does not exist in our records." });
-            console.log(err)
             return;
         });
     }

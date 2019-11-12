@@ -148,9 +148,7 @@ userSchema.statics.findVerificationNumByEmail = function(email) {
 userSchema.statics.findByEmail = function(email) {
   var User = this;
 
-  return User.findOne({email}).then((user) => {
-    // console.log(user)
-    //console.log("email is: " + user.email)
+  return User.findOne({ 'email.properties.value': email }).then((user) => {
     if (user == null || !user.email) {
       return Promise.reject();
     }

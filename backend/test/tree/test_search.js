@@ -2,17 +2,17 @@ var chai = require('chai');
 var chaiHttp = require('chai-http');
 var server = require('../../app');
 var User = require('../../model/user');
-var Tree = require('../../model/tree')
+var Tree = require('../../model/tree');
 var should = require('chai').should();
 
 chai.use(chaiHttp);
 
 
-var uname = process.env.TEST_USERNAME
-var pword = process.env.TEST_PASSWORD
-var mail = process.env.TEST_EMAIL
+var uname = process.env.TEST_USERNAME;
+var pword = process.env.TEST_PASSWORD;
+var mail = process.env.TEST_EMAIL;
 
-var testTreeName = "UNIT_TEST_TREE"
+var testTreeName = "UNIT_TEST_TREE";
 
 describe('Test Search', () => {
     // Preprocessing (Register, login, and create tree)
@@ -21,7 +21,7 @@ describe('Test Search', () => {
             username: uname,
             password: pword,
             email: mail,
-        }
+        };
         chai.request(server)
             .post('/user/register')
             .set('content-type', 'application/x-www-form-urlencoded')

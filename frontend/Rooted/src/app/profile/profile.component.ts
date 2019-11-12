@@ -31,7 +31,8 @@ export class ProfileComponent implements OnInit {
   rspp: Object;
   submitted = false;
   myTrees: Tree[];
-  constructor(private route: ActivatedRoute, private userService: UserService, public authService: AuthService, private formBuilder: FormBuilder, private _router: Router) {
+  constructor(private route: ActivatedRoute, private userService: UserService, public authService:
+    AuthService, private formBuilder: FormBuilder, private _router: Router) {
     this.images = [];
   }
   ngOnInit() {
@@ -62,7 +63,7 @@ export class ProfileComponent implements OnInit {
       this.account = new Account(res);
       this.rspp = res;
       // console.log(this.rspp);
-      this.notifications=this.account.notifications;
+      this.notifications = this.account.notifications;
      // console.log("LEN"+this.notifications.length);
       this.username = this.account.username;
       this.profilePicture = this.account.profilePictureURL;
@@ -121,14 +122,14 @@ export class ProfileComponent implements OnInit {
     });
   }
   showNotifications() {
-    
+
   }
   renderTree(tree: Tree) {
     /* Navigate to /tree/id  */
     this._router.navigate(['/tree/' + tree.ID]);
   }
 
-  
+
 
   get form() { return this.editProfileForm.controls; }
 
@@ -144,18 +145,18 @@ export class ProfileComponent implements OnInit {
     }
 
     if (form.value.profilePictureURL != this.account.profilePictureURL) {
-      //console.log(form.value.profilePictureURL);
+      // console.log(form.value.profilePictureURL);
       this.userService.editUserProfilePicture(form.value.profilePictureURL, this.account.username).subscribe((response) => {
-        //console.log(response);
+        // console.log(response);
         this.response = 'complete';
       },
         (err) => {
-          //console.log(err);
+          // console.log(err);
           this.response = 'fatalError';
         });
     } else {
       this.response = 'noEdit';
-      //console.log('else');
+      // console.log('else');
     }
 
     window.location.replace('/profile');
@@ -206,7 +207,7 @@ export class ProfileComponent implements OnInit {
       this.account.phoneNumber = form.value.phoneNumber;
       this.account.phoneNumberHidden = form.value.phoneNumberHidden;
 
-      //console.log('hide: ' + form.value.emailHidden);
+      // console.log('hide: ' + form.value.emailHidden);
 
       this.account.facebook = form.value.facebook;
       this.account.facebookHidden = form.value.facebookHidden;
@@ -215,21 +216,20 @@ export class ProfileComponent implements OnInit {
       this.account.twitter = form.value.twitter;
       this.account.twitterHidden = form.value.twitterHidden;
       this.authService.editProfile(this.account).then((res) => {
-      //console.log(res);
-      window.alert("Success!")
+      // console.log(res);
+      window.alert('Success!');
           this.response = 'complete_editProfile';
       }).catch((error) => {
         //  console.log(error);
-          window.alert("Failure! :(")
+          window.alert('Failure! :(');
           this.response = 'fatal_error';
 
       });
 
   }
 
-  accept(n)
-  {
-    
+  accept(n) {
+
       this.userService.acceptInvitation(this.username, n.meta).then((response) => {
         console.log(response);
         this.response = 'complete';
@@ -238,13 +238,12 @@ export class ProfileComponent implements OnInit {
           console.log(err);
           this.response = 'fatalError';
         });
-    
-        location.reload();
-    
-  };
 
-  reject(n)
-  {
+        location.reload();
+
+  }
+
+  reject(n) {
       this.userService.declineInvitation(this.username, n.meta).then((response) => {
         console.log(response);
         this.response = 'complete';
@@ -254,9 +253,8 @@ export class ProfileComponent implements OnInit {
           this.response = 'fatalError';
         });
     location.reload();
-  };
-  deleteNotif(n)
-  {
+  }
+  deleteNotif(n) {
       this.userService.removeNotification(this.username, n.meta).then((response) => {
         console.log(response);
         this.response = 'complete';
@@ -265,6 +263,6 @@ export class ProfileComponent implements OnInit {
           console.log(err);
           this.response = 'fatalError';
         });
-    
-  };
+
+  }
 }

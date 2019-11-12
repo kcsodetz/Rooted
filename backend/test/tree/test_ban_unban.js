@@ -2,23 +2,22 @@ var chai = require('chai');
 var chaiHttp = require('chai-http');
 var server = require('../../app');
 var User = require('../../model/user');
-var Tree = require('../../model/tree')
+var Tree = require('../../model/tree');
 var should = require('chai').should();
 var mongoose = require('mongoose');
 
 chai.use(chaiHttp);
 
 
-var uname = process.env.TEST_USERNAME
-var pword = process.env.TEST_PASSWORD
-var mail = process.env.TEST_EMAIL
+var uname = process.env.TEST_USERNAME;
+var pword = process.env.TEST_PASSWORD;
+var mail = process.env.TEST_EMAIL;
 
-var usr = "testing_ken"
+var usr = "testing_ken";
 
 var treeID;
 
 var badID = mongoose.Types.ObjectId();
-
 
 describe('Test Ban and Unban Users', () => {
 
@@ -66,7 +65,6 @@ describe('Test Ban and Unban Users', () => {
     describe('Ban from tree without tree ID', () => {
         it('Should return 400', (done) => {
             User.findOne({ username: uname }).then((user) => {
-                //do the get request here 
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
                     .post('/tree/ban-user')
@@ -89,7 +87,6 @@ describe('Test Ban and Unban Users', () => {
     describe('Ban from tree with bad auth', () => {
         it('Should return 401', (done) => {
             User.findOne({ username: uname }).then((user) => {
-                //do the get request here 
                 chai.request(server)
                     .post('/tree/ban-user')
                     .set('content-type', 'application/x-www-form-urlencoded')
@@ -110,8 +107,6 @@ describe('Test Ban and Unban Users', () => {
     describe('Ban from tree without userToBan', () => {
         it('Should return 400', (done) => {
             User.findOne({ username: uname }).then((user) => {
-                //do the get request here 
-                var token = user['tokens'][0]['token'][0]
                 chai.request(server)
                     .post('/tree/ban-user')
                     .set('content-type', 'application/x-www-form-urlencoded')
@@ -133,7 +128,6 @@ describe('Test Ban and Unban Users', () => {
     describe('Ban from tree with bad tree ID', () => {
         it('Should return 400', (done) => {
             User.findOne({ username: uname }).then((user) => {
-                //do the get request here 
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
                     .post('/tree/ban-user')
@@ -157,7 +151,6 @@ describe('Test Ban and Unban Users', () => {
     describe('Ban from tree with bad username', () => {
         it('Should return 400', (done) => {
             User.findOne({ username: uname }).then((user) => {
-                //do the get request here 
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
                     .post('/tree/ban-user')
@@ -181,7 +174,6 @@ describe('Test Ban and Unban Users', () => {
     describe('Ban from tree with proper info', () => {
         it('Should return 200', (done) => {
             User.findOne({ username: uname }).then((user) => {
-                //do the get request here 
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
                     .post('/tree/ban-user')
@@ -205,7 +197,6 @@ describe('Test Ban and Unban Users', () => {
     describe('Ban from tree with duplicate user', () => {
         it('Should return 400', (done) => {
             User.findOne({ username: uname }).then((user) => {
-                //do the get request here 
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
                     .post('/tree/ban-user')
@@ -225,10 +216,10 @@ describe('Test Ban and Unban Users', () => {
             }
         })
     })
+
     describe('Unban from tree without tree ID', () => {
         it('Should return 400', (done) => {
             User.findOne({ username: uname }).then((user) => {
-                //do the get request here 
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
                     .post('/tree/unban-user')
@@ -248,10 +239,9 @@ describe('Test Ban and Unban Users', () => {
         })
     })
 
-describe('Unban from tree with bad auth', () => {
+    describe('Unban from tree with bad auth', () => {
         it('Should return 401', (done) => {
             User.findOne({ username: uname }).then((user) => {
-                //do the get request here 
                 chai.request(server)
                     .post('/tree/unban-user')
                     .set('content-type', 'application/x-www-form-urlencoded')
@@ -269,10 +259,9 @@ describe('Unban from tree with bad auth', () => {
         })
     })
 
-describe('Unban from tree without userToUnban', () => {
+    describe('Unban from tree without userToUnban', () => {
         it('Should return 400', (done) => {
             User.findOne({ username: uname }).then((user) => {
-                //do the get request here 
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
                     .post('/tree/unban-user')
@@ -292,10 +281,9 @@ describe('Unban from tree without userToUnban', () => {
         })
     })
 
-describe('Unban from tree with bad tree ID', () => {
+    describe('Unban from tree with bad tree ID', () => {
         it('Should return 400', (done) => {
             User.findOne({ username: uname }).then((user) => {
-                //do the get request here 
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
                     .post('/tree/unban-user')
@@ -316,10 +304,9 @@ describe('Unban from tree with bad tree ID', () => {
         })
     })
 
-describe('Unban from tree with bad username', () => {
+    describe('Unban from tree with bad username', () => {
         it('Should return 400', (done) => {
             User.findOne({ username: uname }).then((user) => {
-                //do the get request here 
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
                     .post('/tree/unban-user')
@@ -340,10 +327,9 @@ describe('Unban from tree with bad username', () => {
         })
     })
 
-describe('Unban from tree with proper info', () => {
+    describe('Unban from tree with proper info', () => {
         it('Should return 200', (done) => {
             User.findOne({ username: uname }).then((user) => {
-                //do the get request here 
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
                     .post('/tree/unban-user')

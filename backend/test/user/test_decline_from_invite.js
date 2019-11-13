@@ -9,14 +9,14 @@ var mongoose = require('mongoose');
 chai.use(chaiHttp);
 
 
-var uname = process.env.TEST_USERNAME
-var pword = process.env.TEST_PASSWORD
-var mail = process.env.TEST_EMAIL
+var uname = process.env.TEST_USERNAME;
+var pword = process.env.TEST_PASSWORD;
+var mail = process.env.TEST_EMAIL;
 
 var treeID;
 
 var badID = mongoose.Types.ObjectId();
-var usr = "testing_ken"
+var usr = "testing_ken";
 
 describe('Test Decline Invite', () => {
     // Preprocessing (Register, login, and create tree)

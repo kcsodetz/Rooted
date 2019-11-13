@@ -2,7 +2,7 @@ var chai = require('chai');
 var chaiHttp = require('chai-http');
 var server = require('../../app');
 var User = require('../../model/user');
-var Tree = require('../../model/tree');
+var Tree = require('../../model/tree')
 var should = require('chai').should();
 var mongoose = require('mongoose');
 
@@ -12,17 +12,16 @@ chai.use(chaiHttp);
 var uname = process.env.TEST_USERNAME;
 var pword = process.env.TEST_PASSWORD;
 var mail = process.env.TEST_EMAIL;
-
-var token;
-
-var usr = "testing_ken";
+var testTreeName = 'UNIT_TEST_TREE';
 
 var treeID;
+var token;
 
 var badID = mongoose.Types.ObjectId();
+var usr = "testing_ken";
 
-describe('Test Ban and Unban Users', () => {
-
+describe('Test Adding and Removing an Admin', () => {
+    // Preprocessing (Register, login, create tree, add user)
     before((done) => {
         var info = {
             username: uname,
@@ -39,7 +38,7 @@ describe('Test Ban and Unban Users', () => {
                     .send(info)
                     .then((res) => {
                         var treeInfo = {
-                            treeName: "UNIT_TEST_TREE"
+                            treeName: testTreeName
                         }
                         token = res.header.token
                         chai.request(server)
@@ -48,15 +47,24 @@ describe('Test Ban and Unban Users', () => {
                             .set('token', token)
                             .send(treeInfo)
                             .then((res) => {
-                                treeID = res.body._id
-                                done()
+                                treeID = res.body._id;
+                            }).then(() => {
+                                Tree.findOneAndUpdate({ _id: treeID }, {
+                                    $push: {
+                                        members: usr,
+                                    }
+                                }).catch((err) => {
+                                    console.log("err is: " + err)
+                                })
                             })
+                        done()
                     })
             })
 
+        // Postprocessing (delete user and tree)
         after((done) => {
             User.deleteOne({ username: uname }).then(() => {
-                Tree.deleteOne({ treeName: 'UNIT_TEST_TREE' }).then(() => {
+                Tree.deleteOne({ treeName: testTreeName }).then(() => {
                     done()
                 })
             })
@@ -64,49 +72,13 @@ describe('Test Ban and Unban Users', () => {
 
     })
 
-    describe('Ban from tree without tree ID', () => {
-        it('Should return 400', (done) => {
-             var info = {
-                userToBan: usr
-            }
-            chai.request(server)
-                .post('/tree/ban-user')
-                .set('content-type', 'application/x-www-form-urlencoded')
-                .set('token', token)
-                .send(info)
-                .end((err, res) => {
-                    res.should.have.status(400)
-                    done()
-                })
-        })
-    })
-
-    describe('Ban from tree with bad auth', () => {
-        it('Should return 401', (done) => {
-            User.findOne({ username: uname }).then((user) => {
-                chai.request(server)
-                    .post('/tree/ban-user')
-                    .set('content-type', 'application/x-www-form-urlencoded')
-                    .send(info)
-                    .end((err, res) => {
-                        res.should.have.status(401)
-                        done()
-                    })
-            }).catch((err) => {
-
-            })
-            var info = {
-                userToBan: usr
-            }
-        })
-    })
-
-    describe('Ban from tree without userToBan', () => {
+    describe('Add admin without tree ID', () => {
         it('Should return 400', (done) => {
             User.findOne({ username: uname }).then((user) => {
+                // Request with payload
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
-                    .post('/tree/ban-user')
+                    .post('/tree/add-admin')
                     .set('content-type', 'application/x-www-form-urlencoded')
                     .set('token', token)
                     .send(info)
@@ -118,17 +90,39 @@ describe('Test Ban and Unban Users', () => {
 
             })
             var info = {
-                treeID: treeID
+                username: usr
             }
         })
     })
 
-    describe('Ban from tree with bad tree ID', () => {
+    describe('Add admin with bad authentication', () => {
+        it('Should return 401', (done) => {
+            User.findOne({ username: uname }).then((user) => {
+                // Request with payload
+                chai.request(server)
+                    .post('/tree/add-admin')
+                    .set('content-type', 'application/x-www-form-urlencoded')
+                    .set('token', 'bad auth')
+                    .send(info)
+                    .end((err, res) => {
+                        res.should.have.status(401)
+                        done()
+                    })
+            })
+            var info = {
+                treeID: treeID,
+                username: usr
+            }
+        })
+    })
+
+    describe('Add admin with bad tree ID', () => {
         it('Should return 400', (done) => {
             User.findOne({ username: uname }).then((user) => {
+                // Request with payload
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
-                    .post('/tree/ban-user')
+                    .post('/tree/add-admin')
                     .set('content-type', 'application/x-www-form-urlencoded')
                     .set('token', token)
                     .send(info)
@@ -141,17 +135,18 @@ describe('Test Ban and Unban Users', () => {
             })
             var info = {
                 treeID: badID,
-                userToBan: usr
+                username: usr
             }
         })
     })
 
-    describe('Ban from tree with bad username', () => {
+    describe('Add admin who does not exist / not in tree', () => {
         it('Should return 400', (done) => {
             User.findOne({ username: uname }).then((user) => {
+                //do the get request here 
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
-                    .post('/tree/ban-user')
+                    .post('/tree/add-admin')
                     .set('content-type', 'application/x-www-form-urlencoded')
                     .set('token', token)
                     .send(info)
@@ -164,17 +159,18 @@ describe('Test Ban and Unban Users', () => {
             })
             var info = {
                 treeID: treeID,
-                userToBan: "Does Not Exist"
+                username: "DOES NOT EXIST"
             }
         })
     })
 
-    describe('Ban from tree with proper info', () => {
+    describe('Add admin with correct info', () => {
         it('Should return 200', (done) => {
             User.findOne({ username: uname }).then((user) => {
+                //do the get request here 
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
-                    .post('/tree/ban-user')
+                    .post('/tree/add-admin')
                     .set('content-type', 'application/x-www-form-urlencoded')
                     .set('token', token)
                     .send(info)
@@ -183,21 +179,22 @@ describe('Test Ban and Unban Users', () => {
                         done()
                     })
             }).catch((err) => {
-
+                console.log(err);
             })
             var info = {
                 treeID: treeID,
-                userToBan: usr
+                username: usr
             }
         })
     })
 
-    describe('Ban from tree with duplicate user', () => {
+        describe('Remove admin without tree ID', () => {
         it('Should return 400', (done) => {
             User.findOne({ username: uname }).then((user) => {
+                // Request with payload
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
-                    .post('/tree/ban-user')
+                    .post('/tree/remove-admin')
                     .set('content-type', 'application/x-www-form-urlencoded')
                     .set('token', token)
                     .send(info)
@@ -209,82 +206,39 @@ describe('Test Ban and Unban Users', () => {
 
             })
             var info = {
-                treeID: treeID,
-                userToBan: usr
+                username: usr
             }
         })
     })
 
-    describe('Unban from tree without tree ID', () => {
-        it('Should return 400', (done) => {
-            User.findOne({ username: uname }).then((user) => {
-                var token = user['tokens'][0]['token'][0]
-                chai.request(server)
-                    .post('/tree/unban-user')
-                    .set('content-type', 'application/x-www-form-urlencoded')
-                    .set('token', token)
-                    .send(info)
-                    .end((err, res) => {
-                        res.should.have.status(400)
-                        done()
-                    })
-            }).catch((err) => {
-
-            })
-            var info = {
-                userToUnban: usr
-            }
-        })
-    })
-
-    describe('Unban from tree with bad auth', () => {
+    describe('Remove admin with bad authentication', () => {
         it('Should return 401', (done) => {
             User.findOne({ username: uname }).then((user) => {
+                // Request with payload
                 chai.request(server)
-                    .post('/tree/unban-user')
+                    .post('/tree/remove-admin')
                     .set('content-type', 'application/x-www-form-urlencoded')
+                    .set('token', 'bad auth')
                     .send(info)
                     .end((err, res) => {
                         res.should.have.status(401)
                         done()
                     })
-            }).catch((err) => {
-
             })
             var info = {
-                userToUnban: usr
+                treeID: treeID,
+                username: usr
             }
         })
     })
 
-    describe('Unban from tree without userToUnban', () => {
+    describe('Remove admin with bad tree ID', () => {
         it('Should return 400', (done) => {
             User.findOne({ username: uname }).then((user) => {
+                // Request with payload
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
-                    .post('/tree/unban-user')
-                    .set('content-type', 'application/x-www-form-urlencoded')
-                    .set('token', token)
-                    .send(info)
-                    .end((err, res) => {
-                        res.should.have.status(400)
-                        done()
-                    })
-            }).catch((err) => {
-
-            })
-            var info = {
-                treeID: treeID
-            }
-        })
-    })
-
-    describe('Unban from tree with bad tree ID', () => {
-        it('Should return 400', (done) => {
-            User.findOne({ username: uname }).then((user) => {
-                var token = user['tokens'][0]['token'][0]
-                chai.request(server)
-                    .post('/tree/unban-user')
+                    .post('/tree/remove-admin')
                     .set('content-type', 'application/x-www-form-urlencoded')
                     .set('token', token)
                     .send(info)
@@ -297,17 +251,18 @@ describe('Test Ban and Unban Users', () => {
             })
             var info = {
                 treeID: badID,
-                userToUnban: usr
+                username: usr
             }
         })
     })
 
-    describe('Unban from tree with bad username', () => {
+    describe('Remove admin who does not exist / not in tree', () => {
         it('Should return 400', (done) => {
             User.findOne({ username: uname }).then((user) => {
+                //do the get request here 
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
-                    .post('/tree/unban-user')
+                    .post('/tree/remove-admin')
                     .set('content-type', 'application/x-www-form-urlencoded')
                     .set('token', token)
                     .send(info)
@@ -320,17 +275,18 @@ describe('Test Ban and Unban Users', () => {
             })
             var info = {
                 treeID: treeID,
-                userToUnban: "Does Not Exist"
+                username: "DOES NOT EXIST"
             }
         })
     })
 
-    describe('Unban from tree with proper info', () => {
+    describe('Remove admin with correct info', () => {
         it('Should return 200', (done) => {
             User.findOne({ username: uname }).then((user) => {
+                //do the get request here 
                 var token = user['tokens'][0]['token'][0]
                 chai.request(server)
-                    .post('/tree/unban-user')
+                    .post('/tree/remove-admin')
                     .set('content-type', 'application/x-www-form-urlencoded')
                     .set('token', token)
                     .send(info)
@@ -339,11 +295,11 @@ describe('Test Ban and Unban Users', () => {
                         done()
                     })
             }).catch((err) => {
-
+                console.log(err);
             })
             var info = {
                 treeID: treeID,
-                userToUnban: usr
+                username: usr
             }
         })
     })

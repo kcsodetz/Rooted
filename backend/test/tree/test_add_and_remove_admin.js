@@ -77,15 +77,15 @@ describe('Test Adding and Removing an Admin', () => {
             var info = {
                 username: usr
             }
-             chai.request(server)
-                    .post('/tree/add-admin')
-                    .set('content-type', 'application/x-www-form-urlencoded')
-                    .set('token', token)
-                    .send(info)
-                    .end((err, res) => {
-                        res.should.have.status(400)
-                        done()
-                    })
+            chai.request(server)
+                .post('/tree/add-admin')
+                .set('content-type', 'application/x-www-form-urlencoded')
+                .set('token', token)
+                .send(info)
+                .end((err, res) => {
+                    res.should.have.status(400)
+                    done()
+                })
         })
     })
 
@@ -95,14 +95,14 @@ describe('Test Adding and Removing an Admin', () => {
                 treeID: tID,
                 username: usr
             }
-             chai.request(server)
-                    .post('/tree/add-admin')
-                    .set('content-type', 'application/x-www-form-urlencoded')
-                    .send(info)
-                    .end((err, res) => {
-                        res.should.have.status(401)
-                        done()
-                    })
+            chai.request(server)
+                .post('/tree/add-admin')
+                .set('content-type', 'application/x-www-form-urlencoded')
+                .send(info)
+                .end((err, res) => {
+                    res.should.have.status(401)
+                    done()
+                })
         })
     })
 
@@ -112,15 +112,15 @@ describe('Test Adding and Removing an Admin', () => {
                 treeID: badID,
                 username: usr
             }
-             chai.request(server)
-                    .post('/tree/add-admin')
-                    .set('content-type', 'application/x-www-form-urlencoded')
-                    .set('token', token)
-                    .send(info)
-                    .end((err, res) => {
-                        res.should.have.status(400)
-                        done()
-                    })
+            chai.request(server)
+                .post('/tree/add-admin')
+                .set('content-type', 'application/x-www-form-urlencoded')
+                .set('token', token)
+                .send(info)
+                .end((err, res) => {
+                    res.should.have.status(400)
+                    done()
+                })
         })
     })
 
@@ -130,15 +130,15 @@ describe('Test Adding and Removing an Admin', () => {
                 treeID: tID,
                 username: "DOES NOT EXIST"
             }
-             chai.request(server)
-                    .post('/tree/add-admin')
-                    .set('content-type', 'application/x-www-form-urlencoded')
-                    .set('token', token)
-                    .send(info)
-                    .end((err, res) => {
-                        res.should.have.status(400)
-                        done()
-                    })
+            chai.request(server)
+                .post('/tree/add-admin')
+                .set('content-type', 'application/x-www-form-urlencoded')
+                .set('token', token)
+                .send(info)
+                .end((err, res) => {
+                    res.should.have.status(400)
+                    done()
+                })
         })
     })
 
@@ -148,32 +148,32 @@ describe('Test Adding and Removing an Admin', () => {
                 treeID: tID,
                 username: usr
             }
-             chai.request(server)
-                    .post('/tree/add-admin')
-                    .set('content-type', 'application/x-www-form-urlencoded')
-                    .set('token', token)
-                    .send(info)
-                    .end((err, res) => {
-                        res.should.have.status(200)
-                        done()
-                    })
+            chai.request(server)
+                .post('/tree/add-admin')
+                .set('content-type', 'application/x-www-form-urlencoded')
+                .set('token', token)
+                .send(info)
+                .end((err, res) => {
+                    res.should.have.status(200)
+                    done()
+                })
         })
     })
 
-        describe('Remove admin without tree ID', () => {
+    describe('Remove admin without tree ID', () => {
         it('Should return 400', (done) => {
             var info = {
                 username: usr
             }
-             chai.request(server)
-                    .post('/tree/remove-admin')
-                    .set('content-type', 'application/x-www-form-urlencoded')
-                    .set('token', token)
-                    .send(info)
-                    .end((err, res) => {
-                        res.should.have.status(400)
-                        done()
-                    })
+            chai.request(server)
+                .post('/tree/remove-admin')
+                .set('content-type', 'application/x-www-form-urlencoded')
+                .set('token', token)
+                .send(info)
+                .end((err, res) => {
+                    res.should.have.status(400)
+                    done()
+                })
         })
     })
 
@@ -184,13 +184,13 @@ describe('Test Adding and Removing an Admin', () => {
                 username: usr
             }
             chai.request(server)
-                    .post('/tree/remove-admin')
-                    .set('content-type', 'application/x-www-form-urlencoded')
-                    .send(info)
-                    .end((err, res) => {
-                        res.should.have.status(401)
-                        done()
-                    })
+                .post('/tree/remove-admin')
+                .set('content-type', 'application/x-www-form-urlencoded')
+                .send(info)
+                .end((err, res) => {
+                    res.should.have.status(401)
+                    done()
+                })
         })
     })
 
@@ -201,14 +201,14 @@ describe('Test Adding and Removing an Admin', () => {
                 username: usr
             }
             chai.request(server)
-                    .post('/tree/remove-admin')
-                    .set('content-type', 'application/x-www-form-urlencoded')
-                    .set('token', token)
-                    .send(info)
-                    .end((err, res) => {
-                        res.should.have.status(400)
-                        done()
-                    })
+                .post('/tree/remove-admin')
+                .set('content-type', 'application/x-www-form-urlencoded')
+                .set('token', token)
+                .send(info)
+                .end((err, res) => {
+                    res.should.have.status(400)
+                    done()
+                })
         })
     })
 
@@ -219,14 +219,14 @@ describe('Test Adding and Removing an Admin', () => {
                 username: "DOES NOT EXIST"
             }
             chai.request(server)
-                    .post('/tree/remove-admin')
-                    .set('content-type', 'application/x-www-form-urlencoded')
-                    .set('token', token)
-                    .send(info)
-                    .end((err, res) => {
-                        res.should.have.status(400)
-                        done()
-                    })
+                .post('/tree/remove-admin')
+                .set('content-type', 'application/x-www-form-urlencoded')
+                .set('token', token)
+                .send(info)
+                .end((err, res) => {
+                    res.should.have.status(400)
+                    done()
+                })
         })
     })
 
@@ -237,14 +237,14 @@ describe('Test Adding and Removing an Admin', () => {
                 username: usr
             }
             chai.request(server)
-                    .post('/tree/remove-admin')
-                    .set('content-type', 'application/x-www-form-urlencoded')
-                    .set('token', token)
-                    .send(info)
-                    .end((err, res) => {
-                        res.should.have.status(200)
-                        done()
-                    })
+                .post('/tree/remove-admin')
+                .set('content-type', 'application/x-www-form-urlencoded')
+                .set('token', token)
+                .send(info)
+                .end((err, res) => {
+                    res.should.have.status(200)
+                    done()
+                })
         })
     })
 

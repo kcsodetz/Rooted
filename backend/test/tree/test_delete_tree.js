@@ -8,11 +8,14 @@ var should = require('chai').should();
 chai.use(chaiHttp);
 
 
-var uname = process.env.TEST_USERNAME
-var pword = process.env.TEST_PASSWORD
-var mail = process.env.TEST_EMAIL
+var uname = process.env.TEST_USERNAME;
+var pword = process.env.TEST_PASSWORD;
+var mail = process.env.TEST_EMAIL;
 
-var treeID;
+var tID;
+var token;
+
+var testTreeName = 'UNIT_TEST_TREE';
 
 
 
@@ -34,16 +37,16 @@ describe('Test Delete Tree', () => {
                     .send(info)
                     .then((res) => {
                         var treeInfo = {
-                            treeName: "UNIT_TEST_TREE"
+                            treeName: testTreeName
                         }
-                        var token = res.header.token
+                        token = res.header.token
                         chai.request(server)
                             .post('/tree/add')
                             .set('content-type', 'application/x-www-form-urlencoded')
                             .set('token', token)
                             .send(treeInfo)
                             .then((res) => {
-                                treeID = res.body._id
+                                tID = res.body._id
                                 done()
                             })
                     })
@@ -51,73 +54,57 @@ describe('Test Delete Tree', () => {
 
         after((done) => {
             User.deleteOne({ username: uname }).then(() => {
-                Tree.deleteOne({ treeName: 'UNIT_TEST_TREE' }).then(() => {
+                Tree.deleteOne({ treeName: testTreeName }).then(() => {
                     done()
                 })
             })
         })
-
     })
 
     describe('Delete tree without tree ID', () => {
         it('Should return 400', (done) => {
-            User.findOne({ username: uname }).then((user) => {
-                //do the get request here 
-                var token = user['tokens'][0]['token'][0]
-                chai.request(server)
-                    .post('/tree/delete')
-                    .set('content-type', 'application/x-www-form-urlencoded')
-                    .set('token', token)
-                    .send()
-                    .end((err, res) => {
-                        res.should.have.status(400)
-                        done()
-                    })
-            }).catch((err) => {
-
-            })
+            chai.request(server)
+                .post('/tree/delete')
+                .set('content-type', 'application/x-www-form-urlencoded')
+                .set('token', token)
+                .send()
+                .end((err, res) => {
+                    res.should.have.status(400)
+                    done()
+                })
         })
     })
 
     describe('Delete tree with bad authentication', () => {
         it('Should return 401', (done) => {
-            User.findOne({ username: uname }).then((user) => {
-                //do the get request here 
-                chai.request(server)
-                    .post('/tree/delete')
-                    .set('content-type', 'application/x-www-form-urlencoded')
-                    .set('token', 'bad auth')
-                    .send(info)
-                    .end((err, res) => {
-                        res.should.have.status(401)
-                        done()
-                    })
-            })
             var info = {
-                treeID: treeID
+                treeID: tID
             }
+            chai.request(server)
+                .post('/tree/delete')
+                .set('content-type', 'application/x-www-form-urlencoded')
+                .send(info)
+                .end((err, res) => {
+                    res.should.have.status(401)
+                    done()
+                })
         })
     })
 
     describe('Delete tree with correct info', () => {
         it('Should return 200', (done) => {
-            User.findOne({ username: uname }).then((user) => {
-                //do the get request here 
-                var token = user['tokens'][0]['token'][0]
-                chai.request(server)
-                    .post('/tree/delete')
-                    .set('content-type', 'application/x-www-form-urlencoded')
-                    .set('token', token)
-                    .send(info)
-                    .end((err, res) => {
-                        res.should.have.status(200)
-                        done()
-                    })
-            })
             var info = {
-                treeID: treeID
+                treeID: tID
             }
+            chai.request(server)
+                .post('/tree/delete')
+                .set('content-type', 'application/x-www-form-urlencoded')
+                .set('token', token)
+                .send(info)
+                .end((err, res) => {
+                    res.should.have.status(200)
+                    done()
+                })
         })
     })
-
 })

@@ -20,6 +20,7 @@
     "fs": "0.0.1-security",
     "jsonwebtoken": "^8.4.0",
     "lodash": "^4.17.15",
+    "mocha": "^6.2.2",
     "mongoose": "^5.4.6",
     "multer": "^1.4.1",
     "multer-storage-cloudinary": "^2.2.1",

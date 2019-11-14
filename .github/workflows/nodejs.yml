@@ -23,7 +23,7 @@ jobs:
         npm test --prefix backend
       env:
         MONGODB_HOST: ${{ env.MONGODB_HOST }}
-        PORT: ${{ env.PORT }}
+        PORT: 5000
         JWT_SECRET: ${{ env.JWT_SECRET }}
         EMAIL_ADDRESS: ${{ env.EMAIL_ADDRESS }}
         EMAIL_PASS: ${{ env.EMAIL_PASS }}

@@ -24,7 +24,7 @@ jobs:
       env:
         MONGODB_HOST: ${{ env.MONGODB_HOST }}
         PORT: ${{ env.PORT }}
-        JWT_SECRET: ${{ JWT_SECRET }}
+        JWT_SECRET: ${{ env.JWT_SECRET }}
         EMAIL_ADDRESS: ${{ env.EMAIL_ADDRESS }}
         EMAIL_PASS: ${{ env.EMAIL_PASS }}
         ADMIN_ID: ${{ env.ADMIN_ID }}

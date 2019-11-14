@@ -22,4 +22,5 @@ jobs:
         npm ci --prefix backend
         npm test --prefix backend
       env:
+        MONGODB_HOST: ${{ env.MONGODB_HOST }}
         CI: true

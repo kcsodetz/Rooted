@@ -9,6 +9,8 @@ var validate_email = require('../middleware/validate_email');
 var upload = require('../middleware/photo_upload');
 var validate = require('../middleware/validate_url');
 
+console.log(process.env.MONGODB_HOST);
+
 mongoose.connect(process.env.MONGODB_HOST, { useNewUrlParser: true });
 mongoose.set('useCreateIndex', true);
 

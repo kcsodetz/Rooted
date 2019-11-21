@@ -73,6 +73,7 @@ router.post("/add", authenticate, function (req, res) {
 
 });
 
+
 router.post('/add-photo', authenticate, upload.single("image"), (req, res) => {
     if (!req.file.url || !req.file.public_id || !req.headers.treeid) {
         res.status(400).send({ message: "Bad request" });
@@ -120,6 +121,9 @@ router.get('/all-photos', authenticate, (req, res) => {
     })
 })
 
+/**
+ * DEPRICATED
+ */
 router.post('/add-user', authenticate, (req, res) => {
 
     if (!req.body || !req.body.username || !req.body.treeID) {
@@ -192,7 +196,6 @@ router.post('/add-admin', authenticate, (req, res) => {
         res.status(400).send("Bad request")
         return
     }
-
 
     Tree.findById(req.body.treeID, (err, tre) => {
 

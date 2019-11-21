@@ -1136,5 +1136,48 @@ router.post("/remove-member", authenticate, (req, res) => {
     })
 })
 
+/**
+ * Add notifications to the tree
+ */
+router.post("/add-annoucement", authenticate, (req, res) => {
+    if (!req.body || !req.body.username || !req.body.annoucement || !req.body.treeID) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+    Tree.findById({ _id: req.body.treeID }).then((tree) => {
+        if(!tree) {
+            res.status(400).send({ message: "Tree does not exist" })
+            return
+        }
+        if (!tree.members.includes(req.body.username)) {
+            res.status(400).send({ message: "User does not exist in the tree" })
+            return
+        }
+        if (!tree.admins.includes(req.body.username)) {
+            res.status(400).send({ message: "User must be an admin to an annoucement to the tree" })
+            return
+        }
+
+        Tree.findByIdAndUpdate((req.body.treeID),  {
+            $push: {
+                annoucements: {
+                    user: req.body.username,
+                    annoucement: req.body.annoucement,
+                    // datePosted: Date.now,
+                }
+            }
+        }).then(() => {
+            res.status(200).send({ message: "The annoucement has been added." })
+
+        }).catch((err) => {
+            console.log(err);
+            res.status(400).send({ message: "Can't find tree 1" })
+        })
+    }).catch((err) => {
+        res.status(400).send({ message: "Can't find tree 2" })
+    })
+})
+
+
 
 module.exports = router;

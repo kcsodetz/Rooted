@@ -1138,7 +1138,7 @@ router.post("/remove-member", authenticate, (req, res) => {
 })
 
 /**
- * Add notifications to the tree
+ * Add annoucements to the tree
  */
 router.post("/add-annoucement", authenticate, (req, res) => {
     if (!req.body || !req.body.username || !req.body.annoucement || !req.body.treeID) {
@@ -1155,7 +1155,7 @@ router.post("/add-annoucement", authenticate, (req, res) => {
             return
         }
         if (!tree.admins.includes(req.body.username)) {
-            res.status(400).send({ message: "User must be an admin to an annoucement to the tree" })
+            res.status(400).send({ message: "User must be an admin to add an annoucement to the tree" })
             return
         }
 
@@ -1178,6 +1178,40 @@ router.post("/add-annoucement", authenticate, (req, res) => {
         res.status(400).send({ message: "Can't find tree 2" })
     })
 })
+
+/**
+ * Add annoucements to the tree
+ */
+router.post("/remove-annoucement", authenticate, (req, res) => {
+    if (!req.body || !req.body.annoucementID || !req.body.treeID) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+    Tree.findById({ _id: req.body.treeID }).then((tree) => {
+        if(!tree) {
+            res.status(400).send({ message: "Tree does not exist" })
+            return
+        }
+
+        tree.annoucements.forEach(element => {
+            if (element._id == req.body.annoucementID) {
+                var n = tree.annoucements.indexOf(element)
+                tree.annoucements.splice(n, 1)
+                tree.save()
+                res.status(200).send({ message: "Annoucement succesfully removed." });
+                return;
+            }
+        });
+
+        res.status(400).send({ message: "Could not find annoucement." });
+        return;
+
+    }).catch((err) => {
+        res.status(400).send({ message: "Something went wrongs." });
+        return;
+    })
+})
+
 
 
 

@@ -1080,5 +1080,61 @@ router.get("/search-tree", authenticate, (req, res) => {
     })
 })
 
+router.post("/remove-member", authenticate, (req, res) => {
+    if(!req.body || !req.body.username || !req.body.treeID){
+        res.status(400).send("Bad request")
+        return
+    }
+
+    Tree.findById(req.body.treeID, (err, tre) => {
+        if (err) {
+            res.status(400).send({ message: "Tree does not exist" })
+            return
+        }
+
+        if (!tre.admins.includes(req.user.username)){
+            res.status(401).send({ message: "Not authorized to make changes" })
+            return
+        }
+
+        if (!tre.members.includes(req.body.username)) {
+            res.status(400).send({ message: req.body.username + " is not in the tree." });
+            return;
+        }
+
+        User.findOne({ username: req.body.username }).then((user) => {
+            if (!user) {
+                res.status(400).send({ message: "Username does not exist." })
+                return
+            }
+
+            Tree.findOneAndUpdate({_id: req.body.treeID}, {
+                $pull: {
+                    members: req.body.username,
+                }
+            }).then(() => {
+                User.findEmailByUsername(req.body.username).then((email) => {
+                    var emailSubject = "Rooted: You\'ve been removed from" + tre.treeName + "\"."
+                    var addedToTreeBody = "Dear " + req.body.username +
+                        ",\n\n" + "You have been removed from " + tre.treeName + "!\n\n" +
+                        "Sincerely, \n\nThe Rooted Team";
+
+                    mailer(email, emailSubject, addedToTreeBody);
+                    res.status(200).send({ message: req.body.username + " has been removed from " + tre.treeName + "." });
+                });
+                return;
+            }).catch((err) => {
+                res.status(400).send(err);
+                return;
+            })
+        }).catch((err) => {
+            res.status(400).send(err);
+            return;
+        })
+
+
+    })
+})
+
 
 module.exports = router;

@@ -52,24 +52,21 @@ router.post("/add", authenticate, function (req, res) {
         founder: req.user.username,
         treeName: req.body.treeName,
         description: desc,
-        imageUrl: url
+        imageUrl: url,
+        members: [req.user.username],
+        admins: [req.user.username]
     });
 
-    newTree.save().then(() => {
-        Tree.findOneAndUpdate({ treeName: req.body.treeName }, {
-            $push: {
-                members: req.user.username,
-                admins: req.user.username
-            }
-        }).then((tree) => {
+    newTree.save(function (err, tree) {
+        if (err) {
+            res.status(400).send({ message: "Error: Could not create tree" });
+            return;
+        }
+        else {
             res.status(200).send(tree);
             return;
-        }).catch((err) => {
-            console.log(err);
-            res.status(400).send({ message: "Error: Could not create tree" });
-            return
-        })
-    })
+        }
+    });
 
 });
 

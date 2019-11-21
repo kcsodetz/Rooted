@@ -28,7 +28,11 @@ let treeSchema = new mongoose.Schema({
     memberRequestedUsers: {type: [String]},
     pendingUsers: {type: [String]},
     aboutBio: {type: String, default: "No bio created yet."},
-
+    annoucements: [{
+        user: String,
+        annoucement: String,
+        datePosted: { type: Date, default: Date.now },
+    }],
 })
 
 /* Creating the user model from the schema and giving it to Mongoose */

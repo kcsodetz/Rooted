@@ -62,6 +62,7 @@ router.post("/add", authenticate, function (req, res) {
 
     newTree.save(function (err, tree) {
         if (err) {
+            console.log(err);
             res.status(400).send({ message: "Error: Could not create tree" });
             return;
         }

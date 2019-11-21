@@ -32,6 +32,9 @@ router.get("/", function (req, res) {
     res.send('This router is for all tree related tasks');
 });
 
+/**
+ * Add / create a tree
+ */
 router.post("/add", authenticate, function (req, res) {
 
     if (!req.body || !req.body.treeName) {
@@ -71,6 +74,9 @@ router.post("/add", authenticate, function (req, res) {
 });
 
 
+/**
+ * Add a photo to a tree
+ */
 router.post('/add-photo', authenticate, upload.single("image"), (req, res) => {
     if (!req.file.url || !req.file.public_id || !req.headers.treeid) {
         res.status(400).send({ message: "Bad request" });
@@ -99,6 +105,9 @@ router.post('/add-photo', authenticate, upload.single("image"), (req, res) => {
     })
 })
 
+/**
+ * Get all photos
+ */
 router.get('/all-photos', authenticate, (req, res) => {
     if (!req.headers.treeid) {
         res.status(400).send({ message: "Bad request" });
@@ -120,6 +129,10 @@ router.get('/all-photos', authenticate, (req, res) => {
 
 /**
  * DEPRICATED
+
+ * Add a user to a tree 
+ * 
+ * NOTE: DEPRECATED, DO NOT USE
  */
 router.post('/add-user', authenticate, (req, res) => {
 
@@ -136,14 +149,14 @@ router.post('/add-user', authenticate, (req, res) => {
         }
 
         if (tre.members.includes(req.body.username)) {
-            res.status(400).send({ message: "User is already in tree" })
+            res.status(400).send({ message: req.body.username + " is already in tree" })
             return
         }
 
         User.findOne({ username: req.body.username }).then((user) => {
 
             if (!user) {
-                res.status(400).send({ message: "Username does not exist" });
+                res.status(400).send({ message: req.body.username + " does not exist" });
                 return;
             }
 
@@ -186,7 +199,9 @@ router.post('/add-user', authenticate, (req, res) => {
     })
 })
 
-
+/**
+ * Add an admin to a tree
+ */
 router.post('/add-admin', authenticate, (req, res) => {
 
     if (!req.body || !req.body.username || !req.body.treeID) {
@@ -206,8 +221,13 @@ router.post('/add-admin', authenticate, (req, res) => {
             return;
         }
 
+        if (!tre.members.includes(req.body.username)) {
+            res.status(400).send({ message: req.body.username + " is not in the tree. The user must be a member of the tree in order to be promoted to admin." });
+            return;
+        }
+
         if (tre.admins.includes(req.body.username)) {
-            res.status(400).send({ message: "User is already an admin" });
+            res.status(400).send({ message: req.body.username + " is already an admin" });
             return;
         }
 
@@ -223,28 +243,17 @@ router.post('/add-admin', authenticate, (req, res) => {
                     admins: req.body.username,
                 }
             }).then(() => {
-                Tree.findOneAndUpdate({ _id: req.body.treeID }, {
-                    $inc: {
-                        numberOfPeople: 1
-                    }
-                }).then(() => {
-
                     User.findEmailByUsername(req.body.username).then((email) => {
-                        var emailSubject = "Rooted: You\'ve Been Added to \"" + tre.treeName + "\"!"
+                        var emailSubject = "Rooted: You\'ve Been Promoted to Admin in \"" + tre.treeName + "\"!"
                         var addedToTreeBody = "Dear " + req.body.username +
-                            ",\n\nOne of your friends has added you to " + tre.founder + "\'s tree \"" + tre.treeName + "\". View your profile for more details.\n\n" +
+                            ",\n\nCongrats! " + req.user.username + "has promoted you to an admin of " + tre.treeName + "! Visit the tree page for more information.\n\n" +
                             "Sincerely, \n\nThe Rooted Team";
 
                         mailer(email, emailSubject, addedToTreeBody);
 
-                        res.status(200).send({ message: req.body.username + " added to Tree" })
-                    })
-
-                    return
-                }).catch((err) => {
-                    res.status(400).send(err);
+                        res.status(200).send({ message: req.body.username + " has been promoted to admin" });
+                    });
                     return;
-                })
             }).catch((err) => {
                 res.status(400).send(err);
                 return;
@@ -253,7 +262,72 @@ router.post('/add-admin', authenticate, (req, res) => {
             res.send(err);
             return;
         })
+    })
+})
 
+/**
+ * Remove an admin
+ */
+router.post('/remove-admin', authenticate, (req, res) => {
+
+    if (!req.body || !req.body.username || !req.body.treeID) {
+        res.status(400).send("Bad request")
+        return
+    }
+
+    Tree.findById(req.body.treeID, (err, tre) => {
+
+        if (err) {
+            res.status(400).send({ message: "Tree does not exist." })
+            return;
+        }
+
+        if (!tre.admins.includes(req.user.username)) {
+            res.status(401).send({ message: "Not authorized to make changes." });
+            return;
+        }
+
+        if (!tre.members.includes(req.body.username)) {
+            res.status(400).send({ message: req.body.username + " is not in the tree." });
+            return;
+        }
+
+        if (!tre.admins.includes(req.body.username)) {
+            res.status(400).send({ message: req.body.username + " is not an admin." });
+            return;
+        }
+
+        User.findOne({ username: req.body.username }).then((user) => {
+
+            if (!user) {
+                res.status(400).send({ message: "Username does not exist." });
+                return;
+            }
+
+            Tree.findOneAndUpdate({ _id: req.body.treeID }, {
+                $pull: {
+                    admins: req.body.username,
+                }
+            }).then(() => {
+                    User.findEmailByUsername(req.body.username).then((email) => {
+                        var emailSubject = "Rooted: You\'ve Been Demoted to Admin in \"" + tre.treeName + "\"."
+                        var addedToTreeBody = "Dear " + req.body.username +
+                            ",\n\n" + req.user.username + "has removed your admin status from " + tre.treeName + "! Please contact your admin team for more info.\n\n" +
+                            "Sincerely, \n\nThe Rooted Team";
+
+                        mailer(email, emailSubject, addedToTreeBody);
+
+                        res.status(200).send({ message: req.body.username + " has been demoted from admins." });
+                    });
+                    return;
+            }).catch((err) => {
+                res.status(400).send(err);
+                return;
+            })
+        }).catch((err) => {
+            res.send(err);
+            return;
+        })
     })
 })
 
@@ -315,11 +389,9 @@ router.post("/edit-name", authenticate, (req, res) => {
     })
 })
 
-
 /*
 *   Edit tree about bio
 */
-
 router.post("/edit-about-bio", authenticate, (req, res) => {
     if (!req.body.aboutBio || !req.body.treeID) {
         res.status(400).send({ message: "Tree bio is incomplete" })
@@ -346,11 +418,9 @@ router.post("/edit-about-bio", authenticate, (req, res) => {
 
 })
 
-
 /*
 *   Send messages
 */
-
 router.post('/add-message', authenticate, (req, res) => {
     if (!req.body || !req.body.message || !req.body.treeID) {
         res.status(400).send({ message: "Bad request" });
@@ -379,7 +449,6 @@ router.post('/add-message', authenticate, (req, res) => {
     })
 })
 
-
 /*
 *   Edit existing tree description
 */
@@ -402,6 +471,9 @@ router.post("/edit-tree-description", authenticate, (req, res) => {
         })
 })
 
+/**
+ * Edit group photo
+ */
 router.post('/edit-photo', authenticate, upload.single("image"), function (req, res) {
 
     if (!req.body || !req.body.treeID || !req.body.imageUrl) {
@@ -437,6 +509,9 @@ router.post('/edit-photo', authenticate, upload.single("image"), function (req, 
     })
 });
 
+/**
+ * Leave a group
+ */
 router.post('/leave', authenticate, (req, res) => {
     if (!req.body.treeID) {
         res.status(400).json({ message: "Tree description change is incomplete" });
@@ -482,6 +557,9 @@ router.get('/all-members', authenticate, (req, res) => {
     })
 })
 
+/**
+ * Get all chat messages
+ */
 router.get('/chat', authenticate, (req, res) => {
     if (!req.headers.treeid) {
         // console.log(req.headers)
@@ -677,8 +755,6 @@ router.post('/unban-user', authenticate, (req, res) => {
 
 })
 
-
-
 /*
 *   Display banned users
 */
@@ -697,7 +773,6 @@ router.get("/display-banned-users", authenticate, (req, res) => {
 
 
 })
-
 
 /*
 *   Get report a user
@@ -1002,6 +1077,62 @@ router.get("/search-tree", authenticate, (req, res) => {
     }).catch((err) => {
         res.status(400).send(err);
         return;
+    })
+})
+
+router.post("/remove-member", authenticate, (req, res) => {
+    if(!req.body || !req.body.username || !req.body.treeID){
+        res.status(400).send("Bad request")
+        return
+    }
+
+    Tree.findById(req.body.treeID, (err, tre) => {
+        if (err) {
+            res.status(400).send({ message: "Tree does not exist" })
+            return
+        }
+
+        if (!tre.admins.includes(req.user.username)){
+            res.status(401).send({ message: "Not authorized to make changes" })
+            return
+        }
+
+        if (!tre.members.includes(req.body.username)) {
+            res.status(400).send({ message: req.body.username + " is not in the tree." });
+            return;
+        }
+
+        User.findOne({ username: req.body.username }).then((user) => {
+            if (!user) {
+                res.status(400).send({ message: "Username does not exist." })
+                return
+            }
+
+            Tree.findOneAndUpdate({_id: req.body.treeID}, {
+                $pull: {
+                    members: req.body.username,
+                }
+            }).then(() => {
+                User.findEmailByUsername(req.body.username).then((email) => {
+                    var emailSubject = "Rooted: You\'ve been removed from" + tre.treeName + "\"."
+                    var addedToTreeBody = "Dear " + req.body.username +
+                        ",\n\n" + "You have been removed from " + tre.treeName + "!\n\n" +
+                        "Sincerely, \n\nThe Rooted Team";
+
+                    mailer(email, emailSubject, addedToTreeBody);
+                    res.status(200).send({ message: req.body.username + " has been removed from " + tre.treeName + "." });
+                });
+                return;
+            }).catch((err) => {
+                res.status(400).send(err);
+                return;
+            })
+        }).catch((err) => {
+            res.status(400).send(err);
+            return;
+        })
+
+
     })
 })
 

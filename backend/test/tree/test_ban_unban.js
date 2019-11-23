@@ -21,8 +21,8 @@ var treeID;
 
 var badID = mongoose.Types.ObjectId();
 
-describe('Test Ban and Unban Users', () => {
-
+describe('Test Ban and Unban Users', function() {
+    this.timeout(5000)
     before((done) => {
         var info = {
             username: uname,

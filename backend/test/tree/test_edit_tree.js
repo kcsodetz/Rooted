@@ -17,8 +17,8 @@ var treeID;
 var badID = mongoose.Types.ObjectId();
 
 
-describe('Test Edit Tree', () => {
-
+describe('Test Edit Tree', function() {
+    this.timeout(5000)
     before((done) => {
         var info = {
             username: uname,

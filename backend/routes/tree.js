@@ -100,10 +100,49 @@ router.post('/add-photo', authenticate, upload.single("image"), (req, res) => {
             res.status(200).send({ message: "Photo successfully uploaded" })
             return
         }).catch((err) => {
-            res.send(err);
+            res.status(400).send(err);
         })
     }).catch((err) => {
-        res.send(err);
+        res.status(400).send(err);
+    })
+})
+
+
+/**
+ * Remove photo from tree
+ */
+router.post('/remove-photo', authenticate, (req, res) => {
+    if (!req.headers.treeid || !req.body.imageid) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+    Tree.findOne({ _id: req.headers.treeid }).then((tre) => {
+        if (!tre) {
+            res.status(400).send({ message: "Tree does not exist" });
+            return;
+        }
+
+        var found = false;
+        tre.treePhotoLibraryImages.forEach(element => {
+            if (element._id == req.body.imageid) {
+                found = true;
+                var n = tre.treePhotoLibraryImages.indexOf(element)
+                tre.treePhotoLibraryImages.splice(n, 1)
+                tre.save()
+            }
+        });
+
+        if (found) {
+            res.status(200).send({ message: "Image succesfully removed." });
+            return;
+        }
+        else {
+            res.status(400).send({ message: "Photo not found" });
+            return;
+        }
+
+    }).catch((err) => {
+        res.status(400).send(err);
     })
 })
 
@@ -122,7 +161,7 @@ router.get('/all-photos', authenticate, (req, res) => {
             res.status(400).send({ message: "Could not find tree" });
             return;
         }
-        res.status(200).send(t.treePhotoLibraryImages) //returns all circle properties
+        res.status(200).send(t.treePhotoLibraryImages) //returns all tree properties
         return
     }).catch((err) => {
         res.status(400).send(err);
@@ -248,17 +287,17 @@ router.post('/add-admin', authenticate, (req, res) => {
                     admins: req.body.username,
                 }
             }).then(() => {
-                    User.findEmailByUsername(req.body.username).then((email) => {
-                        var emailSubject = "Rooted: You\'ve Been Promoted to Admin in \"" + tre.treeName + "\"!"
-                        var addedToTreeBody = "Dear " + req.body.username +
-                            ",\n\nCongrats! " + req.user.username + "has promoted you to an admin of " + tre.treeName + "! Visit the tree page for more information.\n\n" +
-                            "Sincerely, \n\nThe Rooted Team";
+                User.findEmailByUsername(req.body.username).then((email) => {
+                    var emailSubject = "Rooted: You\'ve Been Promoted to Admin in \"" + tre.treeName + "\"!"
+                    var addedToTreeBody = "Dear " + req.body.username +
+                        ",\n\nCongrats! " + req.user.username + "has promoted you to an admin of " + tre.treeName + "! Visit the tree page for more information.\n\n" +
+                        "Sincerely, \n\nThe Rooted Team";
 
-                        mailer(email, emailSubject, addedToTreeBody);
+                    mailer(email, emailSubject, addedToTreeBody);
 
-                        res.status(200).send({ message: req.body.username + " has been promoted to admin" });
-                    });
-                    return;
+                    res.status(200).send({ message: req.body.username + " has been promoted to admin" });
+                });
+                return;
             }).catch((err) => {
                 res.status(400).send(err);
                 return;
@@ -315,17 +354,17 @@ router.post('/remove-admin', authenticate, (req, res) => {
                     admins: req.body.username,
                 }
             }).then(() => {
-                    User.findEmailByUsername(req.body.username).then((email) => {
-                        var emailSubject = "Rooted: You\'ve Been Demoted to Admin in \"" + tre.treeName + "\"."
-                        var addedToTreeBody = "Dear " + req.body.username +
-                            ",\n\n" + req.user.username + "has removed your admin status from " + tre.treeName + "! Please contact your admin team for more info.\n\n" +
-                            "Sincerely, \n\nThe Rooted Team";
+                User.findEmailByUsername(req.body.username).then((email) => {
+                    var emailSubject = "Rooted: You\'ve Been Demoted to Admin in \"" + tre.treeName + "\"."
+                    var addedToTreeBody = "Dear " + req.body.username +
+                        ",\n\n" + req.user.username + "has removed your admin status from " + tre.treeName + "! Please contact your admin team for more info.\n\n" +
+                        "Sincerely, \n\nThe Rooted Team";
 
-                        mailer(email, emailSubject, addedToTreeBody);
+                    mailer(email, emailSubject, addedToTreeBody);
 
-                        res.status(200).send({ message: req.body.username + " has been demoted from admins." });
-                    });
-                    return;
+                    res.status(200).send({ message: req.body.username + " has been demoted from admins." });
+                });
+                return;
             }).catch((err) => {
                 res.status(400).send(err);
                 return;
@@ -1107,7 +1146,7 @@ router.get("/search-tree", authenticate, (req, res) => {
  * Remove a member from a tree
  */
 router.post("/remove-member", authenticate, (req, res) => {
-    if(!req.body || !req.body.username || !req.body.treeID){
+    if (!req.body || !req.body.username || !req.body.treeID) {
         res.status(400).send("Bad request")
         return
     }
@@ -1118,7 +1157,7 @@ router.post("/remove-member", authenticate, (req, res) => {
             return
         }
 
-        if (!tre.admins.includes(req.user.username)){
+        if (!tre.admins.includes(req.user.username)) {
             res.status(401).send({ message: "Not authorized to make changes" })
             return
         }
@@ -1134,7 +1173,7 @@ router.post("/remove-member", authenticate, (req, res) => {
                 return
             }
 
-            Tree.findOneAndUpdate({_id: req.body.treeID}, {
+            Tree.findOneAndUpdate({ _id: req.body.treeID }, {
                 $pull: {
                     members: req.body.username,
                 }
@@ -1172,7 +1211,7 @@ router.post("/add-annoucement", authenticate, (req, res) => {
         return;
     }
     Tree.findById({ _id: req.body.treeID }).then((tree) => {
-        if(!tree) {
+        if (!tree) {
             res.status(400).send({ message: "Tree does not exist" })
             return
         }
@@ -1185,7 +1224,7 @@ router.post("/add-annoucement", authenticate, (req, res) => {
             return
         }
 
-        Tree.findByIdAndUpdate((req.body.treeID),  {
+        Tree.findByIdAndUpdate((req.body.treeID), {
             $push: {
                 annoucements: {
                     user: req.body.username,

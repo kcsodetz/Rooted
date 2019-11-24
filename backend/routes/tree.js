@@ -1164,7 +1164,7 @@ router.post("/remove-member", authenticate, (req, res) => {
 
 
 /**
- * Add notifications to the tree
+ * Add annoucements to the tree
  */
 router.post("/add-annoucement", authenticate, (req, res) => {
     if (!req.body || !req.body.username || !req.body.annoucement || !req.body.treeID) {
@@ -1181,7 +1181,7 @@ router.post("/add-annoucement", authenticate, (req, res) => {
             return
         }
         if (!tree.admins.includes(req.body.username)) {
-            res.status(400).send({ message: "User must be an admin to an annoucement to the tree" })
+            res.status(400).send({ message: "User must be an admin to add an annoucement to the tree" })
             return
         }
 
@@ -1194,16 +1194,61 @@ router.post("/add-annoucement", authenticate, (req, res) => {
                 }
             }
         }).then(() => {
-            res.status(200).send({ message: "The annoucement has been added." })
+            res.status(200).send({ message: "The annoucement has been added." });
+            return;
 
         }).catch((err) => {
             console.log(err);
-            res.status(400).send({ message: "Can't find tree 1" })
+            res.status(400).send({ message: "Can't find tree 1" });
+            return;
         })
     }).catch((err) => {
-        res.status(400).send({ message: "Can't find tree 2" })
+        res.status(400).send({ message: "Can't find tree 2" });
+        return;
     })
 })
 
+/**
+ * Add annoucements to the tree
+ */
+router.post("/remove-annoucement", authenticate, (req, res) => {
+    if (!req.body || !req.body.annoucementID || !req.body.treeID) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+    Tree.findById({ _id: req.body.treeID }).then((tree) => {
+        if(!tree) {
+            res.status(400).send({ message: "Tree does not exist" });
+            return;
+        }
+
+        var found = false;
+
+        tree.annoucements.forEach(element => {
+            if (element._id == req.body.annoucementID) {
+                found = true;
+                var n = tree.annoucements.indexOf(element);
+                tree.annoucements.splice(n, 1);         
+                tree.save();
+                // res.status(200).send({ message: "Annoucement succesfully removed." });
+                // return;
+            }
+        });
+
+        if (found) {
+            res.status(200).send({ message: "Annoucement succesfully removed." });
+            return;
+        }
+        else {
+            res.status(400).send({ message: "Annoucement could not be found." });
+            return;
+        }
+
+
+    }).catch((err) => {
+        res.status(400).send({ message: "Something went wrong." });
+        return;
+    })
+})
 
 module.exports = router;

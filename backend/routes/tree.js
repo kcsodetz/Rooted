@@ -1251,4 +1251,31 @@ router.post("/remove-annoucement", authenticate, (req, res) => {
     })
 })
 
+/**
+ * Get all annoucements of a tree
+ */
+router.get("/get-annoucements", authenticate, (req, res) => {
+    if (!req.body || !req.body.treeID) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+
+    Tree.findById({ _id: req.body.treeID }).then((tree) => {
+        if(!tree) {
+            res.status(400).send({ message: "Tree does not exist" });
+            return;
+        }
+
+        res.status(200).send(tree.annoucements);
+        return;
+
+    }).catch((err) => {
+        res.status(400).send({ message: "There's an issue." });
+        return;
+    })
+
+
+
+})
+
 module.exports = router;

@@ -11,8 +11,8 @@ var uname = process.env.TEST_USERNAME
 var pword = process.env.TEST_PASSWORD
 var mail = process.env.TEST_EMAIL
 
-describe('Test Forgot Password', () => {
-
+describe('Test Forgot Password', function() {
+    this.timeout(5000)
     before((done) => {
         var info = {
             username: uname,

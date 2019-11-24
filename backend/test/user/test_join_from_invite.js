@@ -18,7 +18,8 @@ var treeID;
 var badID = mongoose.Types.ObjectId();
 var usr = "testing_ken"
 
-describe('Test Join Tree from Invite', () => {
+describe('Test Join Tree from Invite', function() {
+    this.timeout(5000)
     // Preprocessing (Register, login, and create tree)
     before((done) => {
         var info = {

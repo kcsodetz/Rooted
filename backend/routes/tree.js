@@ -12,7 +12,7 @@ var validate = require('../middleware/validate_url');
 var mailer = require('../middleware/mailer');
 
 
-mongoose.connect(process.env.MONGODB_HOST, { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_HOST, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.set('useCreateIndex', true);
 
 mongoose.Promise = global.Promise;
@@ -31,6 +31,7 @@ var Admin = require('../model/admin');
 router.get("/", function (req, res) {
     res.send('This router is for all tree related tasks');
 });
+
 
 /**
  * Add / create a tree
@@ -106,6 +107,7 @@ router.post('/add-photo', authenticate, upload.single("image"), (req, res) => {
     })
 })
 
+
 /**
  * Get all photos
  */
@@ -127,6 +129,7 @@ router.get('/all-photos', authenticate, (req, res) => {
         return;
     })
 })
+
 
 /**
  * DEPRICATED
@@ -200,6 +203,7 @@ router.post('/add-user', authenticate, (req, res) => {
     })
 })
 
+
 /**
  * Add an admin to a tree
  */
@@ -265,6 +269,7 @@ router.post('/add-admin', authenticate, (req, res) => {
         })
     })
 })
+
 
 /**
  * Remove an admin
@@ -332,8 +337,9 @@ router.post('/remove-admin', authenticate, (req, res) => {
     })
 })
 
-/*
-*   Delete chosen tree
+
+/**
+ * Delete chosen tree
 */
 router.post('/delete', authenticate, (req, res) => {
 
@@ -362,8 +368,9 @@ router.post('/delete', authenticate, (req, res) => {
     })
 })
 
-/*
-*   Edit existing tree name
+
+/**
+* Edit existing tree name
 */
 router.post("/edit-name", authenticate, (req, res) => {
     if (!req.body.treeName || !req.body.treeID) {
@@ -390,9 +397,10 @@ router.post("/edit-name", authenticate, (req, res) => {
     })
 })
 
-/*
-*   Edit tree about bio
-*/
+
+/**
+ * Edit about bio
+ */
 router.post("/edit-about-bio", authenticate, (req, res) => {
     if (!req.body.aboutBio || !req.body.treeID) {
         res.status(400).send({ message: "Tree bio is incomplete" })
@@ -419,9 +427,9 @@ router.post("/edit-about-bio", authenticate, (req, res) => {
 
 })
 
-/*
-*   Send messages
-*/
+/**
+ * Send message to tree
+ */
 router.post('/add-message', authenticate, (req, res) => {
     if (!req.body || !req.body.message || !req.body.treeID) {
         res.status(400).send({ message: "Bad request" });
@@ -450,8 +458,9 @@ router.post('/add-message', authenticate, (req, res) => {
     })
 })
 
-/*
-*   Edit existing tree description
+
+/**
+* Edit existing tree description
 */
 router.post("/edit-tree-description", authenticate, (req, res) => {
     if (!req.body.treeDescription || !req.body.treeID) {
@@ -471,6 +480,7 @@ router.post("/edit-tree-description", authenticate, (req, res) => {
             res.send(err);
         })
 })
+
 
 /**
  * Edit group photo
@@ -510,6 +520,7 @@ router.post('/edit-photo', authenticate, upload.single("image"), function (req, 
     })
 });
 
+
 /**
  * Leave a group
  */
@@ -541,8 +552,8 @@ router.post('/leave', authenticate, (req, res) => {
 })
 
 
-/*
-*   Get all members in a tree
+/**
+* Get all members in a tree
 */
 router.get('/all-members', authenticate, (req, res) => {
     if (!req.body || !req.body.treeid) {
@@ -557,6 +568,7 @@ router.get('/all-members', authenticate, (req, res) => {
         return;
     })
 })
+
 
 /**
  * Get all chat messages
@@ -579,8 +591,9 @@ router.get('/chat', authenticate, (req, res) => {
     })
 })
 
-/*
-*   Get tree info
+
+/**
+* Get tree info
 */
 router.get('/info', authenticate, (req, res) => {
 
@@ -610,8 +623,9 @@ router.get('/info', authenticate, (req, res) => {
     // make sure ID
 })
 
-/*
-*   Ban a user
+
+/**
+* Ban a user
 */
 router.post('/ban-user', authenticate, (req, res) => {
 
@@ -619,7 +633,6 @@ router.post('/ban-user', authenticate, (req, res) => {
         res.status(400).send("Bad request")
         return
     }
-
 
     Tree.findById(req.body.treeID, (err, tre) => {
 
@@ -684,8 +697,9 @@ router.post('/ban-user', authenticate, (req, res) => {
     })
 })
 
-/*
-*   Unban a user
+
+/**
+* Unban a user
 */
 router.post('/unban-user', authenticate, (req, res) => {
 
@@ -756,8 +770,9 @@ router.post('/unban-user', authenticate, (req, res) => {
 
 })
 
-/*
-*   Display banned users
+
+/**
+* Display banned users
 */
 router.get("/display-banned-users", authenticate, (req, res) => {
     if (!req.body || !req.headers.treeID) {
@@ -775,7 +790,8 @@ router.get("/display-banned-users", authenticate, (req, res) => {
 
 })
 
-/*
+
+/**
 *   Get report a user
 */
 router.post('/report-user', authenticate, (req, res) => {
@@ -810,8 +826,9 @@ router.post('/report-user', authenticate, (req, res) => {
         })
 })
 
-/*
-*   Get report a tree/group
+
+/**
+* Get report a tree/group
 */
 router.post('/report-tree', authenticate, (req, res) => {
     //ensure that request has body and has treeID
@@ -847,6 +864,7 @@ router.post('/report-tree', authenticate, (req, res) => {
     });
 })
 
+
 /**
  * Get all trees
  */
@@ -857,6 +875,7 @@ router.get("/get-all-trees", authenticate, (req, res) => {
         res.status(400).send(err);
     })
 })
+
 
 /**
  * Set tree to be private or public
@@ -880,6 +899,7 @@ router.post("/set-private-status", authenticate, (req, res) => {
             return;
         })
 })
+
 
 /**
  * Invites a user to a tree
@@ -989,6 +1009,7 @@ router.post("/decline-user-requested-invite", authenticate, (req, res) => {
     })
 })
 
+
 /**
  * Member requests an admin to add a user
  */
@@ -1056,6 +1077,7 @@ router.post("/request-admin-to-add-user", authenticate, (req, res) => {
     })
 })
 
+
 /**
  * Get array of searched trees
  */
@@ -1081,6 +1103,9 @@ router.get("/search-tree", authenticate, (req, res) => {
     })
 })
 
+/**
+ * Remove a member from a tree
+ */
 router.post("/remove-member", authenticate, (req, res) => {
     if(!req.body || !req.body.username || !req.body.treeID){
         res.status(400).send("Bad request")
@@ -1136,6 +1161,7 @@ router.post("/remove-member", authenticate, (req, res) => {
 
     })
 })
+
 
 /**
  * Add annoucements to the tree
@@ -1224,8 +1250,5 @@ router.post("/remove-annoucement", authenticate, (req, res) => {
         return;
     })
 })
-
-
-
 
 module.exports = router;

@@ -9,7 +9,7 @@ var validate_email = require('../middleware/validate_email');
 var upload = require('../middleware/photo_upload');
 var validate = require('../middleware/validate_url');
 
-mongoose.connect(process.env.MONGODB_HOST, { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_HOST, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.set('useCreateIndex', true);
 
 mongoose.Promise = global.Promise;
@@ -36,7 +36,7 @@ router.get("/account", authenticate, (req, res) => {
     res.status(200).send(req.user);
 });
 
-/*
+/**
  * Register new user
  */
 router.post("/register", (req, res) => {
@@ -94,6 +94,10 @@ router.post("/register", (req, res) => {
     });
 });
 
+
+/**
+ * Log in
+ */
 router.post('/login', (req, res) => {
     if (!req.body.username || !req.body.password) {
         res.status(400).send({ message: "Bad request" });
@@ -212,9 +216,7 @@ router.post("/forgot-password", (req, res) => {
 /**
  * Edit a user's email
  */
-// TOOD: Fix change email, bugs with user schema
 router.post("/change-email", authenticate, (req, res) => {
-
 
     if (!req.body || !req.body.email) {
         res.status(400).send({ message: "User data is incomplete" });
@@ -225,7 +227,6 @@ router.post("/change-email", authenticate, (req, res) => {
         res.status(400).send({ message: "Invalid email" });
         return;
     }
-
 
     User.findOneAndUpdate({ username: req.user.username },
         {
@@ -257,6 +258,7 @@ router.post("/change-email", authenticate, (req, res) => {
 
     mailer(req.body.email, email_subject, email_body);
 })
+
 
 /*
  * Change Password
@@ -310,7 +312,8 @@ router.get("/find-user", (req, res) => {
     })
 })
 
-/*
+
+/**
  * Edit Profile
  */
 router.post("/edit-profile", authenticate, (req, res) => {
@@ -363,6 +366,10 @@ router.post("/edit-profile", authenticate, (req, res) => {
 
 })
 
+
+/**
+ * Edit profile pic
+ */
 router.post("/edit-profile-picture", authenticate, (req, res) => {
     if (!req.body.profilePictureURL || !req.body.username) {
         res.status(400).json({ message: "Profile picture change is incomplete" });
@@ -390,6 +397,9 @@ router.post("/edit-profile-picture", authenticate, (req, res) => {
 })
 
 
+/**
+ * Upload photo
+ */
 router.post('/upload-photo', authenticate, upload.single("image"), (req, res) => {
     // console.log(req)
     if (!req.file.url || !req.file.public_id || !req.headers.username) {
@@ -525,8 +535,9 @@ router.post('/decline-invite', authenticate, (req, res) => {
     })
 })
 
+
 /**
- * Decline invitation to join a tree
+ * Remove notification
  */
 router.post('/remove-notification', authenticate, (req, res) => {
     if (!req.body.username || !req.body.notificationID) {
@@ -629,6 +640,7 @@ router.get('/all-photos', authenticate, (req, res) => {
 //     })
 // });
 
+
 /**
  * Get all trees
  */
@@ -654,6 +666,9 @@ router.get("/get-all-users", authenticate, (req, res) => {
 })
 
 
+/**
+ * Get user profile
+ */
 router.get("/user-profile", authenticate, (req, res) => {
     if (!req.body || !req.body.username) {
         res.status(400).send({ message: 'Error retrieving user' })
@@ -668,9 +683,5 @@ router.get("/user-profile", authenticate, (req, res) => {
     })
 });
 
-
-// router.get('/photo-library', authenticate, (req, res) => {
-
-// }
 
 module.exports = router;

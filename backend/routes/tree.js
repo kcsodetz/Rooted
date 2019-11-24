@@ -1270,7 +1270,7 @@ router.get("/get-annoucements", authenticate, (req, res) => {
         return;
 
     }).catch((err) => {
-        res.status(400).send({ message: "An issue occured." });
+        res.status(400).send({ message: "There's an issue." });
         return;
     })
 

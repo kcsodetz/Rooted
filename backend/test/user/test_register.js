@@ -12,8 +12,8 @@ var uname = process.env.TEST_USERNAME
 var pword = process.env.TEST_PASSWORD
 var mail = process.env.TEST_EMAIL
 
-describe('Test Register', () => {
-
+describe('Test Register', function() {
+    this.timeout(5000)
     after( function() {
         User.deleteOne({username: uname}).then(() => {
 

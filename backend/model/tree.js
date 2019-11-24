@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 let treeSchema = new mongoose.Schema({
     founder: { type: String },
-    members: { type: [String], unique: true},
+    members: { type: [String]},
     treeName: { type: String, required: true},
     dateCreated: { type: Date, default: Date.now },
     numberOfPeople: { type: Number, default: 1 },
@@ -28,7 +28,11 @@ let treeSchema = new mongoose.Schema({
     memberRequestedUsers: {type: [String]},
     pendingUsers: {type: [String]},
     aboutBio: {type: String, default: "No bio created yet."},
-
+    annoucements: [{
+        user: String,
+        annoucement: String,
+        datePosted: { type: Date, default: Date.now },
+    }],
 })
 
 /* Creating the user model from the schema and giving it to Mongoose */

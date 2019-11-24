@@ -224,18 +224,15 @@
                 </div>
                 <div class="col-3">
                   <div class="row" style="width:100%;justify-content: end;">
-                    <!-- <div *ngIf="admins.includes(user); else elseAdmin"></div> -->
-                    <!-- <ng-template #elseAdmin> -->
-                    <div *ngIf="!admins.includes(user)" class="spacer">
-                      <button (click)="makeAdmin(user)" class="notificationBtn" type="button" color="success">Make Admin</button>
-                    </div>
-                    <!-- </ng-template> -->
-                    <div *ngIf="!bannedUsers.includes(user)" class="spacer">
-                      <button (click)="banUser(user)" class="notificationBtn" type="button" color="success">Ban</button>
-                    </div>
+                    <div *ngIf="admins.includes(user); else elseAdmin"></div>
+                    <ng-template #elseAdmin>
+                      <div class="spacer">
+                        <button (click)="makeAdmin(user)" class="notificationBtn" type="button" color="success">Make Admin</button>
+                      </div>
+                    </ng-template>
                     <div class="spacer">
-                      <button (click)="removeUser(user)" class="notificationBtn" type="button" color="success">Kick</button>
-                    </div>
+                        <button (click)="banUser(user)" class="notificationBtn" type="button" color="success">Ban</button>
+                      </div>
                   </div>
                 </div>
               </div>

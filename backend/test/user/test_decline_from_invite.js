@@ -18,8 +18,7 @@ var treeID;
 var badID = mongoose.Types.ObjectId();
 var usr = "testing_ken";
 
-describe('Test Decline Invite',function () {
-    this.timeout(5000)
+describe('Test Decline Invite', () => {
     // Preprocessing (Register, login, and create tree)
     before((done) => {
         var info = {

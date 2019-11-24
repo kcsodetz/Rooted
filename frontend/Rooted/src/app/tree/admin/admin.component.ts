@@ -73,11 +73,6 @@ export class AdminComponent implements OnInit {
 
   }
 
-  removeUser(username: string){
-    console.log("removed: " + username);
-    this.treeService.removeUser(this.route.snapshot.params['id'],username);
-  }
-
   banUser(username: string){
     console.log("banned: " + username);
     this.treeService.banUser(this.route.snapshot.params['id'],username);

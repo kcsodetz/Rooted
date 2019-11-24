@@ -31,14 +31,6 @@ export class TreeService {
 
     }
 
-    removeUser(treeID: string, username: string){
-        const info = {
-            treeID: treeID,
-            username: username
-        };
-        return this.http.post('http://localhost:5000/tree/remove-member', info).toPromise();
-    }
-
     getPhotos(treeID: string) {
         const info = {
             headers: new HttpHeaders({

@@ -14,8 +14,7 @@ var mail = process.env.TEST_EMAIL;
 
 var testTreeName = "UNIT_TEST_TREE";
 
-describe('Test Search', function() {
-    this.timeout(5000)
+describe('Test Search', () => {
     // Preprocessing (Register, login, and create tree)
     before((done) => {
         var info = {

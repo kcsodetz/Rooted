@@ -13,16 +13,14 @@ var uname = process.env.TEST_USERNAME;
 var pword = process.env.TEST_PASSWORD;
 var mail = process.env.TEST_EMAIL;
 
-var token;
-
 var usr = "testing_ken";
 
 var treeID;
 
 var badID = mongoose.Types.ObjectId();
 
-describe('Test Ban and Unban Users', function() {
-    this.timeout(5000)
+describe('Test Ban and Unban Users', () => {
+
     before((done) => {
         var info = {
             username: uname,
@@ -41,7 +39,7 @@ describe('Test Ban and Unban Users', function() {
                         var treeInfo = {
                             treeName: "UNIT_TEST_TREE"
                         }
-                        token = res.header.token
+                        var token = res.header.token
                         chai.request(server)
                             .post('/tree/add')
                             .set('content-type', 'application/x-www-form-urlencoded')
@@ -66,18 +64,23 @@ describe('Test Ban and Unban Users', function() {
 
     describe('Ban from tree without tree ID', () => {
         it('Should return 400', (done) => {
-             var info = {
+            User.findOne({ username: uname }).then((user) => {
+                var token = user['tokens'][0]['token'][0]
+                chai.request(server)
+                    .post('/tree/ban-user')
+                    .set('content-type', 'application/x-www-form-urlencoded')
+                    .set('token', token)
+                    .send(info)
+                    .end((err, res) => {
+                        res.should.have.status(400)
+                        done()
+                    })
+            }).catch((err) => {
+
+            })
+            var info = {
                 userToBan: usr
             }
-            chai.request(server)
-                .post('/tree/ban-user')
-                .set('content-type', 'application/x-www-form-urlencoded')
-                .set('token', token)
-                .send(info)
-                .end((err, res) => {
-                    res.should.have.status(400)
-                    done()
-                })
         })
     })
 
@@ -104,7 +107,6 @@ describe('Test Ban and Unban Users', function() {
     describe('Ban from tree without userToBan', () => {
         it('Should return 400', (done) => {
             User.findOne({ username: uname }).then((user) => {
-                var token = user['tokens'][0]['token'][0]
                 chai.request(server)
                     .post('/tree/ban-user')
                     .set('content-type', 'application/x-www-form-urlencoded')

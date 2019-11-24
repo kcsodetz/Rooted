@@ -14,8 +14,8 @@ var mail = process.env.TEST_EMAIL;
 
 console.log(mail)
 
-describe('Test Login', function() {
-    this.timeout(5000)
+describe('Test Login', () => {
+
     before((done) => {
         var info = {
             username: uname,

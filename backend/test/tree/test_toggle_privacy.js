@@ -16,8 +16,8 @@ var treeID;
 
 
 
-describe('Test Toggle Privacy', function() {
-    this.timeout(5000)
+describe('Test Toggle Privacy', () => {
+
     before((done) => {
         var info = {
             username: uname,

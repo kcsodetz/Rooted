@@ -1209,7 +1209,7 @@ router.post("/add-annoucement", authenticate, (req, res) => {
 })
 
 /**
- * Add annoucements to the tree
+ * Remove annoucements to the tree
  */
 router.post("/remove-annoucement", authenticate, (req, res) => {
     if (!req.body || !req.body.annoucementID || !req.body.treeID) {

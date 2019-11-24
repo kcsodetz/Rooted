@@ -1168,14 +1168,17 @@ router.post("/add-annoucement", authenticate, (req, res) => {
                 }
             }
         }).then(() => {
-            res.status(200).send({ message: "The annoucement has been added." })
+            res.status(200).send({ message: "The annoucement has been added." });
+            return;
 
         }).catch((err) => {
             console.log(err);
-            res.status(400).send({ message: "Can't find tree 1" })
+            res.status(400).send({ message: "Can't find tree 1" });
+            return;
         })
     }).catch((err) => {
-        res.status(400).send({ message: "Can't find tree 2" })
+        res.status(400).send({ message: "Can't find tree 2" });
+        return;
     })
 })
 
@@ -1189,25 +1192,35 @@ router.post("/remove-annoucement", authenticate, (req, res) => {
     }
     Tree.findById({ _id: req.body.treeID }).then((tree) => {
         if(!tree) {
-            res.status(400).send({ message: "Tree does not exist" })
-            return
+            res.status(400).send({ message: "Tree does not exist" });
+            return;
         }
+
+        var found = false;
 
         tree.annoucements.forEach(element => {
             if (element._id == req.body.annoucementID) {
-                var n = tree.annoucements.indexOf(element)
-                tree.annoucements.splice(n, 1)
-                tree.save()
-                res.status(200).send({ message: "Annoucement succesfully removed." });
-                return;
+                found = true;
+                var n = tree.annoucements.indexOf(element);
+                tree.annoucements.splice(n, 1);         
+                tree.save();
+                // res.status(200).send({ message: "Annoucement succesfully removed." });
+                // return;
             }
         });
 
-        res.status(400).send({ message: "Could not find annoucement." });
-        return;
+        if (found) {
+            res.status(200).send({ message: "Annoucement succesfully removed." });
+            return;
+        }
+        else {
+            res.status(400).send({ message: "Annoucement could not be found." });
+            return;
+        }
+
 
     }).catch((err) => {
-        res.status(400).send({ message: "Something went wrongs." });
+        res.status(400).send({ message: "Something went wrong." });
         return;
     })
 })

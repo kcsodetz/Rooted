@@ -9,6 +9,7 @@ require('dotenv').config();
 /* Routes */
 let user = require('./routes/users.js'); 
 let tree = require('./routes/tree.js');  
+let admin = require('./routes/admin.js'); 
 
 const app = express(cors());
 
@@ -29,7 +30,8 @@ app.use((req, res, next) => {
 
 /* Routes */
 app.use('/user', user);
-app.use('/tree', tree)
+app.use('/tree', tree);
+app.use('/admin', admin);
 
 
 app.get('/', (res, req) => {

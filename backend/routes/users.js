@@ -767,7 +767,6 @@ router.post('/remove-sitewide-admin', authenticate, (req, res) => {
                     return;
                 }
 
-                
                 else {
                     docs[0].admins.pull(req.body.userToRemove)
                     docs[0].save().then(() => {
@@ -845,5 +844,34 @@ router.post('/sw-admin-ban-user', authenticate, (req, res) => {
 
 
 })
+
+
+/**
+ * Get all banned users - sitewide admin
+ */
+
+router.get('/all-banned-users', authenticate, (req, res) => {
+
+    Admin.find({}, function (err, docs) {
+        if (!err && docs) {
+
+            if (!docs[0].admins.includes(req.user.username)) {
+                res.status(400).send({ message: "Unauthorized to see banned users." });
+                return;
+            }
+
+            else {
+                res.status(200).send(docs[0].bannedUsers);
+                return;
+            }
+        }
+        else {
+            res.status(400).send({ message: "Could not find table" });
+            return;
+        }
+    });
+})
+
+
 
 module.exports = router;

@@ -7,7 +7,8 @@ let adminSchema = new mongoose.Schema({
         treeName: String,
         reason: String,
         reporter: String
-   }]
+   }],
+   bannedUsers: {type: [String]},
 });
 
 /* Creating the user model from the schema and giving it to Mongoose */

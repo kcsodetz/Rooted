@@ -810,7 +810,7 @@ router.post('/sw-admin-ban-user', authenticate, (req, res) => {
             if (!err && docs) {
 
                 if (!docs[0].admins.includes(req.user.username)) {
-                    res.status(400).send({ message: "Unauthorized to make ban users" });
+                    res.status(400).send({ message: "Unauthorized to ban users" });
                     return;
                 }
 
@@ -870,6 +870,62 @@ router.get('/all-banned-users', authenticate, (req, res) => {
             return;
         }
     });
+})
+
+
+/**
+ * Unban user - sitewide admin
+ */
+
+router.post('/sw-admin-unban-user', authenticate, (req, res) => {
+    if(!req.body || !req.body.userToUnban) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+
+    User.findOne({ username: req.body.userToUnban }).then((usr) => {
+        if (!usr) {
+            res.status(400).send({ message: "Could not find user" });
+            return;
+        }
+
+        Admin.find({}, function (err, docs) {
+            if (!err && docs) {
+
+                if (!docs[0].admins.includes(req.user.username)) {
+                    res.status(400).send({ message: "Unauthorized to unban users" });
+                    return;
+                }
+
+                if (!docs[0].bannedUsers.includes(req.body.userToUnban)) {
+                    res.status(400).send({ message: req.body.userToUnban + " is not banned" });
+                    return;
+                }
+
+                else {
+                    docs[0].bannedUsers.pull(req.body.userToUnban)
+                    docs[0].save().then(() => {
+                        res.status(200).send({ message: req.body.userToUnban +  " has been unbanned by sitewide admin " + req.user.username });
+                        return;
+                    }).catch((err) => {
+                        res.status(400).send({ message: "Could not save" });
+                        return;
+                    })
+                }
+            }
+            else {
+                res.status(400).send({ message: "Could not find table" });
+                return;
+            }
+        });
+    }).catch((err) => {
+        console.log(err);
+        res.status(400).send({ message: "FATAL" });
+        return;
+    })
+
+
+
 })
 
 

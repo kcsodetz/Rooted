@@ -19,6 +19,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 /* Objects */
 var User = require('../model/user');
 var Tree = require('../model/tree');
+var Admin = require('../model/admin');
 
 /**
  * All user related routes
@@ -682,6 +683,113 @@ router.get("/user-profile", authenticate, (req, res) => {
         res.status(400).send(err);
     })
 });
+
+
+// Any sitewide admin stuff
+
+/**
+ * Add a sitewide admin
+ */
+router.post('/add-sitewide-admin', authenticate, (req, res) => {
+    if (!req.body || !req.body.username) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+    User.findOne({ username: req.body.username }).then((usr) => {
+
+        if (!usr) {
+            res.status(400).send({ message: "Could not find user" });
+            return;
+        }
+
+        Admin.find({}, function (err, docs) {
+            if (!err && docs) {
+                // console.log(docs[0].admins);
+                if (docs[0].admins.includes(req.body.username)) {
+                    res.status(400).send({ message: "User is already a sitewide admin" });
+                    return;
+                }
+
+                if (!docs[0].admins.includes(req.user.username)) {
+                    res.status(400).send({ message: "Unauthorized to make user sitewide admin" });
+                    return;
+                }
+
+                
+                else {
+                    docs[0].admins.push(req.body.username)
+                    docs[0].save().then(() => {
+                        res.status(200).send({ message: "User is now a sitewide admin" });
+                        return;
+                    }).catch((err) => {
+                        res.status(400).send({ message: "Could not save" });
+                        return;
+                    })
+                }
+            }
+            else {
+                res.status(400).send({ message: "Could not find table" });
+                return;
+            }
+        });
+
+        // res.status(400).send({ message: "found user" });
+        // return
+        
+    }).catch((err) => {
+        console.log(err);
+        res.status(400).send({ message: "FATAL" });
+        return;
+    })
+})
+
+
+/**
+ * Remove a sitewide admin
+ */
+router.post('/remove-sitewide-admin', authenticate, (req, res) => {
+    if (!req.body || !req.body.userToRemove) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+    User.findOne({ username: req.body.userToRemove }).then((usr) => {
+
+        if (!usr) {
+            res.status(400).send({ message: "Could not find user" });
+            return;
+        }
+
+        Admin.find({}, function (err, docs) {
+            if (!err && docs) {
+
+                if (!docs[0].admins.includes(req.user.username)) {
+                    res.status(400).send({ message: "Unauthorized to make user sitewide admin" });
+                    return;
+                }
+                
+                else {
+                    docs[0].admins.pull(req.body.userToRemove)
+                    docs[0].save().then(() => {
+                        res.status(200).send({ message: "User is now removed as a sitewide admin" });
+                        return;
+                    }).catch((err) => {
+                        res.status(400).send({ message: "Could not save" });
+                        return;
+                    })
+                }
+            }
+            else {
+                res.status(400).send({ message: "Could not find table" });
+                return;
+            }
+        });
+    }).catch((err) => {
+        console.log(err);
+        res.status(400).send({ message: "FATAL" });
+        return;
+    })
+})
+
 
 
 module.exports = router;

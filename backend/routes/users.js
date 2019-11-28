@@ -766,7 +766,7 @@ router.post('/remove-sitewide-admin', authenticate, (req, res) => {
                     res.status(400).send({ message: "Unauthorized to make user sitewide admin" });
                     return;
                 }
-                
+
                 else {
                     docs[0].admins.pull(req.body.userToRemove)
                     docs[0].save().then(() => {
@@ -788,6 +788,88 @@ router.post('/remove-sitewide-admin', authenticate, (req, res) => {
         res.status(400).send({ message: "FATAL" });
         return;
     })
+})
+
+/**
+ * Ban user - sitewide admin
+ */
+
+router.post('/sw-admin-ban-user', authenticate, (req, res) => {
+    if(!req.body || !req.body.userToBan) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+
+    User.findOne({ username: req.body.userToBan }).then((usr) => {
+        if (!usr) {
+            res.status(400).send({ message: "Could not find user" });
+            return;
+        }
+
+        Admin.find({}, function (err, docs) {
+            if (!err && docs) {
+
+                if (!docs[0].admins.includes(req.user.username)) {
+                    res.status(400).send({ message: "Unauthorized to make ban users" });
+                    return;
+                }
+
+                if (docs[0].bannedUsers.includes(req.body.userToBan)) {
+                    res.status(400).send({ message: req.body.userToBan + " is already banned" });
+                    return;
+                }
+
+                else {
+                    docs[0].bannedUsers.push(req.body.userToBan)
+                    docs[0].save().then(() => {
+                        res.status(200).send({ message: req.body.userToBan +  " has been banned by sitewide admin " + req.user.username });
+                        return;
+                    }).catch((err) => {
+                        res.status(400).send({ message: "Could not save" });
+                        return;
+                    })
+                }
+            }
+            else {
+                res.status(400).send({ message: "Could not find table" });
+                return;
+            }
+        });
+    }).catch((err) => {
+        console.log(err);
+        res.status(400).send({ message: "FATAL" });
+        return;
+    })
+
+
+
+})
+
+
+/**
+ * Get all banned users - sitewide admin
+ */
+
+router.get('/all-banned-users', authenticate, (req, res) => {
+
+    Admin.find({}, function (err, docs) {
+        if (!err && docs) {
+
+            if (!docs[0].admins.includes(req.user.username)) {
+                res.status(400).send({ message: "Unauthorized to see banned users." });
+                return;
+            }
+
+            else {
+                res.status(200).send(docs[0].bannedUsers);
+                return;
+            }
+        }
+        else {
+            res.status(400).send({ message: "Could not find table" });
+            return;
+        }
+    });
 })
 
 

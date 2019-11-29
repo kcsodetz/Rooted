@@ -100,7 +100,8 @@ let userSchema = new mongoose.Schema({
       type: String,
       require: true
     }]
-  }]
+  }],
+  rootedStatus: { type: Boolean, default: true },
 })
 
 userSchema.methods.generateAuth = function () {
@@ -191,7 +192,7 @@ userSchema.statics.findByUsername = function(username) {
 
 /* Function to prevent too much information from being returned on request when the response is the object */
 userSchema.methods.toJSON = function () {
-  return ld.pick(this.toObject(), ['_id', 'username', 'email', 'profilePictureURL', 'verified', 'birthYear','phoneNumber', 'facebook', 'instagram', 'twitter', 'notifications'  ])
+  return ld.pick(this.toObject(), ['_id', 'username', 'email', 'profilePictureURL', 'verified', 'birthYear','phoneNumber', 'facebook', 'instagram', 'twitter', 'notifications', 'rootedStatus'  ])
 }
 
 /* Creating the user model from the schema and giving it to Mongoose */

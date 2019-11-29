@@ -230,7 +230,7 @@ export class TreeComponent implements OnInit {
     const username = localStorage.getItem('username');
     this.treeService.leaveTree(this.myTree.ID, username).then(() => {
       const confirm = window.confirm('Are you sure you want to leave this tree. To return, you must be added back by someone');
-      if (confirm === false) {
+      if (!confirm) {
         return;
       }
       this._router.navigate(['/home']);

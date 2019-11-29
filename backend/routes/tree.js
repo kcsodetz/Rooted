@@ -12,7 +12,7 @@ var validate = require('../middleware/validate_url');
 var mailer = require('../middleware/mailer');
 
 
-mongoose.connect(process.env.MONGODB_HOST, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.MONGODB_HOST, { useNewUrlParser: true });
 mongoose.set('useCreateIndex', true);
 
 mongoose.Promise = global.Promise;
@@ -80,10 +80,11 @@ router.post("/add", authenticate, function (req, res) {
  * Add a photo to a tree
  */
 router.post('/add-photo', authenticate, upload.single("image"), (req, res) => {
-    if (!req.file.url || !req.file.public_id || !req.headers.treeid) {
+    if (!req.file || !req.headers.treeid) {
         res.status(400).send({ message: "Bad request" });
         return;
     }
+
     Tree.findOne({ _id: req.headers.treeid }).then((t) => {
         if (!t) {
             res.status(400).send({ message: "Tree does not exist" });
@@ -97,15 +98,15 @@ router.post('/add-photo', authenticate, upload.single("image"), (req, res) => {
                 }
             }
         }).then((t) => {
-            res.status(200).send({ message: "Photo successfully uploaded" })
-            return
+            res.status(200).send({ message: "Photo successfully uploaded" });
+            return;
         }).catch((err) => {
             res.status(400).send(err);
-        })
+        });
     }).catch((err) => {
         res.status(400).send(err);
-    })
-})
+    });
+});
 
 
 /**

@@ -1273,9 +1273,76 @@ router.get("/get-annoucements", authenticate, (req, res) => {
         res.status(400).send({ message: "There's an issue." });
         return;
     })
+})
 
+/**
+ * Display all anonymous messages
+ */
+router.get("/get-anonymous-messages", authenticate, (req, res) => {
+    if (!req.body || !req.body.treeID) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
 
+    Tree.findById({ _id: req.body.treeID }).then((tree) => {
+        if(!tree) {
+            res.status(400).send({ message: "Tree does not exist" });
+            return;
+        }
 
+        // if the user is not a tree admin
+        if (!tree.admins.includes(req.user.username)) {
+            res.status(400).send({ message: "Must be a tree admin to view messages" });
+            return;
+        }
+
+        res.status(200).send(tree.anonymousMessages);
+        return;
+
+    }).catch((err) => {
+        res.status(400).send({ message: "There's an issue." });
+        return;
+    })
+})
+
+/**
+ * Submit anonymous message to admin team
+ */
+
+router.post("/submit-anonymous-message", authenticate, (req, res) => {
+    if (!req.body || !req.body.anonymousMessage || !req.body.treeID) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+    Tree.findById({ _id: req.body.treeID}).then((tree) => {
+        if(!tree) {
+            res.status(400).send({ message: "Tree does not exist" });
+            return
+        }
+
+        if(!tree.members.includes(req.user.username)){
+            res.status(400).send({ message: "User does not exist in the tree" })
+            return;
+        }
+
+        Tree.findByIdAndUpdate((req.body.treeID), {
+            $push: {
+                anonymousMessages: {
+                    message: req.body.anonymousMessage,
+                }
+            }
+        }).then(() => {
+            res.status(200).send({ message: "The anonymous message has been sent." });
+            return;
+        }).catch((err) => {
+            res.status(400).send({ message: "An error as occured" });
+            return;
+        })
+    }).catch((err) => {
+        res.status(400).send({ message: "Tree does not exist" });
+        return;
+    })
 })
 
 module.exports = router;
+

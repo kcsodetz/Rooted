@@ -22,6 +22,7 @@ var usr = "testing_ken";
 
 describe('Test Adding and Removing an Admin', () => {
     // Preprocessing (Register, login, create tree, add user)
+    this.timeout(5000);
     before((done) => {
         var info = {
             username: uname,

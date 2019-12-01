@@ -9,7 +9,7 @@ var validate_email = require('../middleware/validate_email');
 var upload = require('../middleware/photo_upload');
 var validate = require('../middleware/validate_url');
 
-mongoose.connect(process.env.MONGODB_HOST, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.MONGODB_HOST, { useNewUrlParser: true });
 mongoose.set('useCreateIndex', true);
 
 mongoose.Promise = global.Promise;

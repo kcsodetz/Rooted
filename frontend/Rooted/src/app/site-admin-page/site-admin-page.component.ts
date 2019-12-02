@@ -25,6 +25,7 @@ export class SiteAdminPageComponent implements OnInit {
     });
     this.userService.swAllBannedUsers().then((res) => {
       this.bannedUsers = res;
+      console.log(res[0]);
     })
   }
 
@@ -40,6 +41,24 @@ export class SiteAdminPageComponent implements OnInit {
     this.activeTabSection = SectionName;
   }
 
+  makeAdmin(username: string){
+    this.userService.swAddAdmin(username);
+    console.log(username + " made admin!");
+  }
 
+  removeAdmin(username: string){
+    this.userService.swRemoveAdmin(username);
+    console.log(username + "removed as admin!");
+  }
+
+  banUser(username: string){
+    this.userService.swBanUser(username);
+    console.log(username + "banned from the site");
+  }
+
+  unbanUser(username: string){
+    this.userService.swUnbanUser(username);
+    console.log(username + "unbanned from the site");
+  }
 
 }

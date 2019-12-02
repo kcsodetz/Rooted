@@ -70,17 +70,20 @@
                 <label style="float:left">{{user.username}}</label>
               </div>
               <div class="col-3">
-                <!-- <div class="row" style="width:100%;justify-content: end;">
-                  <div *ngIf="!admins.includes(user)" class="spacer">
+                <div class="row" style="width:100%;justify-content: end;">
+                  <!-- <div *ngIf="!admins.includes(user)" class="spacer">
                     <button (click)="makeAdmin(user)" class="notificationBtn" type="button" color="success">Make Admin</button>
                   </div>
                   <div *ngIf="!bannedUsers.includes(user)" class="spacer">
                     <button (click)="banUser(user)" class="notificationBtn" type="button" color="success">Ban</button>
                   </div> -->
                   <div class="spacer">
-                    <button (click)="removeUser(user)" class="notificationBtn" type="button" color="success">Ban</button>
+                      <button (click)="makeAdmin(user.username)" class="notificationBtn" type="button" color="success">Make Admin</button>
                   </div>
-                <!-- </div> -->
+                  <div class="spacer">
+                    <button (click)="banUser(user.username)" class="notificationBtn" type="button" color="success">Ban</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -94,7 +97,7 @@
         <div *ngFor="let user of bannedUsers" class="card notificationCard" name="notificationAcceptReject">
           <div class="row">
             <div class="col-9">
-              <label style="float:left">{{user.username}}</label>
+              <label style="float:left">{{user}}</label>
             </div>
             <div class="col-3">
               <!-- <div class="row" style="width:100%;justify-content: end;">
@@ -105,7 +108,7 @@
                   <button (click)="banUser(user)" class="notificationBtn" type="button" color="success">Ban</button>
                 </div> -->
                 <div class="spacer">
-                  <button (click)="removeUser(user)" class="notificationBtn" type="button" color="success">Ban</button>
+                  <button (click)="unbanUser(user)" class="notificationBtn" type="button" color="success">Unban</button>
                 </div>
               <!-- </div> -->
             </div>

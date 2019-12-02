@@ -9,6 +9,7 @@ import { UserService } from '../services/user.service'
 export class SiteAdminPageComponent implements OnInit {
   users: Object;
   bannedUsers: Object;
+  ban: [string];
   admins: [String];
 
   constructor(private userService: UserService) { }
@@ -16,21 +17,21 @@ export class SiteAdminPageComponent implements OnInit {
   activeTabSection = 'Trees';
 
   ngOnInit() {
-    this.users = [0];
+    this.ban = [null];
     this.userService.getAllUsers().then((res) => {
-      console.log(res[0]);
       this.users = res;
-      //this.users.push(res[0]);
-      //console.log(this.users);
     });
     this.userService.swAllBannedUsers().then((res) => {
       this.bannedUsers = res;
-      console.log(res[0]);
+      let x = 0;
+      while(this.bannedUsers[x]!=undefined){
+        this.ban[x] = this.bannedUsers[x++];
+      }
     })
   }
 
   toggle(SectionName) {
-    console.log(SectionName);
+    //console.log(SectionName);
     if (this.activeTabSection === SectionName) {
       return;
     }

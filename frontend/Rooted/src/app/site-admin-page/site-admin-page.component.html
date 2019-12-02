@@ -65,7 +65,7 @@
             <h3>Users</h3>
           </mdb-card-title>
           <div *ngFor="let user of users" class="card notificationCard" name="notificationAcceptReject">
-            <div class="row">
+            <div *ngIf="!ban.includes(user.username)" class="row">
               <div class="col-9">
                 <label style="float:left">{{user.username}}</label>
               </div>
@@ -107,7 +107,7 @@
                 <div *ngIf="!bannedUsers.includes(user)" class="spacer">
                   <button (click)="banUser(user)" class="notificationBtn" type="button" color="success">Ban</button>
                 </div> -->
-                <div class="spacer">
+                <div *ngIf="ban.includes(user)"class="spacer">
                   <button (click)="unbanUser(user)" class="notificationBtn" type="button" color="success">Unban</button>
                 </div>
               <!-- </div> -->

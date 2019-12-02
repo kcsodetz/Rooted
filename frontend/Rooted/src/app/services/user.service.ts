@@ -134,7 +134,7 @@ export class UserService {
         return this.http.post('http://localhost:5000/user/remove-sitewide-admin',payload).toPromise();
     }
 
-    swAllBannedUsers(username: string){
+    swAllBannedUsers(){
         return this.http.get<Object>('http://localhost:5000/user/all-banned-users').toPromise();
     }
 

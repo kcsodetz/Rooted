@@ -8,6 +8,7 @@ import { UserService } from '../services/user.service'
 })
 export class SiteAdminPageComponent implements OnInit {
   users: Object;
+  bannedUsers: Object;
   admins: [String];
 
   constructor(private userService: UserService) { }
@@ -22,6 +23,9 @@ export class SiteAdminPageComponent implements OnInit {
       //this.users.push(res[0]);
       //console.log(this.users);
     });
+    this.userService.swAllBannedUsers().then((res) => {
+      this.bannedUsers = res;
+    })
   }
 
   toggle(SectionName) {
@@ -35,5 +39,7 @@ export class SiteAdminPageComponent implements OnInit {
     document.getElementById(SectionName + 'Section').classList.toggle('invisible');
     this.activeTabSection = SectionName;
   }
+
+
 
 }

@@ -230,7 +230,7 @@ export class ProfileComponent implements OnInit {
 
   accept(n) {
 
-      this.userService.acceptInvitation(this.username, n.meta).then((response) => {
+      this.userService.acceptInvitation(this.username, n).then((response) => {
         console.log(response);
         this.response = 'complete';
       },
@@ -239,12 +239,12 @@ export class ProfileComponent implements OnInit {
           this.response = 'fatalError';
         });
 
-        location.reload();
+       // location.reload();
 
   }
 
   reject(n) {
-      this.userService.declineInvitation(this.username, n.meta).then((response) => {
+      this.userService.declineInvitation(this.username, n).then((response) => {
         console.log(response);
         this.response = 'complete';
       },
@@ -252,10 +252,10 @@ export class ProfileComponent implements OnInit {
           console.log(err);
           this.response = 'fatalError';
         });
-    location.reload();
+    //location.reload();
   }
   deleteNotif(n) {
-      this.userService.removeNotification(this.username, n.meta).then((response) => {
+      this.userService.removeNotification(this.username, n).then((response) => {
         console.log(response);
         this.response = 'complete';
       },

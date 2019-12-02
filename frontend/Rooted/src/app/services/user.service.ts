@@ -70,12 +70,12 @@ export class UserService {
     /*
     *   Accept invitation to join a group
     */
-    acceptInvitation(username: string, treeid: string) {
-        const tree = {
+    acceptInvitation(username: string, notif: Notification) {
+        const userAndNotif = {
             'username' : username,
-            'treeID' : treeid,
+            'notif' : Notification,
         };
-        return this.http.post('http://localhost:5000/user/join-tree', tree).toPromise();
+        return this.http.post('http://localhost:5000/user/join-tree', userAndNotif).toPromise();
     }
 
     /*

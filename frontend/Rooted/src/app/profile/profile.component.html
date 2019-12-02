@@ -36,9 +36,10 @@
             <!-- Create New Tree Button -->
             <button onclick="document.getElementById('id01').style.display='block'" mdbBtn type="button" color="success"
               mdbWavesEffect>Upload Image</button>
-      
-            <!-- Create New Tree Modal -->
-            <div id="id01" class="w3-modal">
+              <button onclick="document.getElementById('idColor').style.display='block'" mdbBtn type="button" color="success"
+              mdbWavesEffect>Change Color Scheme</button>
+            <!-- Upload Image Modal -->
+            <div id="id01" class="w3-modal" style="display: none;">
               <div class="w3-modal-content">
                 <div class="w3-container">
                   <!-- Card Container and Body -->
@@ -80,8 +81,27 @@
                 </div>
               </div>
             </div>
-            <!-- Create New Tree Modal -->
-          </div>
+            <!---->
+
+            <!--Change Color Scheme-->
+            <div id="idColor" class="w3-modal" style="display: none;">
+              <div class="w3-modal-content">
+                <div class="w3-container">
+                  <mdb-card>
+                    <mdb-card-body>
+                     Change the color 
+                     <div style="width:auto; float:right">
+                      <button type="button" onclick="document.getElementById('idColor').style.display='none'" mdbBtn
+                      color="success" block="true" class="my-4">Close</button>     
+                     </div>
+                    </mdb-card-body>
+                  </mdb-card>
+                </div>
+              </div>
+            </div>
+          <!---->
+        </div>
+
         </body>
         <!-- Main Body -->
       

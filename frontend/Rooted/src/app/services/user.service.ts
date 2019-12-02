@@ -27,6 +27,10 @@ export class UserService {
         return this.http.get<Object>('http://localhost:5000/user/account').toPromise();
     }
 
+    getAllUsers(){
+        return this.http.get<Object>('http://localhost:5000/user/get-all-users').toPromise();
+    }
+
     editUserProfilePicture(profilePictureURL: string, username: string) {
         const user: Object = {
             profilePictureURL: profilePictureURL,

@@ -334,7 +334,7 @@ export class TreeComponent implements OnInit {
               this.response = 'fatal_error';
 
             });
-            location.reload();
+            //location.reload();
 
     } else {
       this.treeService.requestAdminToJoinTree(this.myTree.ID, form.value.username).then((res) => {
@@ -351,7 +351,7 @@ export class TreeComponent implements OnInit {
               this.response = 'fatal_error';
 
             });
-            location.reload();
+            //location.reload();
 
     }
 

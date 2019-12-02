@@ -143,7 +143,7 @@ export class AdminComponent implements OnInit {
       this.response = 'fatal_error';
 
     });
-    location.reload();
+    //location.reload();
 
   }
   rejectUser(us){
@@ -166,7 +166,7 @@ export class AdminComponent implements OnInit {
       this.response = 'fatal_error';
 
     });
-    location.reload();
+  //  location.reload();
 
     //need to delete user from array      
   }
@@ -186,7 +186,7 @@ export class AdminComponent implements OnInit {
       this.response = 'fatal_error';
 
     });
-    location.reload();
+    //location.reload();
 
     //need to delete user from array
   }

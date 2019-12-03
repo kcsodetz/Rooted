@@ -48,7 +48,6 @@ export class SiteAdminPageComponent implements OnInit {
       while(this.treeObj[x]!=undefined){
         this.trees[x] = this.treeObj[x++];
       }
-      console.log(this.trees)
     });
   }
 
@@ -67,25 +66,31 @@ export class SiteAdminPageComponent implements OnInit {
   makeAdmin(username: string){
     this.userService.swAddAdmin(username);
     console.log(username + " made admin!");
+    window.location.replace("/site-admins");
   }
 
   removeAdmin(username: string){
     this.userService.swRemoveAdmin(username);
-    console.log(username + "removed as admin!");
+    console.log(username + " removed as admin!");
+    window.location.replace("/site-admins");
   }
 
   banUser(username: string){
     this.userService.swBanUser(username);
-    console.log(username + "banned from the site");
+    console.log(username + " banned from the site");
+    window.location.replace("/site-admins");
   }
 
   unbanUser(username: string){
     this.userService.swUnbanUser(username);
-    console.log(username + "unbanned from the site");
+    console.log(username + " unbanned from the site");
+    window.location.replace("/site-admins");
   }
 
   deleteTree(treeId: string) {
     this.treeService.deleteChosenTree(treeId);
+    console.log(treeId + " banned from the site")
+    window.location.replace("/site-admins");
   }
 
 }

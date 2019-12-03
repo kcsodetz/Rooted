@@ -35,7 +35,7 @@
                 <li class="nav-item">
                     <a class="nav-link waves-light" routerLink='/about' mdbWavesEffect>About</a>
                 </li>
-                <li class="nav-item">
+                <li *ngIf="admins.includes(username)" class="nav-item">
                     <a class="nav-link waves-light" routerLink='/site-admins' mdbWavesEffect>Admin Page</a>
                 </li>
 

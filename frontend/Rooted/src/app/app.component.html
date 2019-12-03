@@ -35,6 +35,9 @@
                 <li class="nav-item">
                     <a class="nav-link waves-light" routerLink='/about' mdbWavesEffect>About</a>
                 </li>
+                <li *ngIf="admins.includes(username)" class="nav-item">
+                    <a class="nav-link waves-light" routerLink='/site-admins' mdbWavesEffect>Admin Page</a>
+                </li>
 
                 <!-- Dropdown -->
                 <!-- <li *ngIf="userAuthed == true" class="nav-item dropdown" dropdown> -->

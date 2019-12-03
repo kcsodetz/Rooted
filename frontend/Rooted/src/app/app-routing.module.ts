@@ -18,6 +18,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { ReportuserComponent } from './reportuser/reportuser.component';
 import { ReportgroupComponent } from './reportgroup/reportgroup.component';
 import { SearchComponent } from './search/search.component';
+import { SiteAdminPageComponent } from './site-admin-page/site-admin-page.component';
 
 
 
@@ -47,6 +48,11 @@ const routes: Routes = [
     path: 'admin/:id',
     component: AdminComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'site-admins',
+    component: SiteAdminPageComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'search',

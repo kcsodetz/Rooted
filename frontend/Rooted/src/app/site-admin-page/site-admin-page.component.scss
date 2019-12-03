@@ -1,0 +1,150 @@
+.report {
+    width: 50%;
+    text-align: center;
+    margin-left: 25%;
+}
+
+.ques {
+    text-align: center;
+    color: black;
+}
+.header{
+    font-size:50px;
+    margin-top: 35px;
+  
+}
+button{
+  border-radius:10px;
+  padding-top:1%;
+  padding-bottom:1%;
+  background-color: rgb(27, 172, 59);
+  color:white;
+  border:none;
+} 
+.circleInfo{
+    text-align: left;
+    margin-left: 30px;
+}
+
+.topMargin{
+    margin-top: 60px;
+}
+
+.topMargin{
+    margin-top: 20px;
+}
+
+.img {
+    float: left;
+}
+
+.cover {
+  object-fit: cover;
+  width: 500px;
+  height: 500px;
+  margin-left: 7px;
+}
+
+
+
+  .circleTitle{
+      font-size: 50px;
+  }
+
+  .cloudPic2{
+    color: rgb(159, 208, 230);
+    font-size: 200px;
+  }
+
+  .cloudPic{
+    color: rgb(0, 176, 255);
+    font-size: 200px;
+  }
+
+  .adjustLeftMargin{
+      margin-left: 20px;
+  }
+
+  .greenLine{
+      color:  rgb(27, 172, 59);
+  }
+
+#daydreams{
+    transition-duration: 2s ease-in-out;
+}
+
+#daydreams:hover{
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.overflowTest {
+    background: rgb(219, 238, 244);
+    color: black;
+    padding: 15px;
+    width: 72%;
+    height: 200px;
+    overflow: scroll;
+    border: 1px solid #ccc;
+    margin-left: 7px;
+    border-radius: 18px;
+
+  }
+
+.messagesButton{
+    width: 72%;
+    border-radius: 10px;
+}
+
+.messagesInput{
+    width: 66%;
+    margin-left:7px;
+    margin-bottom: 7px;
+    border-radius: 10px;
+    height: 38px;
+}
+
+.iconSize{
+    font-size: 35px;
+    color: rgb(0, 176, 255);
+    margin-left: 10px;
+}
+
+.usericon {
+  display: inline-block;
+}
+
+.usericon span{
+  color:black;
+  font-size:15px;
+  padding:5px 0 10px 10px;
+  display:block;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+.spacer{
+  padding-left: 1%;
+}
+.report{
+  width: 100%;
+}
+
+.notificationCard{
+  padding: 2%;
+  font-size: 12px;
+}
+.notificationBtn{
+  font-size: 12px;
+}
+.active{
+  background-color: rgb(118, 197, 135) !important;
+  border-radius: 0;
+}
+.tab{
+  background-color: transparent;
+  color:black;
+  padding: 0;
+}
+.invisible{
+  display: none;
+}

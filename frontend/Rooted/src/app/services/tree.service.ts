@@ -35,7 +35,7 @@ export class TreeService {
         return this.http.get<Object>('http://localhost:5000/tree/get-all-trees').toPromise();
     }
 
-    removeUser(treeID: string, username: string){
+    removeUser(treeID: string, username: string) {
         const info = {
             treeID: treeID,
             username: username
@@ -62,7 +62,7 @@ export class TreeService {
         return this.http.post('http://localhost:5000/tree/edit-tree-description', tree);
     }
 
-    editAboutBio(aboutBio: string, treeID: string){
+    editAboutBio(aboutBio: string, treeID: string) {
         const tree: Object = {
             aboutBio: aboutBio,
             treeID: treeID,
@@ -78,12 +78,12 @@ export class TreeService {
         return this.http.post('http://localhost:5000/tree/edit-name', tree);
     }
 
-    editTreePhoto(url:string, treeID:string){
+    editTreePhoto(url: string, treeID: string) {
         const options = {
             imageUrl: url,
             treeID: treeID,
-        }
-        return this.http.post('http://localhost:5000/tree/edit-photo', options)
+        };
+        return this.http.post('http://localhost:5000/tree/edit-photo', options);
     }
 
     addMessage(message: string, treeID: string) {
@@ -144,7 +144,7 @@ export class TreeService {
             treeID: treeID,
             username: username
         };
-        return this.http.post('http://localhost:5000/tree/add-admin',info).toPromise();
+        return this.http.post('http://localhost:5000/tree/add-admin', info).toPromise();
     }
 
     deleteChosenTree(treeID: string) {
@@ -154,7 +154,7 @@ export class TreeService {
         return this.http.post('http://localhost:5000/tree/delete', chosen).toPromise();
     }
 
-    
+
 
     createTree(treeName: string, treeDescription: string, imageUrl: string) {
         const tree = {

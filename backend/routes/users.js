@@ -9,7 +9,7 @@ var validate_email = require('../middleware/validate_email');
 var upload = require('../middleware/photo_upload');
 var validate = require('../middleware/validate_url');
 
-mongoose.connect(process.env.MONGODB_HOST, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.MONGODB_HOST, { useNewUrlParser: true });
 mongoose.set('useCreateIndex', true);
 
 mongoose.Promise = global.Promise;
@@ -435,15 +435,28 @@ router.post('/upload-photo', authenticate, upload.single("image"), (req, res) =>
  * Join a tree from an invitation
  */
 router.post('/join-tree', authenticate, (req, res) => {
-    if (!req.body.username || !req.body.treeID) {
+    if (!req.body.username || !req.body.notifID || !req.body.treeID) {
         res.status(400).send({ message: "Bad request" });
         return;
     }
+
+    console.log(req.body.treeID)
+    console.log(req.body.notifID)
+
     User.findOne({ username: req.body.username }).then((usr) => {
         if (!usr) {
             res.status(400).send({ message: "User does not exist" });
             return;
         }
+
+        // For each notification, check the ID against the given ID
+        usr.notifications.forEach(element => {
+            if (element._id == req.body.notifID) {
+                var n = usr.notifications.indexOf(element)
+                usr.notifications.splice(n, 1)
+                return;
+            }
+        });
 
         Tree.findOne({ _id: req.body.treeID }).then((tre) => {
 
@@ -475,6 +488,7 @@ router.post('/join-tree', authenticate, (req, res) => {
 
             // Save new contents
             tre.save();
+            usr.save();
 
             res.status(200).send({ message: "Succesfully joined " + tre.treeName });
             return;
@@ -482,7 +496,7 @@ router.post('/join-tree', authenticate, (req, res) => {
 
     }).catch((err) => {
         res.status(400).send({ message: "Fatal Error" });
-
+        return;
     })
 })
 
@@ -491,25 +505,37 @@ router.post('/join-tree', authenticate, (req, res) => {
  * Decline invitation to join a tree
  */
 router.post('/decline-invite', authenticate, (req, res) => {
-    if (!req.body.username || !req.body.treeID) {
+    if (!req.body.username || !req.body.treeID || !req.body.notifID) {
         res.status(400).send({ message: "Bad request" });
         return;
     }
+
     User.findOne({ username: req.body.username }).then((usr) => {
         if (!usr) {
             res.status(400).send({ message: "User does not exist" });
             return;
         }
 
+        // For each notification, check the ID against the given ID
+        usr.notifications.forEach(element => {
+            if (element._id == req.body.notifID) {
+                var n = usr.notifications.indexOf(element)
+                usr.notifications.splice(n, 1)
+                return;
+            }
+        });
+
         Tree.findOne({ _id: req.body.treeID }).then((tre) => {
             // Check if tree is null
             if (!tre) {
+                usr.save();
                 res.status(400).send({ message: "The tree cannot be found" });
                 return;
             }
 
             // Check if user is already in tree
             if (tre.members.includes(usr.username)) {
+                usr.save();
                 res.status(400).send({ message: "You have already accepted this invitation. You can leave the tree on the group page." });
                 return;
             }
@@ -525,7 +551,7 @@ router.post('/decline-invite', authenticate, (req, res) => {
 
             // Save new contents
             tre.save();
-
+            usr.save();
             res.status(200).send({ message: "Succesfully rejected invite from " + tre.treeName });
             return;
         })

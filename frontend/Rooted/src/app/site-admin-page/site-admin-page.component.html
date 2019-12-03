@@ -63,7 +63,7 @@
             <div class="col-3">
               <div class="row" style="width:100%;justify-content: end;">
                 <div class="spacer">
-                    <button (click)="makeAdmin(user.username)" class="notificationBtn" type="button" color="success">Remove Admin</button>
+                    <button (click)="removeAdmin(admin)" class="notificationBtn" type="button" color="success">Remove Admin</button>
                 </div>
               </div>
             </div>
@@ -90,7 +90,7 @@
                   <div *ngIf="!bannedUsers.includes(user)" class="spacer">
                     <button (click)="banUser(user)" class="notificationBtn" type="button" color="success">Ban</button>
                   </div> -->
-                  <div class="spacer">
+                  <div *ngIf="admins.includes(user.username)" class="spacer">
                       <button (click)="makeAdmin(user.username)" class="notificationBtn" type="button" color="success">Make Admin</button>
                   </div>
                   <div class="spacer">

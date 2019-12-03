@@ -47,6 +47,20 @@
         <mdb-card-title>
           <h3>Trees</h3>
         </mdb-card-title>
+        <div *ngFor="let tree of trees" class="card notificationCard" name="notificationAcceptReject">
+          <div class="row">
+            <div class="col-9">
+              <label style="float:left">{{tree.treeName}}</label>
+            </div>
+            <div class="col-3">
+              <div class="row" style="width:100%;justify-content: end;">
+                <div class="spacer">
+                    <button (click)="deleteTree(tree._id)" class="notificationBtn" type="button" color="success">Delete Tree</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </mdb-card-body>
     </mdb-card>
     

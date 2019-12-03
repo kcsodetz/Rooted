@@ -31,6 +31,10 @@ export class TreeService {
 
     }
 
+    getAllTrees(){
+        return this.http.get<Object>('http://localhost:5000/tree/get-all-trees').toPromise();
+    }
+
     removeUser(treeID: string, username: string){
         const info = {
             treeID: treeID,

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service'
 import { AdminService } from '../services/admin.service'
+import { TreeService } from '../services/tree.service'
 
 @Component({
   selector: 'app-site-admin-page',
@@ -13,14 +14,17 @@ export class SiteAdminPageComponent implements OnInit {
   admObj: Object;
   ban: [string];
   admins: [string];
+  treeObj: Object;
+  trees: [Object];
 
-  constructor(private userService: UserService, private adminService: AdminService) { }
+  constructor(private treeService: TreeService, private userService: UserService, private adminService: AdminService) { }
 
   activeTabSection = 'Trees';
 
   ngOnInit() {
     this.admins = [null];
     this.ban = [null];
+    this.trees = [null];
     this.userService.getAllUsers().then((res) => {
       this.users = res;
     });
@@ -37,6 +41,14 @@ export class SiteAdminPageComponent implements OnInit {
       while(this.admObj[x]!=undefined){
         this.admins[x] = this.admObj[x++];
       }
+    });
+    this.treeService.getAllTrees().then((res) => {
+      this.treeObj = res;
+      let x = 0;
+      while(this.treeObj[x]!=undefined){
+        this.trees[x] = this.treeObj[x++];
+      }
+      console.log(this.trees)
     });
   }
 
@@ -70,6 +82,10 @@ export class SiteAdminPageComponent implements OnInit {
   unbanUser(username: string){
     this.userService.swUnbanUser(username);
     console.log(username + "unbanned from the site");
+  }
+
+  deleteTree(treeId: string) {
+    this.treeService.deleteChosenTree(treeId);
   }
 
 }

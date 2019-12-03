@@ -55,7 +55,20 @@
         <mdb-card-title>
           <h3>Admins</h3>
         </mdb-card-title>
-    
+        <div *ngFor="let admin of admins" class="card notificationCard" name="notificationAcceptReject">
+          <div class="row">
+            <div class="col-9">
+              <label style="float:left">{{admin}}</label>
+            </div>
+            <div class="col-3">
+              <div class="row" style="width:100%;justify-content: end;">
+                <div class="spacer">
+                    <button (click)="makeAdmin(user.username)" class="notificationBtn" type="button" color="success">Remove Admin</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </mdb-card-body>
     </mdb-card>
 

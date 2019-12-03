@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service'
+import { AdminService } from '../services/admin.service'
 
 @Component({
   selector: 'app-site-admin-page',
@@ -9,14 +10,16 @@ import { UserService } from '../services/user.service'
 export class SiteAdminPageComponent implements OnInit {
   users: Object;
   bannedUsers: Object;
+  admObj: Object;
   ban: [string];
-  admins: [String];
+  admins: [string];
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private adminService: AdminService) { }
 
   activeTabSection = 'Trees';
 
   ngOnInit() {
+    this.admins = [null];
     this.ban = [null];
     this.userService.getAllUsers().then((res) => {
       this.users = res;
@@ -27,7 +30,14 @@ export class SiteAdminPageComponent implements OnInit {
       while(this.bannedUsers[x]!=undefined){
         this.ban[x] = this.bannedUsers[x++];
       }
-    })
+    });
+    this.adminService.getAllAdmins().then((res) => {
+      this.admObj = res;
+      let x = 0;
+      while(this.admObj[x]!=undefined){
+        this.admins[x] = this.admObj[x++];
+      }
+    });
   }
 
   toggle(SectionName) {

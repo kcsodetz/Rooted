@@ -37,7 +37,13 @@ let treeSchema = new mongoose.Schema({
         message: String,
         dateSent: { type: Date, default: Date.now },
         unread: {type: Boolean, default: true}
-    }]
+    }],
+    nonRootedMember: [{
+        name: String,
+        rootedStatus: false,
+
+    }],
+    colorScheme: {type: String, default: 'Red'},
 })
 
 /* Creating the user model from the schema and giving it to Mongoose */

@@ -1417,14 +1417,34 @@ router.post('/change-color-scheme', authenticate, (req, res) => {
                 res.send(err);
                 return
             })
-
-
     }).catch((err) => {
         res.status(400).send({ message: "An error occurred" });
         return;
     })
+})
 
+/**
+ * Get color scheme
+ */
+router.get('/color-scheme', authenticate, (req, res) => {
+    if(!req.body || !req.body.treeID) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
 
+    Tree.findById(req.body.treeID, (err, tree) => {
+        if (err || tree == null) {
+            res.status(400).send({ message: "Tree does not exist" })
+            return;
+        }
+
+        res.status(200).send(tree.colorScheme);
+        return
+       
+    }).catch((err) => {
+        res.status(400).send({ message: "An error occurred" });
+        return;
+    })
 })
 
 module.exports = router;

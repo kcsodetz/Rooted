@@ -1,28 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~@angular/material/theming';
 
-// always include only once per project
-@include mat-core();
+$my-normal-theme-primary: mat-palette($mat-indigo);
+$my-normal-theme-accent: mat-palette($mat-light-blue);
+$my-normal-theme-warn: mat-palette($mat-deep-orange);
 
-// import our custom themes
-@import 'my-normal-theme.scss';
-
-
-.my-normal-theme {
-  @include angular-material-theme($my-normal-theme);
-}
-
-// additional css classes
-// you can hardcode one of them on the <body> tag 
-// or switch dynamically during runtime with [class]
-/*.my-light-theme {
-  @include angular-material-theme($my-light-theme);
-}
-
-.my-dark-theme {
-  @include angular-material-theme($my-dark-theme);
-}*/
-
+// create theme (use mat-dark-theme for themes with dark backgrounds)
+$my-normal-theme: mat-light-theme(
+    $my-normal-theme-primary,
+    $my-normal-theme-accent,
+    $my-normal-theme-warn
+);
 
 body {
 	background: #FFFAF0;

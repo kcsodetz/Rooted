@@ -36,6 +36,9 @@
               "node_modules/angular-bootstrap-md/scss/mdb-free.scss",
               "src/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/styles"]
+            },
             "scripts": [
               "javascript/dragAndDrop.js"
             ]
@@ -145,5 +148,10 @@
       }
     }
   },
-  "defaultProject": "DayDream"
+  "defaultProject": "DayDream",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }

@@ -1384,5 +1384,48 @@ router.post("/submit-anonymous-message", authenticate, (req, res) => {
     })
 })
 
+/**
+ * Change color scheme
+ */
+
+router.post('/change-color-scheme', authenticate, (req, res) => {
+    if(!req.body || !req.body.newColor || !req.body.treeID) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+
+    Tree.findById(req.body.treeID, (err, tree) => {
+        if (err || tree == null) {
+            res.status(400).send({ message: "Tree does not exist" })
+            return;
+        }
+
+        if (!tree.admins.includes(req.user.username)) {
+            res.status(401).send({ message: "Not authorized to change tree color scheme." });
+            return;
+        }
+
+        Tree.findOneAndUpdate({ _id: req.body.treeID }, 
+            {
+                $set: {
+                    colorScheme: req.body.newColor,
+                }
+            }).then(() => {
+                res.status(200).send({ message: 'Color scheme of tree has been changed.'})
+                return
+            }).catch((err) => {
+                res.send(err);
+                return
+            })
+
+
+    }).catch((err) => {
+        res.status(400).send({ message: "An error occurred" });
+        return;
+    })
+
+
+})
+
 module.exports = router;
 

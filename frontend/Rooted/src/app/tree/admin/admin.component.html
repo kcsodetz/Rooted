@@ -8,7 +8,7 @@
 
 
     <div class="spacer" style="float: right; align-self: right;">
-      <button (click)="cancel()" onclick="document.getElementById('userinfo').style.display='block'" type="button"
+      <button (click)="cancel()" [ngStyle]="{'background-color': myTree.colorScheme}" onclick="document.getElementById('userinfo').style.display='block'" type="button"
       block="true">Delete This Tree</button>
     </div>
   </div>
@@ -74,13 +74,13 @@
     
     
     </nav>
-    <mdb-card id="TreeSection"  borderColor="border-success">
-      <mdb-card-body>
+    <mdb-card id="TreeSection"  borderColor="" [ngStyle]="{'color': myTree.colorScheme}" [ngStyle]="{'border-color': myTree.colorScheme}">
+      <mdb-card-body >
         <mdb-card-title>
-          <h3>2019</h3>
+          <h3 [ngStyle]="{'color': myTree.colorScheme}">2019</h3>
         </mdb-card-title>
         <div class="usericon" *ngFor="let member of myTree.members">
-          <i class="fas fa-user-circle fa-5x fa-green-text green-text pr-3 ml-3"></i>
+          <i class="fas fa-user-circle fa-5x  pr-3 ml-3" [ngStyle]="{'color': myTree.colorScheme}"></i>
           <!--<span><a onclick="document.getElementById('userinfo').style.display='block'">
               {{member}}</a></span>-->
           <div id="userinfo" class="w3-modal">

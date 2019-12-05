@@ -251,4 +251,17 @@ export class TreeService {
         };
         return this.http.post('http://localhost:5000/tree/decline-user-requested-invite', payload).toPromise();
     }
+
+    setColorScheme(treeID: string, newColor: string) {
+        const color = {
+            newColor: newColor,
+            treeID: treeID,
+        };
+
+        return this.http.post('http://localhost:5000/tree/change-color-scheme', color).toPromise();
+    }
+
+    getColorScheme(){
+        return this.http.get('http://localhost:5000/tree/display-banned-users').toPromise();
+    }
 }

@@ -163,7 +163,7 @@
                 
                 <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
                   <button type="button" class="btn btn-info" (click)="fileInput.click()">Upload picture <i class="fa fa-camera"></i> </button>
-                  <button type="button" class="btn btn-danger" onclick="document.getElementById('deleteconfirm').style.display='block'">Delete picture <i class="fa fa-trash"></i> </button>
+                  <button *ngIf="isAdmin" type="button" class="btn btn-danger" onclick="document.getElementById('deleteconfirm').style.display='block'">Delete picture <i class="fa fa-trash"></i> </button>
                   
                   
                   <div id="deleteconfirm" class="w3-modal">

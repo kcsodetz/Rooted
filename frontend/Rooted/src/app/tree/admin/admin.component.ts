@@ -100,8 +100,10 @@ export class AdminComponent implements OnInit {
   }
 
   removeUser(username: string){
-    console.log("removed: " + username);
-    this.treeService.removeUser(this.route.snapshot.params['id'],username);
+    if(confirm("Are you sure you want to kick this user from the group?")){
+      this.treeService.removeUser(this.route.snapshot.params['id'],username);
+      console.log("removed: " + username);
+    }
   }
 
   banUser(username: string){
@@ -227,23 +229,26 @@ export class AdminComponent implements OnInit {
   }
 
   removeAnnouncement(announcementID: string){
-    console.log(this.route.snapshot.params['id']);
-    this.treeService.removeAnnouncement(this.route.snapshot.params['id'],announcementID).then(() => {
-      var confirm = window.alert('Announcement Removed');
-      console.log(confirm);
-    })
+    if(confirm("Are you sure you want to permanently remove this announcement?")){
+      this.treeService.removeAnnouncement(this.route.snapshot.params['id'],announcementID).then(() => {
+        var confirm = window.alert('Announcement Removed');
+        console.log(confirm);
+      })
+    }
   }
 
   approveAnnouncement(announcementID: string, status: boolean){
-    this.treeService.approveAnnouncement(announcementID,this.route.snapshot.params['id'],status).then(()=>{
-      if(status){
-        var confirm = window.alert('Announcement Approved');
-        console.log(confirm);
-      }else{
-        var confirm = window.alert('Announcement Rejected');
-        console.log(confirm);
-      }
-    })
+    if(confirm("Are you sure you want to confirm/reject this announcmenet?")){
+      this.treeService.approveAnnouncement(announcementID,this.route.snapshot.params['id'],status).then(()=>{
+        if(status){
+          var confirm = window.alert('Announcement Approved');
+          console.log(confirm);
+        }else{
+          var confirm = window.alert('Announcement Rejected');
+          console.log(confirm);
+        }
+      })
+    }
   }
 
 }

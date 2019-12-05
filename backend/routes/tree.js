@@ -61,6 +61,12 @@ router.post("/add", authenticate, function (req, res) {
         admins: [req.user.username]
     });
 
+    var year = new Date();
+    var yearStr = year.getFullYear();
+
+    var obj = { "user": req.user.username , "yearStarted": yearStr, "yearEnded": yearStr};
+    newTree.memberInvolvement.push(obj);
+
     newTree.save(function (err, tree) {
         if (err) {
             console.log(err);
@@ -113,11 +119,11 @@ router.post('/add-photo', authenticate, upload.single("image"), (req, res) => {
  * Remove photo from tree
  */
 router.post('/remove-photo', authenticate, (req, res) => {
-    if (!req.headers.treeid || !req.body.imageid) {
+    if (!req.body.treeid || !req.body.imageid) {
         res.status(400).send({ message: "Bad request" });
         return;
     }
-    Tree.findOne({ _id: req.headers.treeid }).then((tre) => {
+    Tree.findOne({ _id: req.body.treeid }).then((tre) => {
         if (!tre) {
             res.status(400).send({ message: "Tree does not exist" });
             return;
@@ -1312,7 +1318,7 @@ router.post("/remove-annoucement", authenticate, (req, res) => {
  * Approve annoucement of a tree
  */
 router.post("/approve-annoucement", authenticate, (req, res) => {
-    if (!req.body || !req.body.annoucementID || !req.body.treeID || !req.body.status) {
+    if (!req.body || !req.body.annoucementID || !req.body.treeID || req.body.status==null) {
         res.status(400).send({ message: "Bad request" });
         return;
     }
@@ -1384,12 +1390,12 @@ router.post("/approve-annoucement", authenticate, (req, res) => {
  * Get all annoucements of a tree
  */
 router.get("/get-annoucements", authenticate, (req, res) => {
-    if (!req.body || !req.body.treeID) {
+    if (!req.headers.treeid) {
         res.status(400).send({ message: "Bad request" });
         return;
     }
 
-    Tree.findById({ _id: req.body.treeID }).then((tree) => {
+    Tree.findById({ _id: req.headers.treeid }).then((tree) => {
         if(!tree) {
             res.status(400).send({ message: "Tree does not exist" });
             return;
@@ -1544,6 +1550,56 @@ router.get('/color-scheme', authenticate, (req, res) => {
        
     }).catch((err) => {
         res.status(400).send({ message: "An error occurred" });
+        return;
+    })
+})
+
+/**
+ * Edit involvement year
+ */
+router.post('/edit-involvement-year', authenticate, (req, res) => {
+    if (!req.body || !req.body.treeID) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+
+    Tree.findById({ _id: req.body.treeID}).then((tree) => {
+        if(!tree) {
+            res.status(400).send({ message: "Tree does not exist" })
+            return
+        }
+
+        if (!tree.members.includes(req.user.username)) {
+            res.status(400).send({ message: "User does not exist in the tree" })
+            return
+        }
+
+        var found = false;
+
+        tree.memberInvolvement.forEach(element => {
+            if (req.user.username == element.user) {
+                found = true;
+                var n = tree.memberInvolvement.indexOf(element);
+                if (req.body.yearStarted) {
+                    tree.memberInvolvement[n].yearStarted = req.body.yearStarted;
+                }
+                if (req.body.yearEnded) {
+                    tree.memberInvolvement[n].yearEnded = req.body.yearEnded;
+                }
+                tree.save();
+            }
+        })
+
+        if(found) {
+            res.status(200).send({ message: "Involvement years changed" });
+            return;
+        }
+        else {
+            res.status(200).send({ message: "Unable to find user." });
+            return;
+        }
+    }).catch((err) => {
+        res.status(400).send({ message: "An error has occured." });
         return;
     })
 })

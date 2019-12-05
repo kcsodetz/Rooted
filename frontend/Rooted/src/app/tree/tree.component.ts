@@ -38,7 +38,12 @@ export class TreeComponent implements OnInit {
   username: String;
   isMember: Boolean;
   notMember: Boolean;
+  photoID: string;
+  selectedIndex = 0;
   messageForm: FormGroup;
+  annObj: Object;
+  announcements: [Object];
+  announcementForm: FormGroup;
 
   /* variables used in editing tree name*/
   renderComponent: string;
@@ -92,6 +97,19 @@ export class TreeComponent implements OnInit {
     this.messageForm = this.formBuilder.group({
       message: ['']
     })
+
+    this.announcementForm = this.formBuilder.group({
+      announcement: ['']
+    })
+    this.announcements = [null];
+    this.treeService.getAnnouncements(this.route.snapshot.params['id']).then((data) => {
+      this.annObj = data;
+      let x = 0;
+      while(this.annObj[x]!=undefined){
+        this.announcements[x] = this.annObj[x++];
+      }
+      console.log(this.announcements);
+    });
 
   }
 
@@ -229,6 +247,11 @@ export class TreeComponent implements OnInit {
     this._router.navigate(['/admin/' + this.myTree.ID]);
   }
 
+  setRow(_index: number) {
+    this.selectedIndex = _index;
+    console.log(this.selectedIndex);
+  }
+
 
 
   leaveTree() {
@@ -309,6 +332,21 @@ export class TreeComponent implements OnInit {
     });
   }
 
+
+  selectPhoto(string: string){
+    this.photoID = string;
+    console.log(this.photoID);
+  }
+
+  deletePhoto(){
+    this.treeService.deletePhoto(this.myTree.ID, this.photoID).then(() => {
+      console.log('Deleting Photo');
+      // navigate back to page
+      window.location.replace('/tree/' + this.myTree.ID);
+    });
+  }
+
+
   sendJoinRequest() {
     this.treeService.requestAdminToJoinTree(this.myTree.ID, this.account.username).then((res) => {
   //    console.log(res);
@@ -371,5 +409,12 @@ export class TreeComponent implements OnInit {
       console.log(confirm);
     });
     console.log("message: " + message + "submitted to mods");
+  }
+
+  addAnnouncement(announcement: string){
+    this.treeService.addAnnouncement(this.route.snapshot.params['id'],announcement).then(()=> {
+      var confirm = window.alert('Announcement Requested');
+      console.log(confirm);
+    })
   }
 }

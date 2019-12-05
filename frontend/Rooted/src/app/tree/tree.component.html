@@ -36,6 +36,7 @@
               [state]="{ data: {treeID: myTree.ID, treeName: myTree.treeName, reporter: username}}" class="my-4"> Report
               Group </a>
           </button>
+          <button mdbBtn onclick="document.getElementById('bruh').style.display='block'" type="button" color="success">Message the Admins</button>
 
         </div>
       </div>
@@ -345,3 +346,29 @@
   </div>
   </ng-template>
 </div>
+
+<div id="bruh" class="w3-modal">
+    <div class="w3-modal-content">
+      <div class="w3-container">
+        <!-- Card Container and Body -->
+        <mdb-card>
+          <mdb-card-body>
+            <span onclick="document.getElementById('bruh').style.display='none'"
+              class="w3-button w3-display-topright">&times;</span>
+              <form (submit)="sendAnonMessage(message)" class="text-center border border-light p-5" [formGroup]="messageForm">
+
+                  <p class="h4 mb-4">Anonymously Message the Admins</p>
+          
+                  <!-- Message -->
+                  <div class="form-group">
+                    <textarea class="form-control rounded-0" id="message" [(ngModel)]="message" formControlName="message" rows="3" placeholder="Message"></textarea>
+                  </div>
+          
+                  <!-- Send button -->
+                  <button mdbBtn color="success" block="true" type="submit">Send</button>
+                </form>
+          </mdb-card-body>
+        </mdb-card>
+      </div>
+    </div>
+  </div>

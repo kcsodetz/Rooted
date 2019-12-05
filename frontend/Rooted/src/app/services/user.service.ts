@@ -27,6 +27,10 @@ export class UserService {
         return this.http.get<Object>('http://localhost:5000/user/account').toPromise();
     }
 
+    getAllUsers(){
+        return this.http.get<Object>('http://localhost:5000/user/get-all-users').toPromise();
+    }
+
     editUserProfilePicture(profilePictureURL: string, username: string) {
         const user: Object = {
             profilePictureURL: profilePictureURL,
@@ -70,23 +74,29 @@ export class UserService {
     /*
     *   Accept invitation to join a group
     */
-    acceptInvitation(username: string, treeid: string) {
-        const tree = {
+    acceptInvitation(username: string, notif: Object) {
+        const notifID = notif['_id'];
+        const treeID = notif['meta'];
+        const userAndNotif = {
             'username' : username,
-            'treeID' : treeid,
+            'treeID' : treeID,
+            'notifID' : notifID
         };
-        return this.http.post('http://localhost:5000/user/join-tree', tree).toPromise();
+        return this.http.post('http://localhost:5000/user/join-tree', userAndNotif).toPromise();
     }
 
     /*
     *   Decline invitation to join a group
     */
-    declineInvitation(username: string, treeid: string) {
-        const tree = {
+    declineInvitation(username: string, notif: Object) {
+        const notifID = notif['_id'];
+        const treeID = notif['meta'];
+        const userAndNotif = {
             'username' : username,
-            'treeID' : treeid,
+            'treeID' : treeID,
+            'notifID' : notifID
         };
-        return this.http.post('http://localhost:5000/user/decline-invite', tree).toPromise();
+        return this.http.post('http://localhost:5000/user/decline-invite', userAndNotif).toPromise();
     }
 
     /*
@@ -99,13 +109,45 @@ export class UserService {
         };
         return this.http.post('http://localhost:5000/user/remove-notification', payload).toPromise();
     }
-  
-    joinTree(name: string, treeID: string){
+
+    joinTree(name: string, treeID: string) {
         const tree = {
             username: name,
             treeID: treeID,
         };
         return this.http.post('http://localhost:5000/tree/join-tree', tree).toPromise();
 
+    }
+
+    swBanUser(username: string){
+        const payload = {
+            'userToBan' : username
+        };
+        return this.http.post('http://localhost:5000/user/sw-admin-ban-user', payload).toPromise();
+    }
+
+    swAddAdmin(username: string){
+        const payload = {
+            'username' : username
+        };
+        return this.http.post('http://localhost:5000/user/add-sitewide-admin',payload).toPromise();
+    }
+
+    swRemoveAdmin(username: string){
+        const payload = {
+            'userToRemove' : username
+        };
+        return this.http.post('http://localhost:5000/user/remove-sitewide-admin',payload).toPromise();
+    }
+
+    swAllBannedUsers(){
+        return this.http.get<Object>('http://localhost:5000/user/all-banned-users').toPromise();
+    }
+
+    swUnbanUser(username: string){
+        const payload = {
+            'userToUnban' : username
+        };
+        return this.http.post('http://localhost:5000/user/sw-admin-unban-user',payload).toPromise();
     }
 }

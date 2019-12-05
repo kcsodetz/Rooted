@@ -20,7 +20,7 @@ var token;
 var badID = mongoose.Types.ObjectId();
 var usr = "testing_ken";
 
-describe('Test Adding and Removing an Admin', () => {
+describe('Test Adding and Removing an Admin', function() {
     // Preprocessing (Register, login, create tree, add user)
     this.timeout(5000);
     before((done) => {

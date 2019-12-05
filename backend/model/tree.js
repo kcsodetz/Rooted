@@ -32,12 +32,14 @@ let treeSchema = new mongoose.Schema({
         user: String,
         annoucement: String,
         datePosted: { type: Date, default: Date.now },
+        approved: {type: Boolean, default: false},
     }],
     anonymousMessages: [{
         message: String,
         dateSent: { type: Date, default: Date.now },
         unread: {type: Boolean, default: true}
-    }]
+    }],
+    colorScheme: {type: String, default: 'Red'},
 })
 
 /* Creating the user model from the schema and giving it to Mongoose */

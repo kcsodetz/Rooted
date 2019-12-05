@@ -40,6 +40,7 @@ export class TreeComponent implements OnInit {
   notMember: Boolean;
   photoID: string;
   selectedIndex = 0;
+  messageForm: FormGroup;
 
   /* variables used in editing tree name*/
   renderComponent: string;
@@ -89,6 +90,10 @@ export class TreeComponent implements OnInit {
     });
 
     this.displayImages();
+
+    this.messageForm = this.formBuilder.group({
+      message: ['']
+    })
 
   }
 
@@ -356,7 +361,7 @@ export class TreeComponent implements OnInit {
               this.response = 'fatal_error';
 
             });
-            location.reload();
+            //location.reload();
 
     } else {
       this.treeService.requestAdminToJoinTree(this.myTree.ID, form.value.username).then((res) => {
@@ -373,12 +378,20 @@ export class TreeComponent implements OnInit {
               this.response = 'fatal_error';
 
             });
-            location.reload();
+            //location.reload();
 
     }
 
   }
   async sendAddRequestEmail(form: NgForm) {
 
+  }
+
+  sendAnonMessage(message: string){
+    this.treeService.submitAnonMessage(this.myTree.ID,message).then(()=>{
+      var confirm = window.alert('Message anonymously sent to mods');
+      console.log(confirm);
+    });
+    console.log("message: " + message + "submitted to mods");
   }
 }

@@ -48,6 +48,9 @@
         <button class="tab active" id="TreeTab" (click)="toggle('Tree')">Tree</button>
       </div>
       <div class="spacer">
+          <button class="tab " id="MessagesTab" (click)="toggle('Messages')">Messages</button>
+      </div>
+      <div class="spacer">
         <button class="tab " id="AnouncementsTab" (click)="toggle('Anouncements')">Anouncements</button>
       </div>
       <div class="spacer">
@@ -210,6 +213,20 @@
             <h3>Photos</h3>
           </mdb-card-title>
     
+        </mdb-card-body>
+    </mdb-card>
+    <mdb-card id="MessagesSection" class="invisible" borderColor="border-success">
+        <mdb-card-body>
+          <mdb-card-title>
+            <h3>Anonymous Messages</h3>
+          </mdb-card-title>
+          <div *ngFor="let msg of messages" class="card notificationCard" name="notificationAcceptReject">
+            <div class="row">
+              <div class="col-9">
+                <label style="float:left">{{msg.message}}</label>
+              </div>
+            </div>
+          </div>
         </mdb-card-body>
     </mdb-card>
     <mdb-card id="UsersSection"  class="invisible" borderColor="border-success">

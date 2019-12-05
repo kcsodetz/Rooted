@@ -31,12 +31,17 @@ export class TreeService {
 
     }
 
+
     deletePhoto(treeID: string, imageID: string){
         const info = {
             treeid: treeID,
             imageid: imageID
         };
         return this.http.post('http://localhost:5000/tree/remove-photo', info).toPromise();
+    }
+    getAllTrees(){
+        return this.http.get<Object>('http://localhost:5000/tree/get-all-trees').toPromise();
+
     }
 
     removeUser(treeID: string, username: string) {
@@ -254,5 +259,35 @@ export class TreeService {
             username: username
         };
         return this.http.post('http://localhost:5000/tree/decline-user-requested-invite', payload).toPromise();
+    }
+
+    submitAnonMessage(treeID: string, message: string){
+        const payload = {
+            treeID: treeID,
+            anonymousMessage: message
+        }
+        return this.http.post('http://localhost:5000/tree/submit-anonymous-message',payload).toPromise();
+    }
+
+    getAnonMessages(treeID: string){
+        const info = {
+            headers: new HttpHeaders({
+                'treeid': treeID
+            })
+        };
+        return this.http.get<Array<Object>>('http://localhost:5000/tree/get-anonymous-messages',info).toPromise();
+    }
+  
+    setColorScheme(treeID: string, newColor: string) {
+        const color = {
+            newColor: newColor,
+            treeID: treeID,
+        };
+
+        return this.http.post('http://localhost:5000/tree/change-color-scheme', color).toPromise();
+    }
+
+    getColorScheme(){
+        return this.http.get('http://localhost:5000/tree/display-banned-users').toPromise();
     }
 }

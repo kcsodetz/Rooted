@@ -32,7 +32,7 @@ router.get("/", function (req, res) {
 router.get("/all-admins", function (req, res) {
     Admin.find({}).then((adm) => {
         res.status(200).send(adm[0].admins);
-        console.log(adm[0].admins);
+        //console.log(adm[0].admins);
         return 
     }).catch((err) => {
         res.status(400).send(err);

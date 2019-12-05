@@ -89,8 +89,11 @@ export class TreeComponent implements OnInit {
       // this.treeMember();
     });
     this.addUserFormEmail = this.formBuilder.group({
-      email: ['', Validators.required]
+      email: ['', Validators.required],
+      name: [''],
+      sendEmail: [Boolean],
     });
+    
 
     this.displayImages();
 
@@ -400,7 +403,7 @@ export class TreeComponent implements OnInit {
 
   }
   async sendAddRequestEmail(form: NgForm) {
-
+      
   }
 
   sendAnonMessage(message: string){

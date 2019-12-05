@@ -154,10 +154,10 @@
       </mdb-card-body>
     </mdb-card>
 
-    <mdb-card id="PendingAnouncementsSection" class="invisible" borderColor="border-success">
+    <mdb-card id="PendingAnouncementsSection" class="invisible" borderColor="">
       <mdb-card-body>
         <mdb-card-title>
-          <h3>Pending Anouncements</h3>
+          <h3 [ngStyle]="{'color': myTree.colorScheme}">Pending Anouncements</h3>
         </mdb-card-title>
         <div *ngFor="let ann of announcements" class="card notificationCard" name="notificationAcceptReject">
           <div *ngIf="!ann.approved" class="row">
@@ -167,10 +167,10 @@
             <div class="col-3">
               <div class="row" style="width:100%;justify-content: end;">
                 <div class="spacer">
-                  <button (click)="approveAnnouncement(ann._id,true)"class="notificationBtn" type="button" color="success">Approve</button>
+                  <button (click)="approveAnnouncement(ann._id,true)"class="notificationBtn" type="button" [ngStyle]="{'background-color': myTree.colorScheme}">Approve</button>
                 </div>
                 <div class="spacer">
-                  <button (click)="approveAnnouncement(ann._id,false)"class="notificationBtn" type="button" color="success">Reject</button>
+                  <button (click)="approveAnnouncement(ann._id,false)"class="notificationBtn" type="button" [ngStyle]="{'background-color': myTree.colorScheme}">Reject</button>
                 </div>
               </div>
             </div>

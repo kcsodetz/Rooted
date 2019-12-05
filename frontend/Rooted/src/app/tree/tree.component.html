@@ -1,3 +1,5 @@
+
+
 <div>
   <div *ngIf="isPrivate; else elseStatus">
     <div *ngIf="notMember; else elseStatus">
@@ -122,7 +124,6 @@
                         </div>
                       </div>
                   </div> -->
-
               </div>
             </mdb-card-body>
           </mdb-card>
@@ -260,7 +261,7 @@
                           A Fatal Error has occured. Please try again at another time.
                         </div>
                         <button color="success" block="true" type="submit" prevent-default  
-                        style="align-self: start;">Add User</button>
+                        style="align-self: start;" [ngStyle]="{'background-color': myTree.colorScheme}">Add User</button>
                       </div>
                       </form>
 
@@ -268,15 +269,18 @@
                       <form (submit)="sendAddRequestEmail(f)" #f="ngForm" class="text-center border border-light p-5"
                       [formGroup]="addUserFormEmail">
                       <div class="form-group">
-                        <label style="float:left">By Email:</label>
-                        <input type="text" placeholder="Email" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': submitted_email  }" />
+                        <label style="float:left">Non-Rooted Member</label>
+                        <input type="text" placeholder="Name" class="form-control" formControlName="name"/>
+                        <br>
+                        <label>Invite User to Join Rooted?</label><mdb-checkbox [checked]="false" [default]="false" formControlName="sendEmail"></mdb-checkbox><br> 
+                        <input type="text" placeholder="Email" class="form-control" formControlName="email"/>
                         
                         <br>
                         
                         <br>
                       </div>
                       <button color="success" block="true" type="submit" prevent-default  
-                        style="align-self: start;">Add
+                        style="align-self: start;" [ngStyle]="{'background-color': myTree.colorScheme}">Add
                         User</button>
                     </form>
                       <div class="form-group">
@@ -287,7 +291,7 @@
                           </div>
                           <div class="spacer" style="width:50%; display: flex; justify-content: end;">
                             <button (click)="cancel()" type="button"
-                              onclick="document.getElementById('id02').style.display='none'" color="success"
+                              onclick="document.getElementById('id02').style.display='none'" [ngStyle]="{'background-color': myTree.colorScheme}"
                               block="true">Cancel</button>
                           </div>
                         </div>

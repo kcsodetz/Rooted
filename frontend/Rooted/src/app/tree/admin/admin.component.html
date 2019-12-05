@@ -1,6 +1,6 @@
 <div class="col" style="display: flex; align-content: center; width:100%;">
   <div class="row">
-    <h1>{{myTree.treeName}} Admin Dashboard</h1>
+    <h1 [ngStyle]="{'color': myTree.colorScheme}">{{myTree.treeName}} Admin Dashboard</h1>
 
     <button mdbBtn type="button" [ngStyle]="{'background-color': myTree.colorScheme}"
               mdbWavesEffect (click)=renderEditTree()>Edit Tree <i class="fa fa-edit"> </i></button>
@@ -128,41 +128,41 @@
       </mdb-card-body>
     </mdb-card>
     
-    <mdb-card id="AnouncementsSection" class="invisible" borderColor="border-success">
+    <mdb-card id="AnouncementsSection" class="invisible" borderColor="">
       <mdb-card-body>
         <mdb-card-title>
-          <h3>Anouncements</h3>
+          <h3 [ngStyle]="{'color': myTree.colorScheme}">Anouncements</h3>
         </mdb-card-title>
     
       </mdb-card-body>
     </mdb-card>
     
-    <mdb-card id="AboutSection" class="invisible" borderColor="border-success">
+    <mdb-card id="AboutSection" class="invisible" borderColor="">
         <mdb-card-body>
           <mdb-card-title>
-            <h3>About</h3>
+            <h3 [ngStyle]="{'color': myTree.colorScheme}">About</h3>
           </mdb-card-title>
     
         </mdb-card-body>
     </mdb-card>
     
-  <mdb-card id="RequestedUsersSection" class="invisible" borderColor="border-success">
+  <mdb-card id="RequestedUsersSection" class="invisible" borderColor="">
       <mdb-card-body>
         <mdb-card-title>
           <div  *ngFor="let ru of requestedUsersArray" class="w3-container col" >
 
             <div class="card notificationCard" name="notificationAcceptReject">
                 <div class="row">
-                    <div class="col-9" >
+                    <div class="col-9" [ngStyle]="{'color': myTree.colorScheme}"  >
                             {{ru}}
                     </div>
                     <div class="col-3">
                         <div class="row" style="width:100%;justify-content: end;"  >
                                 <div class="spacer">
-                                    <button class="notificationBtn"  type="button" color="success" (click)="acceptUserRequest(ru)" >Accept</button>
+                                    <button class="notificationBtn"  type="button" [ngStyle]="{'background-color': myTree.colorScheme}" (click)="acceptUserRequest(ru)" >Accept</button>
                                 </div>
                                 <div class="spacer">
-                                    <button class="notificationBtn"  type="button" color="success" (click)="rejectUserRequest(ru)">Reject</button>
+                                    <button class="notificationBtn"  type="button" [ngStyle]="{'background-color': myTree.colorScheme}" (click)="rejectUserRequest(ru)">Reject</button>
                                 </div>
                         </div>
                         
@@ -177,23 +177,23 @@
       </mdb-card-body>
   </mdb-card>
 
-  <mdb-card id="PendingUsersSection" class="invisible" borderColor="border-success">
+  <mdb-card id="PendingUsersSection" class="invisible" borderColor="">
     <mdb-card-body>
       <mdb-card-title>
         <div  *ngFor="let us of pendingUsersArray"  class="w3-container col" >
 
           <div class="card notificationCard" name="notificationAcceptReject">
               <div class="row">
-                  <div class="col-9" >
+                  <div class="col-9" [ngStyle]="{'color': myTree.colorScheme}" >
                           {{us}}
                   </div>
                   <div class="col-3">
                       <div class="row" style="width:100%;justify-content: end;"   >
                               <div class="spacer">
-                                  <button class="notificationBtn"  type="button" color="success" (click)="acceptUser(us)" >Accept</button>
+                                  <button class="notificationBtn"  type="button" [ngStyle]="{'background-color': myTree.colorScheme}" (click)="acceptUser(us)" >Accept</button>
                               </div>
                               <div class="spacer">
-                                  <button class="notificationBtn"  type="button" color="success" (click)="rejectUser(us)">Reject</button>
+                                  <button class="notificationBtn"  type="button" [ngStyle]="{'background-color': myTree.colorScheme}" (click)="rejectUser(us)">Reject</button>
                               </div>
                       </div>
                   </div>
@@ -207,18 +207,18 @@
     </mdb-card-body>
 </mdb-card>
 
-    <mdb-card id="PhotosSection" class="invisible" borderColor="border-success">
+    <mdb-card id="PhotosSection" class="invisible" borderColor="s">
         <mdb-card-body>
           <mdb-card-title>
-            <h3>Photos</h3>
+            <h3 [ngStyle]="{'color': myTree.colorScheme}">Photos</h3>
           </mdb-card-title>
     
         </mdb-card-body>
     </mdb-card>
-    <mdb-card id="MessagesSection" class="invisible" borderColor="border-success">
+    <mdb-card id="MessagesSection" class="invisible" borderColor="">
         <mdb-card-body>
           <mdb-card-title>
-            <h3>Anonymous Messages</h3>
+            <h3 [ngStyle]="{'color': myTree.colorScheme}">Anonymous Messages</h3>
           </mdb-card-title>
           <div *ngFor="let msg of messages" class="card notificationCard" name="notificationAcceptReject">
             <div class="row">
@@ -229,10 +229,10 @@
           </div>
         </mdb-card-body>
     </mdb-card>
-    <mdb-card id="UsersSection"  class="invisible" borderColor="border-success">
+    <mdb-card id="UsersSection"  class="invisible" borderColor="">
         <mdb-card-body>
           <mdb-card-title>
-            <h3>Users</h3>
+            <h3 [ngStyle]="{'color': myTree.colorScheme}">Users</h3>
           </mdb-card-title>
           <div *ngFor="let user of users" class="card notificationCard" name="notificationAcceptReject">
               <div class="row">
@@ -244,14 +244,14 @@
                     <!-- <div *ngIf="admins.includes(user); else elseAdmin"></div> -->
                     <!-- <ng-template #elseAdmin> -->
                     <div *ngIf="!admins.includes(user)" class="spacer">
-                      <button (click)="makeAdmin(user)" class="notificationBtn" type="button" color="success">Make Admin</button>
+                      <button (click)="makeAdmin(user)" class="notificationBtn" type="button" [ngStyle]="{'background-color': myTree.colorScheme}">Make Admin</button>
                     </div>
                     <!-- </ng-template> -->
                     <div *ngIf="!bannedUsers.includes(user)" class="spacer">
-                      <button (click)="banUser(user)" class="notificationBtn" type="button" color="success">Ban</button>
+                      <button (click)="banUser(user)" class="notificationBtn" type="button" [ngStyle]="{'background-color': myTree.colorScheme}">Ban</button>
                     </div>
                     <div class="spacer">
-                      <button (click)="removeUser(user)" class="notificationBtn" type="button" color="success">Kick</button>
+                      <button (click)="removeUser(user)" class="notificationBtn" type="button" [ngStyle]="{'background-color': myTree.colorScheme}">Kick</button>
                     </div>
                   </div>
                 </div>
@@ -259,10 +259,10 @@
             </div>
         </mdb-card-body>
       </mdb-card>
-    <mdb-card id="BannedUsersSection"  class="invisible" borderColor="border-success">
+    <mdb-card id="BannedUsersSection"  class="invisible" borderColor="">
       <mdb-card-body>
         <mdb-card-title>
-          <h3>BannedUsers</h3>
+          <h3 [ngStyle]="{'color': myTree.colorScheme}">BannedUsers</h3>
         </mdb-card-title>
         <div *ngFor="let user of bannedUsers" class="card notificationCard" name="notificationAcceptReject">
             <div class="row">
@@ -272,7 +272,7 @@
               <div class="col-3">
                 <div class="row" style="width:100%;justify-content: end;">
                   <div class="spacer">
-                    <button (click)="unbanUser(user)"class="notificationBtn" type="button" color="success">Unban</button>
+                    <button (click)="unbanUser(user)"class="notificationBtn" type="button" [ngStyle]="{'background-color': myTree.colorScheme}">Unban</button>
                   </div>
                 </div>
               </div>

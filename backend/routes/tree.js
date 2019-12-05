@@ -1309,6 +1309,78 @@ router.post("/remove-annoucement", authenticate, (req, res) => {
 })
 
 /**
+ * Approve annoucement of a tree
+ */
+router.post("/approve-annoucement", authenticate, (req, res) => {
+    if (!req.body || !req.body.annoucementID || !req.body.treeID || !req.body.status) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+
+    Tree.findById({ _id: req.body.treeID }).then((tree) => {
+        if(!tree) {
+            res.status(400).send({ message: "Tree does not exists" })
+            return
+        }
+
+        if(!tree.members.includes(req.user.username)) {
+            res.status(400).send({ message: "User does not exist in the tree" })
+            return
+        }
+
+        if(!tree.admins.includes(req.user.username)) {
+            res.status(400).send({ message: "User is not authorized to approve or reject annoucements" })
+            return
+        }
+        
+        var found = false;
+        var approved = false;
+
+        tree.annoucements.forEach(element => {
+            if(element._id == req.body.annoucementID) {
+                if (req.body.status == true) { //if approve state is true
+                    found = true;
+                    approved = true;
+                    var n = tree.annoucements.indexOf(element);
+                    tree.annoucements[n].approved = true;
+                    tree.save();
+                    
+                }
+                else{
+                    found = true;
+                    approved = false;
+                    var n = tree.annoucements.indexOf(element);
+                    tree.annoucements.splice(n, 1);         
+                    tree.save();
+                }
+            }
+        })
+
+        if (found && approved) {
+            res.status(200).send({ message: "Annoucement has been approved." });
+            return;
+        }
+        else if ((found) && approved == false) {
+            res.status(200).send({ message: "Annoucement has been rejected." });
+            return;
+        }
+        else {
+            console.log("big error");
+            res.status(400).send({ message: "Annoucement could not be found." });
+            return;
+        }
+
+    }).catch((err) => {
+        console.log(err);
+        res.status(400).send({ message: "Something went wrong." });
+        return;
+    })
+
+
+})
+
+
+/**
  * Get all annoucements of a tree
  */
 router.get("/get-annoucements", authenticate, (req, res) => {

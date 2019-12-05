@@ -1257,7 +1257,7 @@ router.post("/remove-annoucement", authenticate, (req, res) => {
         return;
     }
     Tree.findById({ _id: req.body.treeID }).then((tree) => {
-        if(!tree) {
+        if (!tree) {
             res.status(400).send({ message: "Tree does not exist" });
             return;
         }
@@ -1268,7 +1268,7 @@ router.post("/remove-annoucement", authenticate, (req, res) => {
             if (element._id == req.body.annoucementID) {
                 found = true;
                 var n = tree.annoucements.indexOf(element);
-                tree.annoucements.splice(n, 1);         
+                tree.annoucements.splice(n, 1);
                 tree.save();
                 // res.status(200).send({ message: "Annoucement succesfully removed." });
                 // return;
@@ -1301,7 +1301,7 @@ router.get("/get-annoucements", authenticate, (req, res) => {
     }
 
     Tree.findById({ _id: req.body.treeID }).then((tree) => {
-        if(!tree) {
+        if (!tree) {
             res.status(400).send({ message: "Tree does not exist" });
             return;
         }
@@ -1325,7 +1325,7 @@ router.get("/get-anonymous-messages", authenticate, (req, res) => {
     }
 
     Tree.findById({ _id: req.body.treeID }).then((tree) => {
-        if(!tree) {
+        if (!tree) {
             res.status(400).send({ message: "Tree does not exist" });
             return;
         }
@@ -1348,19 +1348,18 @@ router.get("/get-anonymous-messages", authenticate, (req, res) => {
 /**
  * Submit anonymous message to admin team
  */
-
 router.post("/submit-anonymous-message", authenticate, (req, res) => {
     if (!req.body || !req.body.anonymousMessage || !req.body.treeID) {
         res.status(400).send({ message: "Bad request" });
         return;
     }
-    Tree.findById({ _id: req.body.treeID}).then((tree) => {
-        if(!tree) {
+    Tree.findById({ _id: req.body.treeID }).then((tree) => {
+        if (!tree) {
             res.status(400).send({ message: "Tree does not exist" });
             return
         }
 
-        if(!tree.members.includes(req.user.username)){
+        if (!tree.members.includes(req.user.username)) {
             res.status(400).send({ message: "User does not exist in the tree" })
             return;
         }
@@ -1385,67 +1384,50 @@ router.post("/submit-anonymous-message", authenticate, (req, res) => {
 })
 
 /**
- * Change color scheme
+ * Request a member that does not have an account
  */
-
-router.post('/change-color-scheme', authenticate, (req, res) => {
-    if(!req.body || !req.body.newColor || !req.body.treeID) {
+router.post("/request-non-rooted", authenticate, (req, res) => {
+    if (!req.body.treeID || !req.body.name) {
         res.status(400).send({ message: "Bad request" });
         return;
     }
 
-    Tree.findById(req.body.treeID, (err, tree) => {
-        if (err || tree == null) {
-            res.status(400).send({ message: "Tree does not exist" })
+    // let email;
+    // if (req.body.email) {
+    //     email = req.body.email;
+    // }
+    // else {
+    //     email = null;
+    // }
+
+    let email = (req.body.email) ? (req.body.email) : (null)
+
+    console.log(email);
+
+    Tree.findOneAndUpdate({ _id: req.body.treeID }, {
+        $push: {
+            nonRootedMembers: {
+                name: req.body.name,
+                email: email
+            }
+        }
+    }).then((tre) => {
+        if (!tre) {
+            res.status(400).send({ message: "Tree does not exist" });
             return;
         }
-
-        if (!tree.admins.includes(req.user.username)) {
-            res.status(401).send({ message: "Not authorized to change tree color scheme." });
+        else {
+            res.status(200).send({ message: "User has been successfully invited" });
             return;
         }
-
-        Tree.findOneAndUpdate({ _id: req.body.treeID }, 
-            {
-                $set: {
-                    colorScheme: req.body.newColor,
-                }
-            }).then(() => {
-                res.status(200).send({ message: 'Color scheme of tree has been changed.'})
-                return
-            }).catch((err) => {
-                res.send(err);
-                return
-            })
     }).catch((err) => {
-        res.status(400).send({ message: "An error occurred" });
+        console.log(err)
+        res.status(400).send({ message: "Fatal Error" });
         return;
     })
+
 })
 
-/**
- * Get color scheme
- */
-router.get('/color-scheme', authenticate, (req, res) => {
-    if(!req.body || !req.body.treeID) {
-        res.status(400).send({ message: "Bad request" });
-        return;
-    }
-
-    Tree.findById(req.body.treeID, (err, tree) => {
-        if (err || tree == null) {
-            res.status(400).send({ message: "Tree does not exist" })
-            return;
-        }
-
-        res.status(200).send(tree.colorScheme);
-        return
-       
-    }).catch((err) => {
-        res.status(400).send({ message: "An error occurred" });
-        return;
-    })
-})
 
 module.exports = router;
 

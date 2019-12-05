@@ -103,23 +103,32 @@ export class AdminComponent implements OnInit {
     if(confirm("Are you sure you want to kick this user from the group?")){
       this.treeService.removeUser(this.route.snapshot.params['id'],username);
       console.log("removed: " + username);
+      window.location.replace("/admin/" + this.route.snapshot.params['id']);
     }
   }
 
   banUser(username: string){
-    console.log("banned: " + username);
-    this.treeService.banUser(this.route.snapshot.params['id'],username);
+    if(confirm("Are you sure you want to ban this user from posting in the group?")){
+      this.treeService.banUser(this.route.snapshot.params['id'],username);
+      console.log("banned: " + username);
+      window.location.replace("/admin/" + this.route.snapshot.params['id']);
+    }
   }
 
   unbanUser(username: string){
-    console.log("unbanned: " + username);
-    this.treeService.unbanUser(this.route.snapshot.params['id'],username);
+    if(confirm("Are you sure you want to unban this user from the group?")){
+      this.treeService.unbanUser(this.route.snapshot.params['id'],username);
+      console.log("unbanned: " + username);
+      window.location.replace("/admin/" + this.route.snapshot.params['id']);
+    }
   }
 
   makeAdmin(username: string){
-    console.log("making admin: "+username);
-    this.treeService.addAdmin(this.route.snapshot.params['id'],username);
-    window.location.replace("/admin/" + this.route.snapshot.params['id']);
+    if(confirm("Are you sure you want to make this user an admin?")){
+      this.treeService.addAdmin(this.route.snapshot.params['id'],username);
+      console.log("making admin: "+username);
+      window.location.replace("/admin/" + this.route.snapshot.params['id']);
+    }
   }
 
   changeVisibility(){
@@ -149,8 +158,7 @@ export class AdminComponent implements OnInit {
 
   deleteTree() {
     this.treeService.deleteChosenTree(this.route.snapshot.params['id']);
-    
-    
+    window.location.replace("/home");
   }
 
   renderEditTree(){
@@ -226,6 +234,7 @@ export class AdminComponent implements OnInit {
       var confirm = window.alert('Announcement Added');
       console.log(confirm);
     })
+    window.location.replace("/admin/" + this.route.snapshot.params['id']);
   }
 
   removeAnnouncement(announcementID: string){
@@ -234,6 +243,7 @@ export class AdminComponent implements OnInit {
         var confirm = window.alert('Announcement Removed');
         console.log(confirm);
       })
+      window.location.replace("/admin/" + this.route.snapshot.params['id']);
     }
   }
 
@@ -243,12 +253,18 @@ export class AdminComponent implements OnInit {
         if(status){
           var confirm = window.alert('Announcement Approved');
           console.log(confirm);
+          window.location.replace("/admin/" + this.route.snapshot.params['id']);
         }else{
           var confirm = window.alert('Announcement Rejected');
           console.log(confirm);
+          window.location.replace("/admin/" + this.route.snapshot.params['id']);
         }
       })
     }
+  }
+
+  backToTree(){
+    window.location.replace("/tree/" + this.route.snapshot.params['id']);
   }
 
 }

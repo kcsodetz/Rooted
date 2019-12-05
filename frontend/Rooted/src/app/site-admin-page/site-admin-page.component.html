@@ -104,7 +104,7 @@
                   <div *ngIf="!bannedUsers.includes(user)" class="spacer">
                     <button (click)="banUser(user)" class="notificationBtn" type="button" color="success">Ban</button>
                   </div> -->
-                  <div *ngIf="admins.includes(user.username)" class="spacer">
+                  <div *ngIf="!admins.includes(user.username)" class="spacer">
                       <button (click)="makeAdmin(user.username)" class="notificationBtn" type="button" color="success">Make Admin</button>
                   </div>
                   <div class="spacer">

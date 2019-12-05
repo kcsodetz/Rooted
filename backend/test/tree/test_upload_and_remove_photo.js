@@ -22,7 +22,8 @@ var treeID;
 var imageID;
 
 var info = {
-    imageid: imageID
+    imageid: imageID,
+    treeID: treeID
 };
 
 describe('Test Upload and Remove Group Photo', function () {
@@ -199,13 +200,18 @@ describe('Test Upload and Remove Group Photo', function () {
 
     describe('Remove photo with correct values', () => {
         it('Should return 200', (done) => {
+            let info_c = {
+                imageid: imageID,
+                treeid: treeID
+            }
             // Request with payload
+            console.log(info_c)
             chai.request(server)
                 .post('/tree/remove-photo')
                 .set('content-type', 'application/x-www-form-urlencoded')
                 .set('token', token)
                 .set('treeid', treeID)
-                .send(info)
+                .send(info_c)
                 .end((err, res) => {
                     res.should.have.status(200)
                     done()

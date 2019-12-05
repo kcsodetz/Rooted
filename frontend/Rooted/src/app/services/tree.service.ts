@@ -31,8 +31,17 @@ export class TreeService {
 
     }
 
+
+    deletePhoto(treeID: string, imageID: string){
+        const info = {
+            treeid: treeID,
+            imageid: imageID
+        };
+        return this.http.post('http://localhost:5000/tree/remove-photo', info).toPromise();
+    }
     getAllTrees(){
         return this.http.get<Object>('http://localhost:5000/tree/get-all-trees').toPromise();
+
     }
 
     removeUser(treeID: string, username: string) {

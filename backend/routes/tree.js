@@ -113,11 +113,11 @@ router.post('/add-photo', authenticate, upload.single("image"), (req, res) => {
  * Remove photo from tree
  */
 router.post('/remove-photo', authenticate, (req, res) => {
-    if (!req.headers.treeid || !req.body.imageid) {
+    if (!req.body.treeid || !req.body.imageid) {
         res.status(400).send({ message: "Bad request" });
         return;
     }
-    Tree.findOne({ _id: req.headers.treeid }).then((tre) => {
+    Tree.findOne({ _id: req.body.treeid }).then((tre) => {
         if (!tre) {
             res.status(400).send({ message: "Tree does not exist" });
             return;

@@ -31,8 +31,6 @@ export class TreeService {
 
     }
 
-<<<<<<< HEAD
-=======
 
     deletePhoto(treeID: string, imageID: string){
         const info = {
@@ -54,7 +52,6 @@ export class TreeService {
         return this.http.post('http://localhost:5000/tree/remove-member', info).toPromise();
     }
 
->>>>>>> sprint-3
     getPhotos(treeID: string) {
         const info = {
             headers: new HttpHeaders({

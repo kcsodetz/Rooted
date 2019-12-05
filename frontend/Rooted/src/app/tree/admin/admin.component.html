@@ -25,7 +25,7 @@
 
   <div id="userinfo" class="w3-modal" style="display: none;">
     <div class="w3-modal-content">
-      <div class="w3-container">
+      <div clas="w3-container">
           <mdb-card-body>
                 <span onclick="document.getElementById('userinfo').style.display='none'"
                 class="w3-button w3-display-topright">&times;</span>
@@ -296,17 +296,6 @@
                 </div>
                 <div class="col-3">
                   <div class="row" style="width:100%;justify-content: end;">
-<<<<<<< HEAD
-                    <div *ngIf="admins.includes(user); else elseAdmin"></div>
-                    <ng-template #elseAdmin>
-                      <div class="spacer">
-                        <button (click)="makeAdmin(user)" class="notificationBtn" type="button" color="success">Make Admin</button>
-                      </div>
-                    </ng-template>
-                    <div class="spacer">
-                        <button (click)="banUser(user)" class="notificationBtn" type="button" color="success">Ban</button>
-                      </div>
-=======
                     <!-- <div *ngIf="admins.includes(user); else elseAdmin"></div> -->
                     <!-- <ng-template #elseAdmin> -->
                     <div *ngIf="!admins.includes(user)" class="spacer">
@@ -319,7 +308,6 @@
                     <div class="spacer">
                       <button (click)="removeUser(user)" class="notificationBtn" type="button" [ngStyle]="{'background-color': myTree.colorScheme}">Kick</button>
                     </div>
->>>>>>> sprint-3
                   </div>
                 </div>
               </div>

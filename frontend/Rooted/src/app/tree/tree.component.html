@@ -37,7 +37,7 @@
               Group </a>
           </button>
           <button mdbBtn onclick="document.getElementById('bruh').style.display='block'" type="button" [ngStyle]="{'background-color': myTree.colorScheme}">Message the Admins</button>
-
+          <button mdbBtn onclick="document.getElementById('editInv').style.display='block'" type="button" [ngStyle]="{'background-color': myTree.colorScheme}">Edit Your Involvement</button>
         </div>
       </div>
 
@@ -398,6 +398,36 @@
                   <textarea class="form-control rounded-0" id="announcement" [(ngModel)]="announcement" formControlName="announcement" rows="3" placeholder="Announcement"></textarea>
                 </div>
         
+                <!-- Send button -->
+                <button mdbBtn color="success" block="true" type="submit">Send</button>
+                </form>
+          </mdb-card-body>
+        </mdb-card>
+      </div>
+    </div>
+  </div>
+
+  <div id="editInv" class="w3-modal">
+    <div class="w3-modal-content">
+      <div class="w3-container">
+        <!-- Card Container and Body -->
+        <mdb-card>
+          <mdb-card-body>
+            <span onclick="document.getElementById('editInv').style.display='none'"
+              class="w3-button w3-display-topright">&times;</span>
+              <form (submit)="editInvolvement(joinYear,exitYear)" class="text-center border border-light p-5" [formGroup]="involvementForm">
+
+                <p class="h4 mb-4">Edit Your Involvement</p>
+        
+                <!-- year joined and left -->
+                <div class="form-group">
+                  <input type="text" id="joinYear" formControlName="joinYear" class="form-control"
+                  placeholder="Year you joined the group" [(ngModel)]="joinYear">
+                </div>
+                <div class="form-group">
+                  <input type="text" id="exitYear" formControlName="exitYear" class="form-control"
+                  placeholder="Year you left the group (if applicable)" [(ngModel)]="exitYear">
+                </div>
                 <!-- Send button -->
                 <button mdbBtn color="success" block="true" type="submit">Send</button>
                 </form>

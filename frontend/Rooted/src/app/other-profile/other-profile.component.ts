@@ -6,6 +6,7 @@ import { Account } from '../models/account.model';
 import { Tree } from '../models/tree.model';
 
 import { AuthService } from '../services/auth.service';
+import { AdminService } from '../services/admin.service';
 
 @Component({
   selector: 'app-other-profile',
@@ -31,7 +32,9 @@ export class OtherProfileComponent implements OnInit {
   myTrees: Tree[];
   profilePicture: string;
   submitted = false;
-  constructor(private route: ActivatedRoute, private userService: UserService, private formBuilder: FormBuilder, private _router: Router) {
+  isAdmin: Boolean;
+  admObj: Object;
+  constructor(private route: ActivatedRoute, private userService: UserService, private formBuilder: FormBuilder, private _router: Router, private adminService: AdminService) {
 
   }
   ngOnInit() {
@@ -43,6 +46,16 @@ export class OtherProfileComponent implements OnInit {
       {
         window.location.replace("/profile");
         return;
+      }
+    });
+    this.adminService.getAllAdmins().then((res) => {
+      this.admObj = res;
+      let x = 0;
+      while(this.admObj[x]!=undefined){
+        if(this.admObj[x++]==this.account.username){
+          this.isAdmin = true;
+          break;
+        }
       }
     });
     this.getUser(user);
@@ -97,5 +110,11 @@ export class OtherProfileComponent implements OnInit {
   }
 
   get response_msg() { return this.response; }
+
+  banUser(username: string){
+    this.userService.swBanUser(username);
+    console.log(username + " banned from the site");
+    window.location.replace("/home");
+  }
 
 }

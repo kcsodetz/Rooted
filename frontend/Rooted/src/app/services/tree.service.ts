@@ -251,4 +251,12 @@ export class TreeService {
         };
         return this.http.post('http://localhost:5000/tree/decline-user-requested-invite', payload).toPromise();
     }
+
+    submitAnonMessage(treeID: string, message: string){
+        const payload = {
+            treeID: treeID,
+            anonymousMessage: message
+        }
+        return this.http.post('http://localhost:5000/tree/submit-anonymous-message',payload).toPromise();
+    }
 }

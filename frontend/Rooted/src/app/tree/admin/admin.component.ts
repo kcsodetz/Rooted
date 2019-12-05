@@ -15,7 +15,9 @@ export class AdminComponent implements OnInit {
   pendingUsersArray: [String];
   bannedUsers: [String];
   users: string;
-  myTree: Tree = { memberRequestedUsers:null, pendingUsers:null ,founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null, chat: null, imageUrl: null, ID: null, description: null, admins: null, privateStatus: false, bannedUsers: null, aboutBio: null };
+ 
+  
+  myTree: Tree = { memberRequestedUsers:null, pendingUsers:null ,founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null, chat: null, imageUrl: null, ID: null, description: null, admins: null, privateStatus: false, bannedUsers: null, aboutBio: null, colorScheme:null };
   
   constructor(private route: ActivatedRoute, private treeService: TreeService, private _router: Router) { }
   privateStatus: Boolean;
@@ -30,6 +32,7 @@ export class AdminComponent implements OnInit {
   r1: string = "NULL";
   r2: string = "NULL";
   r3: string = "NULL";
+  colorOption: string ="red";
 
   ngOnInit() {
     const id = this.route.snapshot.params['id'];
@@ -45,6 +48,22 @@ export class AdminComponent implements OnInit {
       this.pendingUsersArray=this.myTree.pendingUsers;
       this.requestedUsersArray= this.myTree.memberRequestedUsers;
       console.log("this tree's private status: " + this.myTree.privateStatus);
+      this.colorOption=this.myTree.colorScheme.toString();
+      //var elements = document.getElementsByClassName("changeColor");
+     /* let elements: HTMLElement = Array.from(document.getElementsByClassName("changeColor"));
+      console.log(this.myTree.colorScheme.toString())
+      var i=0;
+      //console.log(elements.item.name);
+      elements.forEach(function (value) {
+        elements[0].setAttribute("background-color", this.myTree.colorScheme.toString());
+        console.log("change")
+
+      });*/
+     /* while(i< elements.length)
+      {
+        elements[i].style.backgroundColor=this.myTree.colorScheme;
+        i++;
+      }*/
     });
 
     this.treeService.getAnonMessages(id).then((data) => {
@@ -72,12 +91,9 @@ export class AdminComponent implements OnInit {
       return;
     }
     const id = this.route.snapshot.params['id'];
-    this.treeService.deleteChosenTree(id).then((data) => {
-      this.myTree = new Tree(data);
-      console.log('Deleting Tree');
-      // navigate back to page
-      this._router.navigate(['/home']);
-    });
+    this.treeService.deleteChosenTree(id);
+    console.log(id + " banned from the site")
+    window.location.replace("/home");
 
 
   }
@@ -130,6 +146,8 @@ export class AdminComponent implements OnInit {
 
   deleteTree() {
     this.treeService.deleteChosenTree(this.route.snapshot.params['id']);
+    
+    
   }
 
   renderEditTree(){

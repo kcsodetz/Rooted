@@ -62,6 +62,14 @@ export class TreeService {
         return this.http.post('http://localhost:5000/tree/edit-tree-description', tree);
     }
 
+    editColorScheme(colorScheme: string, treeID: string) {
+        const tree: Object = {
+            colorScheme: colorScheme,
+            treeID: treeID,
+        };
+        return this.http.post('http://localhost:5000/tree/change-color-scheme', tree);
+    }
+
     editAboutBio(aboutBio: string, treeID: string) {
         const tree: Object = {
             aboutBio: aboutBio,
@@ -269,12 +277,12 @@ export class TreeService {
         return this.http.get<Array<Object>>('http://localhost:5000/tree/get-anonymous-messages',info).toPromise();
     }
   
-    setColorScheme(treeID: string, newColor: string) {
+    setColorScheme(newColor: string, treeID: string) {
         const color = {
-            newColor: newColor,
+            hexValue: newColor,
             treeID: treeID,
         };
-
+        console.log("COLOR:"+newColor+":COLOR");
         return this.http.post('http://localhost:5000/tree/change-color-scheme', color).toPromise();
     }
 

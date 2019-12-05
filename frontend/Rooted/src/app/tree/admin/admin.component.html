@@ -2,7 +2,7 @@
   <div class="row">
     <h1>{{myTree.treeName}} Admin Dashboard</h1>
 
-    <button mdbBtn type="button" color="success"
+    <button mdbBtn type="button" [ngStyle]="{'background-color': myTree.colorScheme}"
               mdbWavesEffect (click)=renderEditTree()>Edit Tree <i class="fa fa-edit"> </i></button>
 
 
@@ -21,7 +21,7 @@
   <label (click)="changeVisibility()" class="custom-control-label" for="customSwitches">Toggle Group Privacy. Currently: {{this.myTree.privateStatus}}</label>
 </div>
 
-  <div id="userinfo" class="w3-modal">
+  <div id="userinfo" class="w3-modal" style="display: none;">
     <div class="w3-modal-content">
       <div class="w3-container">
           <mdb-card-body>
@@ -42,10 +42,10 @@
 
 
 <div class="mainDiv">
-  <div class="grid-item" style="padding: 3%;">
-    <nav class="nav green py-4 col">
+  <div class="grid-item" style="padding: 3%;"  >
+    <nav class="nav py-4 col" [ngStyle]="{'background-color': myTree.colorScheme}" >
       <div class="spacer">
-        <button class="tab active" id="TreeTab" (click)="toggle('Tree')">Tree</button>
+        <button class="tab active" id="TreeTab" (click)="toggle('Tree')" >Tree</button>
       </div>
       <div class="spacer">
           <button class="tab " id="MessagesTab" (click)="toggle('Messages')">Messages</button>

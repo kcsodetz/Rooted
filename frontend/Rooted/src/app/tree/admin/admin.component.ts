@@ -17,12 +17,16 @@ export class AdminComponent implements OnInit {
   users: string;
   myTree: Tree = { memberRequestedUsers:null, pendingUsers:null ,founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null, chat: null, imageUrl: null, ID: null, description: null, admins: null, privateStatus: false, bannedUsers: null, aboutBio: null };
   
-  constructor(private route: ActivatedRoute, private treeService: TreeService, private _router: Router) { }
+  constructor(private route: ActivatedRoute, private treeService: TreeService, private _router: Router, private formBuilder: FormBuilder) { }
   privateStatus: Boolean;
   editTreeForm: FormGroup;
+  announcementForm: FormGroup;
+
   admins = [];
   msgObj: Object;
   messages: [Object];
+  annObj: Object;
+  announcements: [Object];
  
   activeTabSection = 'Tree';
   submitted = false;
@@ -34,17 +38,18 @@ export class AdminComponent implements OnInit {
   ngOnInit() {
     const id = this.route.snapshot.params['id'];
     this.messages = [null];
+    this.announcements = [null];
 
     this.treeService.getAllTreeInfo(id).then((data) => {
       this.myTree = new Tree(data);
-      console.log(this.myTree);
+      //console.log(this.myTree);
       this.bannedUsers = this.myTree.bannedUsers;
       this.users = this.myTree.members;
       this.privateStatus = this.myTree.privateStatus;
       this.admins = this.myTree.admins;
       this.pendingUsersArray=this.myTree.pendingUsers;
       this.requestedUsersArray= this.myTree.memberRequestedUsers;
-      console.log("this tree's private status: " + this.myTree.privateStatus);
+      //console.log("this tree's private status: " + this.myTree.privateStatus);
     });
 
     this.treeService.getAnonMessages(id).then((data) => {
@@ -56,6 +61,19 @@ export class AdminComponent implements OnInit {
       console.log(this.messages);
     });
 
+    this.announcementForm = this.formBuilder.group({
+      announcement: ['']
+    })
+
+    this.treeService.getAnnouncements(id).then((data) => {
+      this.annObj = data;
+      let x = 0;
+      while(this.annObj[x]!=undefined){
+        this.announcements[x] = this.annObj[x++];
+      }
+      console.log(this.announcements);
+    });
+    
   }
   get tree() { return this.myTree; }
 
@@ -198,6 +216,21 @@ export class AdminComponent implements OnInit {
     //location.reload();
 
     //need to delete user from array
+  }
+
+  addAnnouncement(announcement: string){
+    this.treeService.addAnnouncement(this.route.snapshot.params['id'],announcement).then(()=> {
+      var confirm = window.alert('Announcement Added');
+      console.log(confirm);
+    })
+  }
+
+  removeAnnouncement(announcementID: string){
+    console.log(this.route.snapshot.params['id']);
+    this.treeService.removeAnnouncement(this.route.snapshot.params['id'],announcementID).then(() => {
+      var confirm = window.alert('Announcement Removed');
+      console.log(confirm);
+    })
   }
 
 }

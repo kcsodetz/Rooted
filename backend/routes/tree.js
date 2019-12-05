@@ -1384,12 +1384,12 @@ router.post("/approve-annoucement", authenticate, (req, res) => {
  * Get all annoucements of a tree
  */
 router.get("/get-annoucements", authenticate, (req, res) => {
-    if (!req.body || !req.body.treeID) {
+    if (!req.headers.treeid) {
         res.status(400).send({ message: "Bad request" });
         return;
     }
 
-    Tree.findById({ _id: req.body.treeID }).then((tree) => {
+    Tree.findById({ _id: req.headers.treeid }).then((tree) => {
         if(!tree) {
             res.status(400).send({ message: "Tree does not exist" });
             return;

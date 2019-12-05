@@ -39,7 +39,8 @@ let treeSchema = new mongoose.Schema({
         dateSent: { type: Date, default: Date.now },
         unread: {type: Boolean, default: true}
     }],
-    colorScheme: {type: String, default: 'Red'},
+
+    colorScheme: {type: String, default: '#083815'},
     memberInvolvement: [{
         user: String,
         yearStarted: {type: Number, default: Date.now },

@@ -1387,7 +1387,7 @@ router.post("/submit-anonymous-message", authenticate, (req, res) => {
 /**
  * Request a member that does not have an account
  */
-router.post("/request-non-rooted", authenticate, (req, res) => {
+router.post("/request-non-rooted", authenticate, async (req, res) => {
     if (!req.body.treeID || !req.body.name) {
         res.status(400).send({ message: "Bad request" });
         return;
@@ -1396,7 +1396,6 @@ router.post("/request-non-rooted", authenticate, (req, res) => {
     // if email is included in the request bdy, set local variable email to the body email. Else, set to null
     let email = (req.body.email) ? (req.body.email) : (null);
 
-
     if (email !== null) {
         var newInvitedUser = new InvitedUser({
             email: email,
@@ -1404,13 +1403,30 @@ router.post("/request-non-rooted", authenticate, (req, res) => {
             treeID: req.body.treeID
         });
 
-        newInvitedUser.save().then(() => {
-            console.log("saved!")
-        }).catch((err) => {
-            console.log(err);
-            res.status(400).send({ message: "Fatal Error: Invited User" });
+        try {
+            await newInvitedUser.save();
+        } catch (err) {
+            if (err.code === 11000) {
+                res.status(400).send({ message: "Duplicate User" })
+                return;
+            }
+            else {
+                res.status(400).send({ message: "Fatal Error: Invite User" })
+                return;
+            }
+        }
+
+        var newMemberInvite = "Dear " + req.body.name +
+            ",\n\nOne of your friends has invited you to join Roooted! If you join using this email address, then you will automatically be added to "
+            + " their group. We look forward to having you with us!\n\nSincerely, \nThe Rooted Team";
+        var newMemberEmailSubject = "One of your friends has invited you to Rooted!";
+
+        try {
+            mailer(email, newMemberEmailSubject, newMemberInvite);
+        } catch (err) {
+            res.status(400).send({ message: "Fatal Error: Mailer" })
             return;
-        })
+        }
 
     }
 
@@ -1431,6 +1447,7 @@ router.post("/request-non-rooted", authenticate, (req, res) => {
             return;
         }
     }).catch((err) => {
+        console.log(err)
         res.status(400).send({ message: "Fatal Error" });
         return;
     })

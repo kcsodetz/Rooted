@@ -1389,7 +1389,7 @@ router.post("/submit-anonymous-message", authenticate, (req, res) => {
  */
 
 router.post('/change-color-scheme', authenticate, (req, res) => {
-    if(!req.body || !req.body.newColor || !req.body.treeID) {
+    if(!req.body || !req.body.hexValue || !req.body.treeID) {
         res.status(400).send({ message: "Bad request" });
         return;
     }
@@ -1405,18 +1405,30 @@ router.post('/change-color-scheme', authenticate, (req, res) => {
             return;
         }
 
-        Tree.findOneAndUpdate({ _id: req.body.treeID }, 
-            {
-                $set: {
-                    colorScheme: req.body.newColor,
-                }
-            }).then(() => {
-                res.status(200).send({ message: 'Color scheme of tree has been changed.'})
-                return
-            }).catch((err) => {
-                res.send(err);
-                return
-            })
+        var regex = /^#[0-9A-F]{6}$/i; 
+        var isHex = regex.test(req.body.hexValue);
+
+        if (isHex) {
+            console.log("valid hex");
+            Tree.findOneAndUpdate({ _id: req.body.treeID }, 
+                {
+                    $set: {
+                        colorScheme: req.body.hexValue,
+                    }
+                }).then(() => {
+                    res.status(200).send({ message: 'Color scheme of tree has been changed.'})
+                    return
+                }).catch((err) => {
+                    res.send(err);
+                    return
+                })
+        }
+        else {
+            console.log("invalid hex");
+            res.status(400).send({ message: 'Hex value is invalid.'})
+            return
+        }
+
     }).catch((err) => {
         res.status(400).send({ message: "An error occurred" });
         return;

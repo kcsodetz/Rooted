@@ -205,7 +205,6 @@ describe('Test Upload and Remove Group Photo', function () {
                 treeid: treeID
             }
             // Request with payload
-            console.log(info_c)
             chai.request(server)
                 .post('/tree/remove-photo')
                 .set('content-type', 'application/x-www-form-urlencoded')

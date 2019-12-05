@@ -61,6 +61,12 @@ router.post("/add", authenticate, function (req, res) {
         admins: [req.user.username]
     });
 
+    var year = new Date();
+    var yearStr = year.getFullYear();
+
+    var obj = { "user": req.user.username , "yearStarted": yearStr, "yearEnded": yearStr};
+    newTree.memberInvolvement.push(obj);
+
     newTree.save(function (err, tree) {
         if (err) {
             console.log(err);

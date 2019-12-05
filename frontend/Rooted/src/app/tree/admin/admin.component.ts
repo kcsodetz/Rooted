@@ -233,4 +233,11 @@ export class AdminComponent implements OnInit {
     })
   }
 
+  approveAnnouncement(announcementID: string, status: boolean){
+    this.treeService.approveAnnouncement(announcementID,this.route.snapshot.params['id'],status).then(()=>{
+      var confirm = window.alert('Announcement Approved');
+      console.log(confirm);
+    })
+  }
+
 }

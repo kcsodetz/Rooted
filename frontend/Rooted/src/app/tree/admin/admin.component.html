@@ -167,7 +167,10 @@
             <div class="col-3">
               <div class="row" style="width:100%;justify-content: end;">
                 <div class="spacer">
-                  <button (click)="removeAnnouncement(ann._id)"class="notificationBtn" type="button" color="success">Remove</button>
+                  <button (click)="approveAnnouncement(ann._id,true)"class="notificationBtn" type="button" color="success">Approve</button>
+                </div>
+                <div class="spacer">
+                  <button (click)="approveAnnouncement(ann._id,false)"class="notificationBtn" type="button" color="success">Reject</button>
                 </div>
               </div>
             </div>

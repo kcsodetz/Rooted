@@ -305,7 +305,7 @@ export class TreeService {
             treeID: treeID,
             status: status
         }
-        return this.http.post('http://localhost:5000/tree/approveAnnoucement',payload).toPromise();
+        return this.http.post('http://localhost:5000/tree/approve-annoucement',payload).toPromise();
     }
 
     getAnnouncements(treeID: string){

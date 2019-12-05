@@ -94,7 +94,7 @@
   <div class="grid-container" style="display: flex; flex-wrap: wrap; width:100%" id="treeObject">
     <div *ngFor="let t of myTrees">
       <h2 class="center">{{t.treeName}}</h2>
-      <div class="cardProperties grid-item" id="trees" (click)="renderTree(t)">
+      <div class="cardProperties grid-item" id="trees" (click)="renderTree(t)" [ngStyle]="{'border-color': t.colorScheme}">
         <img [src]="t.imageUrl" class="imgSize" />
       </div>
     </div>

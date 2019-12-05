@@ -32,6 +32,7 @@ let treeSchema = new mongoose.Schema({
         user: String,
         annoucement: String,
         datePosted: { type: Date, default: Date.now },
+        approved: {type: Boolean, default: false},
     }],
     nonRootedMembers: [{
         name: String,
@@ -42,7 +43,13 @@ let treeSchema = new mongoose.Schema({
         dateSent: { type: Date, default: Date.now },
         unread: {type: Boolean, default: true}
     }],
-    colorScheme: {type: String, default: 'Red'},
+
+    colorScheme: {type: String, default: '#083815'},
+    memberInvolvement: [{
+        user: String,
+        yearStarted: {type: Number, default: Date.now },
+        yearEnded: {type: Number, default: Date.now, required: false}
+    }]
 })
 
 /* Creating the user model from the schema and giving it to Mongoose */

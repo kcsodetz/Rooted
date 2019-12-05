@@ -76,21 +76,27 @@ export class SiteAdminPageComponent implements OnInit {
   }
 
   banUser(username: string){
-    this.userService.swBanUser(username);
-    console.log(username + " banned from the site");
-    window.location.replace("/site-admins");
+    if(confirm("Are you sure you want to ban this user from the website?")){
+      this.userService.swBanUser(username);
+      console.log(username + " banned from the site");
+      window.location.replace("/site-admins");
+    }
   }
 
   unbanUser(username: string){
-    this.userService.swUnbanUser(username);
-    console.log(username + " unbanned from the site");
-    window.location.replace("/site-admins");
+    if(confirm("Are you sure you want to unban this user?")){
+      this.userService.swUnbanUser(username);
+      console.log(username + " unbanned from the site");
+      window.location.replace("/site-admins");
+    }
   }
 
   deleteTree(treeId: string) {
-    this.treeService.deleteChosenTree(treeId);
-    console.log(treeId + " banned from the site")
-    window.location.replace("/site-admins");
+    if(confirm("Are you sure you want to permanently delete this tree?")){
+      this.treeService.deleteChosenTree(treeId);
+      console.log(treeId + " banned from the site")
+      window.location.replace("/site-admins");
+    }
   }
 
 }

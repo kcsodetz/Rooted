@@ -1312,7 +1312,7 @@ router.post("/remove-annoucement", authenticate, (req, res) => {
  * Approve annoucement of a tree
  */
 router.post("/approve-annoucement", authenticate, (req, res) => {
-    if (!req.body || !req.body.annoucementID || !req.body.treeID || !req.body.status) {
+    if (!req.body || !req.body.annoucementID || !req.body.treeID || req.body.status==null) {
         res.status(400).send({ message: "Bad request" });
         return;
     }

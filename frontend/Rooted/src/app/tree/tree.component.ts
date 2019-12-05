@@ -39,6 +39,9 @@ export class TreeComponent implements OnInit {
   isMember: Boolean;
   notMember: Boolean;
   messageForm: FormGroup;
+  annObj: Object;
+  announcements: [Object];
+  announcementForm: FormGroup;
 
   /* variables used in editing tree name*/
   renderComponent: string;
@@ -92,6 +95,19 @@ export class TreeComponent implements OnInit {
     this.messageForm = this.formBuilder.group({
       message: ['']
     })
+
+    this.announcementForm = this.formBuilder.group({
+      announcement: ['']
+    })
+    this.announcements = [null];
+    this.treeService.getAnnouncements(this.route.snapshot.params['id']).then((data) => {
+      this.annObj = data;
+      let x = 0;
+      while(this.annObj[x]!=undefined){
+        this.announcements[x] = this.annObj[x++];
+      }
+      console.log(this.announcements);
+    });
 
   }
 
@@ -371,5 +387,12 @@ export class TreeComponent implements OnInit {
       console.log(confirm);
     });
     console.log("message: " + message + "submitted to mods");
+  }
+
+  addAnnouncement(announcement: string){
+    this.treeService.addAnnouncement(this.route.snapshot.params['id'],announcement).then(()=> {
+      var confirm = window.alert('Announcement Requested');
+      console.log(confirm);
+    })
   }
 }

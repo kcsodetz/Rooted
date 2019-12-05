@@ -75,6 +75,7 @@ button{
   background-color: rgb(27, 172, 59);
   color:white;
   border:none;
+  pointer-events: none;
 } 
 .invisible{
   display: none;

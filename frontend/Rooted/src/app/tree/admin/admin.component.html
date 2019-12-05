@@ -3,7 +3,7 @@
     <h1 [ngStyle]="{'color': myTree.colorScheme}">{{myTree.treeName}} Admin Dashboard</h1>
 
     <button mdbBtn type="button" [ngStyle]="{'background-color': myTree.colorScheme}"
-              mdbWavesEffect (click)=renderEditTree()>Edit Tree <i class="fa fa-edit"> </i></button>
+              (click)=renderEditTree()  onho>Edit Tree <i class="fa fa-edit"> </i></button>
 
 
 
@@ -71,6 +71,9 @@
       <div class="spacer">
         <button class="tab " id="RequestedUsersTab" (click)="toggle('RequestedUsers')">Requested Users</button>
       </div>
+      <div class="spacer">
+          <button class="tab " id="RequestedNonRootedUsersTab" (click)="toggle('RequestedNonRootedUsers')">Requested Non-Rooted Users</button>
+        </div>
       <div class="spacer">
         <button class="tab " id="PendingUsersTab" (click)="toggle('PendingUsers')">Pending Users</button>
       </div>
@@ -189,6 +192,37 @@
     </mdb-card>
     
   <mdb-card id="RequestedUsersSection" class="invisible" borderColor="">
+      <mdb-card-body>
+        <mdb-card-title>
+          <div  *ngFor="let ru of requestedUsersArray" class="w3-container col" >
+
+            <div class="card notificationCard" name="notificationAcceptReject">
+                <div class="row">
+                    <div class="col-9" [ngStyle]="{'color': myTree.colorScheme}"  >
+                            {{ru}}
+                    </div>
+                    <div class="col-3">
+                        <div class="row" style="width:100%;justify-content: end;"  >
+                                <div class="spacer">
+                                    <button class="notificationBtn"  type="button" [ngStyle]="{'background-color': myTree.colorScheme}" (click)="acceptUserRequest(ru)" >Accept</button>
+                                </div>
+                                <div class="spacer">
+                                    <button class="notificationBtn"  type="button" [ngStyle]="{'background-color': myTree.colorScheme}" (click)="rejectUserRequest(ru)">Reject</button>
+                                </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <br>
+           
+      </div>
+        </mdb-card-title>
+  
+      </mdb-card-body>
+  </mdb-card>
+
+  <mdb-card id="RequestedNonRootedUsersSection" class="invisible" borderColor="">
       <mdb-card-body>
         <mdb-card-title>
           <div  *ngFor="let ru of requestedUsersArray" class="w3-container col" >

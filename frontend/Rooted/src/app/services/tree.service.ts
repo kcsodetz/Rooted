@@ -263,10 +263,22 @@ export class TreeService {
     getAnonMessages(treeID: string){
         const info = {
             headers: new HttpHeaders({
-                // 'Content-Type': 'application/form-data',
                 'treeid': treeID
             })
         };
         return this.http.get<Array<Object>>('http://localhost:5000/tree/get-anonymous-messages',info).toPromise();
+    }
+  
+    setColorScheme(treeID: string, newColor: string) {
+        const color = {
+            newColor: newColor,
+            treeID: treeID,
+        };
+
+        return this.http.post('http://localhost:5000/tree/change-color-scheme', color).toPromise();
+    }
+
+    getColorScheme(){
+        return this.http.get('http://localhost:5000/tree/display-banned-users').toPromise();
     }
 }

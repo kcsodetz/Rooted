@@ -486,12 +486,12 @@ router.post('/join-tree', authenticate, (req, res) => {
 
             tre.numberOfPeople = tre.members.length;
 
-            var u = req.body.username;
+            // var u = req.body.username;
             var year = new Date();
             var yearStr = year.getFullYear();
 
 
-            var obj = { "user": u , "yearStarted": yearStr, "yearEnded": yearStr};
+            var obj = { "user": req.body.username , "yearStarted": yearStr, "yearEnded": yearStr};
             tre.memberInvolvement.push(obj);
 
             // Tree.findOneAndUpdate({ _id: req.body.treeID}, {

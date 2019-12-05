@@ -259,4 +259,14 @@ export class TreeService {
         }
         return this.http.post('http://localhost:5000/tree/submit-anonymous-message',payload).toPromise();
     }
+
+    getAnonMessages(treeID: string){
+        const info = {
+            headers: new HttpHeaders({
+                // 'Content-Type': 'application/form-data',
+                'treeid': treeID
+            })
+        };
+        return this.http.get<Array<Object>>('http://localhost:5000/tree/get-anonymous-messages',info).toPromise();
+    }
 }

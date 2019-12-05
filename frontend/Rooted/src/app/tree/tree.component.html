@@ -36,7 +36,7 @@
               [state]="{ data: {treeID: myTree.ID, treeName: myTree.treeName, reporter: username}}" class="my-4"> Report
               Group </a>
           </button>
-          <button mdbBtn onclick="document.getElementById('bruh').style.display='block'" type="button" color="success">Message the Mods</button>
+          <button mdbBtn onclick="document.getElementById('bruh').style.display='block'" type="button" color="success">Message the Admins</button>
 
         </div>
       </div>
@@ -333,7 +333,7 @@
               class="w3-button w3-display-topright">&times;</span>
               <form (submit)="sendAnonMessage(message)" class="text-center border border-light p-5" [formGroup]="messageForm">
 
-                  <p class="h4 mb-4">Anonymously Message the Mods</p>
+                  <p class="h4 mb-4">Anonymously Message the Admins</p>
           
                   <!-- Message -->
                   <div class="form-group">

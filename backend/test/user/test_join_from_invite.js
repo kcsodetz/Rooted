@@ -60,157 +60,157 @@ describe('Test Join Tree from Invite', function () {
                                     .then((res) => {
 
                                     })
+                            })
                     })
             })
-    })
 
-    // Postprocessing (delete user and tree)
-    after((done) => {
-        User.deleteOne({ username: uname }).then(() => {
-            Tree.deleteOne({ treeName: 'UNIT_TEST_TREE' }).then(() => {
-                done()
+        // Postprocessing (delete user and tree)
+        after((done) => {
+            User.deleteOne({ username: uname }).then(() => {
+                Tree.deleteOne({ treeName: 'UNIT_TEST_TREE' }).then(() => {
+                    done()
+                })
             })
         })
+
     })
 
-})
+    describe('Join tree without tree ID', () => {
+        it('Should return 400', (done) => {
+            User.findOne({ username: uname }).then((user) => {
+                // Request with payload
+                var token = user['tokens'][0]['token'][0]
+                chai.request(server)
+                    .post('/user/join-tree')
+                    .set('content-type', 'application/x-www-form-urlencoded')
+                    .set('token', token)
+                    .send(info)
+                    .end((err, res) => {
+                        res.should.have.status(400)
+                        done()
+                    })
+            }).catch((err) => {
 
-describe('Join tree without tree ID', () => {
-    it('Should return 400', (done) => {
-        User.findOne({ username: uname }).then((user) => {
-            // Request with payload
-            var token = user['tokens'][0]['token'][0]
-            chai.request(server)
-                .post('/user/join-tree')
-                .set('content-type', 'application/x-www-form-urlencoded')
-                .set('token', token)
-                .send(info)
-                .end((err, res) => {
-                    res.should.have.status(400)
-                    done()
-                })
-        }).catch((err) => {
-
+            })
+            var info = {
+                username: usr
+            }
         })
-        var info = {
-            username: usr
-        }
     })
-})
 
-describe('Join tree without username', () => {
-    it('Should return 400', (done) => {
-        User.findOne({ username: uname }).then((user) => {
-            // Request with payload
-            var token = user['tokens'][0]['token'][0]
-            chai.request(server)
-                .post('/user/join-tree')
-                .set('content-type', 'application/x-www-form-urlencoded')
-                .set('token', token)
-                .send(info)
-                .end((err, res) => {
-                    res.should.have.status(400)
-                    done()
-                })
-        }).catch((err) => {
+    describe('Join tree without username', () => {
+        it('Should return 400', (done) => {
+            User.findOne({ username: uname }).then((user) => {
+                // Request with payload
+                var token = user['tokens'][0]['token'][0]
+                chai.request(server)
+                    .post('/user/join-tree')
+                    .set('content-type', 'application/x-www-form-urlencoded')
+                    .set('token', token)
+                    .send(info)
+                    .end((err, res) => {
+                        res.should.have.status(400)
+                        done()
+                    })
+            }).catch((err) => {
 
+            })
+            var info = {
+                treeID: treeID,
+            }
         })
-        var info = {
-            treeID: treeID,
-        }
     })
-})
 
-describe('Join tree with bad authentication', () => {
-    it('Should return 401', (done) => {
-        User.findOne({ username: uname }).then((user) => {
-            // Request with payload
-            chai.request(server)
-                .post('/user/join-tree')
-                .set('content-type', 'application/x-www-form-urlencoded')
-                .set('token', 'bad auth')
-                .send(info)
-                .end((err, res) => {
-                    res.should.have.status(401)
-                    done()
-                })
+    describe('Join tree with bad authentication', () => {
+        it('Should return 401', (done) => {
+            User.findOne({ username: uname }).then((user) => {
+                // Request with payload
+                chai.request(server)
+                    .post('/user/join-tree')
+                    .set('content-type', 'application/x-www-form-urlencoded')
+                    .set('token', 'bad auth')
+                    .send(info)
+                    .end((err, res) => {
+                        res.should.have.status(401)
+                        done()
+                    })
+            })
+            var info = {
+                treeID: treeID,
+                username: usr
+            }
         })
-        var info = {
-            treeID: treeID,
-            username: usr
-        }
     })
-})
 
-describe('Join tree with bad tree ID', () => {
-    it('Should return 400', (done) => {
-        User.findOne({ username: uname }).then((user) => {
-            // Request with payload
-            var token = user['tokens'][0]['token'][0]
-            chai.request(server)
-                .post('/user/join-tree')
-                .set('content-type', 'application/x-www-form-urlencoded')
-                .set('token', token)
-                .send(info)
-                .end((err, res) => {
-                    res.should.have.status(400)
-                    done()
-                })
-        }).catch((err) => {
+    describe('Join tree with bad tree ID', () => {
+        it('Should return 400', (done) => {
+            User.findOne({ username: uname }).then((user) => {
+                // Request with payload
+                var token = user['tokens'][0]['token'][0]
+                chai.request(server)
+                    .post('/user/join-tree')
+                    .set('content-type', 'application/x-www-form-urlencoded')
+                    .set('token', token)
+                    .send(info)
+                    .end((err, res) => {
+                        res.should.have.status(400)
+                        done()
+                    })
+            }).catch((err) => {
 
+            })
+            var info = {
+                treeID: badID,
+                username: usr
+            }
         })
-        var info = {
-            treeID: badID,
-            username: usr
-        }
     })
-})
 
-describe('Join tree as user who does not exist', () => {
-    it('Should return 400', (done) => {
-        User.findOne({ username: uname }).then((user) => {
-            //do the get request here 
-            var token = user['tokens'][0]['token'][0]
-            chai.request(server)
-                .post('/user/join-tree')
-                .set('content-type', 'application/x-www-form-urlencoded')
-                .set('token', token)
-                .send(info)
-                .end((err, res) => {
-                    res.should.have.status(400)
-                    done()
-                })
-        }).catch((err) => {
+    describe('Join tree as user who does not exist', () => {
+        it('Should return 400', (done) => {
+            User.findOne({ username: uname }).then((user) => {
+                //do the get request here 
+                var token = user['tokens'][0]['token'][0]
+                chai.request(server)
+                    .post('/user/join-tree')
+                    .set('content-type', 'application/x-www-form-urlencoded')
+                    .set('token', token)
+                    .send(info)
+                    .end((err, res) => {
+                        res.should.have.status(400)
+                        done()
+                    })
+            }).catch((err) => {
 
+            })
+            var info = {
+                treeID: treeID,
+                username: "DOES NOT EXIST"
+            }
         })
-        var info = {
-            treeID: treeID,
-            username: "DOES NOT EXIST"
-        }
     })
-})
 
-describe('Join tree with correct info', () => {
-    it('Should return 200', (done) => {
-        User.findOne({ username: uname }).then((user) => {
-            //do the get request here 
-            var token = user['tokens'][0]['token'][0]
-            chai.request(server)
-                .post('/user/join-tree')
-                .set('content-type', 'application/x-www-form-urlencoded')
-                .set('token', token)
-                .send(info)
-                .end((err, res) => {
-                    res.should.have.status(200)
-                    done()
-                })
-        }).catch((err) => {
+    describe('Join tree with correct info', () => {
+        it('Should return 200', (done) => {
+            User.findOne({ username: uname }).then((user) => {
+                //do the get request here 
+                var token = user['tokens'][0]['token'][0]
+                chai.request(server)
+                    .post('/user/join-tree')
+                    .set('content-type', 'application/x-www-form-urlencoded')
+                    .set('token', token)
+                    .send(info)
+                    .end((err, res) => {
+                        res.should.have.status(200)
+                        done()
+                    })
+            }).catch((err) => {
 
+            })
+            var info = {
+                treeID: treeID,
+                username: usr
+            }
         })
-        var info = {
-            treeID: treeID,
-            username: usr
-        }
     })
-})
 })

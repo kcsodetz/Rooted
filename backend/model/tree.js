@@ -38,11 +38,6 @@ let treeSchema = new mongoose.Schema({
         dateSent: { type: Date, default: Date.now },
         unread: {type: Boolean, default: true}
     }],
-    nonRootedMember: [{
-        name: String,
-        rootedStatus: false,
-
-    }],
     colorScheme: {type: String, default: 'Red'},
 })
 

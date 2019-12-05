@@ -333,4 +333,31 @@ export class TreeService {
         };
         return this.http.get<Array<Object>>('http://localhost:5000/tree/get-annoucements',info).toPromise();
     }
+
+    editInvolvement(treeID: string, yearStarted: string, yearEnded: string){
+        let payload = {};
+        if(yearStarted == null && yearEnded == null){
+            payload = {
+                treeID: treeID
+            }
+        }else if(yearStarted != null && yearEnded == null){
+            payload = {
+                treeID: treeID,
+                yearStarted: yearStarted
+            }
+        }else if(yearStarted == null && yearEnded != null){
+            payload = {
+                treeID: treeID,
+                yearEnded: yearEnded
+            }
+        }else{
+            payload = {
+                treeID: treeID,
+                yearStarted: yearStarted,
+                yearEnded: yearEnded
+            }
+        }
+        console.log(payload);
+        return this.http.post('http://localhost:5000/tree/edit-involvement-year',payload).toPromise();
+    }
 }

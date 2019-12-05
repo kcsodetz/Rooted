@@ -44,6 +44,7 @@ export class TreeComponent implements OnInit {
   annObj: Object;
   announcements: [Object];
   announcementForm: FormGroup;
+  involvementForm: FormGroup;
 
   /* variables used in editing tree name*/
   renderComponent: string;
@@ -113,6 +114,11 @@ export class TreeComponent implements OnInit {
       }
       console.log(this.announcements);
     });
+
+    this.involvementForm = this.formBuilder.group({
+      joinYear: [''],
+      exitYear: ['']
+    })
 
   }
 
@@ -417,6 +423,21 @@ export class TreeComponent implements OnInit {
   addAnnouncement(announcement: string){
     this.treeService.addAnnouncement(this.route.snapshot.params['id'],announcement).then(()=> {
       var confirm = window.alert('Announcement Requested');
+      console.log(confirm);
+    })
+  }
+
+  editInvolvement(joinYear: string, exitYear: string){
+    if(joinYear==''){
+      joinYear = null;
+    }
+    if(exitYear==''){
+      exitYear = null;
+    }
+    console.log("joinyear " + joinYear);
+    console.log("exityear " + exitYear);
+    this.treeService.editInvolvement(this.route.snapshot.params['id'],joinYear,exitYear).then(()=>{
+      var confirm = window.alert('Your involvement has been updated');
       console.log(confirm);
     })
   }

@@ -34,6 +34,10 @@ let treeSchema = new mongoose.Schema({
         datePosted: { type: Date, default: Date.now },
         approved: {type: Boolean, default: false},
     }],
+    nonRootedMembers: [{
+        name: String,
+        email: {type: String, unique: true, required: false}
+    }],
     anonymousMessages: [{
         message: String,
         dateSent: { type: Date, default: Date.now },

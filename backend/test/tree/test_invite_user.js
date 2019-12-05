@@ -9,17 +9,17 @@ var mongoose = require('mongoose');
 chai.use(chaiHttp);
 
 
-var uname = process.env.TEST_USERNAME
-var pword = process.env.TEST_PASSWORD
-var mail = process.env.TEST_EMAIL
+var uname = process.env.TEST_USERNAME;
+var pword = process.env.TEST_PASSWORD;
+var mail = process.env.TEST_EMAIL;
 
 var treeID;
 
 var badID = mongoose.Types.ObjectId();
-var usr = "testing_ken"
+var usr = "testing_ken";
 
 describe('Test Inviting User to Tree', function() {
-    this.timeout(5000)
+    this.timeout(5000);
     // Preprocessing (Register, login, and create tree)
     before((done) => {
         var info = {

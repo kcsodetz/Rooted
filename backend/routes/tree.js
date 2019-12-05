@@ -1,4 +1,4 @@
-var express = require('express');
+ar express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var encrypt = require('../middleware/encrypt');
@@ -23,6 +23,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 var Tree = require('../model/tree');
 var User = require('../model/user');
 var Admin = require('../model/admin');
+var InvitedUser = require('../model/invitedUser');
 
 
 /**
@@ -1281,7 +1282,7 @@ router.post("/remove-annoucement", authenticate, (req, res) => {
         return;
     }
     Tree.findById({ _id: req.body.treeID }).then((tree) => {
-        if(!tree) {
+        if (!tree) {
             res.status(400).send({ message: "Tree does not exist" });
             return;
         }
@@ -1292,7 +1293,7 @@ router.post("/remove-annoucement", authenticate, (req, res) => {
             if (element._id == req.body.annoucementID) {
                 found = true;
                 var n = tree.annoucements.indexOf(element);
-                tree.annoucements.splice(n, 1);         
+                tree.annoucements.splice(n, 1);
                 tree.save();
                 // res.status(200).send({ message: "Annoucement succesfully removed." });
                 // return;
@@ -1395,6 +1396,7 @@ router.get("/get-annoucements", authenticate, (req, res) => {
         return;
     }
 
+
     Tree.findById({ _id: req.headers.treeid }).then((tree) => {
         if(!tree) {
             res.status(400).send({ message: "Tree does not exist" });
@@ -1418,6 +1420,7 @@ router.get("/get-anonymous-messages", authenticate, (req, res) => {
         res.status(400).send({ message: "Bad request" });
         return;
     }
+
 
     Tree.findById({ _id: req.headers.treeid }).then((tree) => {
         if(!tree) {
@@ -1443,19 +1446,18 @@ router.get("/get-anonymous-messages", authenticate, (req, res) => {
 /**
  * Submit anonymous message to admin team
  */
-
 router.post("/submit-anonymous-message", authenticate, (req, res) => {
     if (!req.body || !req.body.anonymousMessage || !req.body.treeID) {
         res.status(400).send({ message: "Bad request" });
         return;
     }
-    Tree.findById({ _id: req.body.treeID}).then((tree) => {
-        if(!tree) {
+    Tree.findById({ _id: req.body.treeID }).then((tree) => {
+        if (!tree) {
             res.status(400).send({ message: "Tree does not exist" });
             return
         }
 
-        if(!tree.members.includes(req.user.username)){
+        if (!tree.members.includes(req.user.username)) {
             res.status(400).send({ message: "User does not exist in the tree" })
             return;
         }
@@ -1480,9 +1482,78 @@ router.post("/submit-anonymous-message", authenticate, (req, res) => {
 })
 
 /**
+ * Request a member that does not have an account
+ */
+router.post("/request-non-rooted", authenticate, async (req, res) => {
+    if (!req.body.treeID || !req.body.name) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+
+    // if email is included in the request bdy, set local variable email to the body email. Else, set to null
+    let email = (req.body.email) ? (req.body.email) : (null);
+
+    if (email !== null) {
+        var newInvitedUser = new InvitedUser({
+            email: email,
+            name: req.body.name,
+            treeID: req.body.treeID
+        });
+
+        try {
+            await newInvitedUser.save();
+        } catch (err) {
+            if (err.code === 11000) {
+                res.status(400).send({ message: "Duplicate User" })
+                return;
+            }
+            else {
+                res.status(400).send({ message: "Fatal Error: Invite User" })
+                return;
+            }
+        }
+
+        var newMemberInvite = "Dear " + req.body.name +
+            ",\n\nOne of your friends has invited you to join Roooted! If you join using this email address, then you will automatically be added to "
+            + " their group. We look forward to having you with us!\n\nSincerely, \nThe Rooted Team";
+        var newMemberEmailSubject = "One of your friends has invited you to Rooted!";
+
+        try {
+            mailer(email, newMemberEmailSubject, newMemberInvite);
+        } catch (err) {
+            res.status(400).send({ message: "Fatal Error: Mailer" })
+            return;
+        }
+
+    }
+
+    Tree.findOneAndUpdate({ _id: req.body.treeID }, {
+        $push: {
+            nonRootedMembers: {
+                name: req.body.name,
+                email: email
+            }
+        }
+    }).then((tre) => {
+        if (!tre) {
+            res.status(400).send({ message: "Tree does not exist" });
+            return;
+        }
+        else {
+            res.status(200).send({ message: "User has been successfully invited" });
+            return;
+        }
+    }).catch((err) => {
+        console.log(err)
+        res.status(400).send({ message: "Fatal Error" });
+        return;
+    })
+})
+
+
+/**
  * Change color scheme
  */
-
 router.post('/change-color-scheme', authenticate, (req, res) => {
     if(!req.body || !req.body.hexValue || !req.body.treeID) {
         res.status(400).send({ message: "Bad request" });
@@ -1604,5 +1675,5 @@ router.post('/edit-involvement-year', authenticate, (req, res) => {
     })
 })
 
-module.exports = router;
 
+module.exports = router;

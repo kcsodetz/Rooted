@@ -1439,12 +1439,12 @@ router.post('/change-color-scheme', authenticate, (req, res) => {
  * Get color scheme
  */
 router.get('/color-scheme', authenticate, (req, res) => {
-    if(!req.body || !req.body.treeID) {
+    if(!req.headers.treeid) {
         res.status(400).send({ message: "Bad request" });
         return;
     }
 
-    Tree.findById(req.body.treeID, (err, tree) => {
+    Tree.findById(req.headers.treeid, (err, tree) => {
         if (err || tree == null) {
             res.status(400).send({ message: "Tree does not exist" })
             return;

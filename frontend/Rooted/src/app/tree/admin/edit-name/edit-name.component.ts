@@ -14,7 +14,7 @@ export class EditNameComponent implements OnInit {
 
 
 
-  myTree: Tree = { memberRequestedUsers:null, pendingUsers:null ,founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null, chat: null, imageUrl: null, ID: null, description: null, admins: null, privateStatus: false, bannedUsers: null, aboutBio: null };
+  myTree: Tree = { memberRequestedUsers:null, pendingUsers:null ,founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null, chat: null, imageUrl: null, ID: null, description: null, admins: null, privateStatus: false, bannedUsers: null, aboutBio: null, colorScheme: null};
   constructor(private route: ActivatedRoute, private treeService: TreeService, private _router: Router, private formBuilder: FormBuilder) { }
   editTreeForm: FormGroup;
   submitted = false;
@@ -23,6 +23,7 @@ export class EditNameComponent implements OnInit {
   r2: string = "NULL";
   r3: string = "NULL";
   r4: string = "NULL";
+  r5: string = "NULL";
 
   ngOnInit() {
 
@@ -42,13 +43,15 @@ export class EditNameComponent implements OnInit {
       this.editTreeForm.controls.imageUrl.setValue(this.myTree.imageUrl);
       this.editTreeForm.controls.treeDescription.setValue(this.myTree.description);
       this.editTreeForm.controls.aboutBio.setValue(this.myTree.aboutBio);
+      this.editTreeForm.controls.colorScheme.setValue(this.myTree.colorScheme);
     });
 
     this.editTreeForm = this.formBuilder.group({
       treeName: [this.myTree.treeName, Validators.required],
       imageUrl: [this.myTree.imageUrl, Validators.required],
       treeDescription: [this.myTree.description, Validators.required],
-      aboutBio: [this.myTree.aboutBio, Validators.required]
+      aboutBio: [this.myTree.aboutBio, Validators.required],
+      colorScheme: [this.myTree.colorScheme]
     });
   }
 
@@ -128,8 +131,31 @@ export class EditNameComponent implements OnInit {
       else {
         this.r4 = "noEdit";
     }
-
-    if (this.r1 == "noEdit" && this.r2 == "noEdit" && this.r3 == "noEdit" && this.r4 == "noEdit") {
+    if( form.value.colorScheme!= this.myTree.colorScheme&& form.value.colorScheme!=null && form.value.colorScheme.charAt(0)=='#')
+    {  
+      var regex = /^#[0-9A-F]{6}$/i; 
+      var isHex = regex.test(form.value.colorScheme);
+      if(isHex)
+      {
+        this.treeService.setColorScheme(form.value.colorScheme, this.myTree.ID).then((response) => {
+          console.log(response);
+          this.response = "complete";
+          }),
+            (err) => {
+              console.log("err is:" + err);
+              this.response = "fatalError";
+            }
+      }
+      else
+      {
+        form.value.colorScheme="Invalid Hex Code";
+        this.r5 = "noEdit";
+      }
+    }
+    else {
+      this.r5 = "noEdit";
+    }
+    if (this.r1 == "noEdit" && this.r2 == "noEdit" && this.r3 == "noEdit" && this.r4 == "noEdit" && this.r5=="noEdit") {
       this.response = "noEdit";
     }
 

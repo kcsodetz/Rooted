@@ -1,14 +1,14 @@
 <div class="col" style="display: flex; align-content: center; width:100%;">
   <div class="row">
-    <h1>{{myTree.treeName}} Admin Dashboard</h1>
+    <h1 [ngStyle]="{'color': myTree.colorScheme}">{{myTree.treeName}} Admin Dashboard</h1>
 
-    <button mdbBtn type="button" color="success"
+    <button mdbBtn type="button" [ngStyle]="{'background-color': myTree.colorScheme}"
               mdbWavesEffect (click)=renderEditTree()>Edit Tree <i class="fa fa-edit"> </i></button>
 
 
 
     <div class="spacer" style="float: right; align-self: right;">
-      <button (click)="cancel()" onclick="document.getElementById('userinfo').style.display='block'" type="button"
+      <button (click)="cancel()" [ngStyle]="{'background-color': myTree.colorScheme}" onclick="document.getElementById('userinfo').style.display='block'" type="button"
       block="true">Delete This Tree</button>
     </div>
   </div>
@@ -21,7 +21,7 @@
   <label (click)="changeVisibility()" class="custom-control-label" for="customSwitches">Toggle Group Privacy. Currently: {{this.myTree.privateStatus}}</label>
 </div>
 
-  <div id="userinfo" class="w3-modal">
+  <div id="userinfo" class="w3-modal" style="display: none;">
     <div class="w3-modal-content">
       <div class="w3-container">
           <mdb-card-body>
@@ -42,16 +42,19 @@
 
 
 <div class="mainDiv">
-  <div class="grid-item" style="padding: 3%;">
-    <nav class="nav green py-4 col">
+  <div class="grid-item" style="padding: 3%;"  >
+    <nav class="nav py-4 col" [ngStyle]="{'background-color': myTree.colorScheme}" >
       <div class="spacer">
-        <button class="tab active" id="TreeTab" (click)="toggle('Tree')">Tree</button>
+        <button class="tab active" id="TreeTab" (click)="toggle('Tree')" >Tree</button>
       </div>
       <div class="spacer">
           <button class="tab " id="MessagesTab" (click)="toggle('Messages')">Messages</button>
       </div>
       <div class="spacer">
         <button class="tab " id="AnouncementsTab" (click)="toggle('Anouncements')">Anouncements</button>
+      </div>
+      <div class="spacer">
+        <button class="tab " id="PendingAnouncementsTab" (click)="toggle('PendingAnouncements')">Pending Anouncements</button>
       </div>
       <div class="spacer">
         <button class="tab " id="AboutTab" (click)="toggle('About')">About</button>
@@ -74,13 +77,13 @@
     
     
     </nav>
-    <mdb-card id="TreeSection"  borderColor="border-success">
-      <mdb-card-body>
+    <mdb-card id="TreeSection"  borderColor="" [ngStyle]="{'color': myTree.colorScheme}" [ngStyle]="{'border-color': myTree.colorScheme}">
+      <mdb-card-body >
         <mdb-card-title>
-          <h3>2019</h3>
+          <h3 [ngStyle]="{'color': myTree.colorScheme}">2019</h3>
         </mdb-card-title>
         <div class="usericon" *ngFor="let member of myTree.members">
-          <i class="fas fa-user-circle fa-5x fa-green-text green-text pr-3 ml-3"></i>
+          <i class="fas fa-user-circle fa-5x  pr-3 ml-3" [ngStyle]="{'color': myTree.colorScheme}"></i>
           <!--<span><a onclick="document.getElementById('userinfo').style.display='block'">
               {{member}}</a></span>-->
           <div id="userinfo" class="w3-modal">
@@ -128,41 +131,80 @@
       </mdb-card-body>
     </mdb-card>
     
-    <mdb-card id="AnouncementsSection" class="invisible" borderColor="border-success">
+    <mdb-card id="AnouncementsSection" class="invisible" borderColor="">
       <mdb-card-body>
         <mdb-card-title>
-          <h3>Anouncements</h3>
+          <h3 [ngStyle]="{'color': myTree.colorScheme}">Anouncements</h3>
+          <button mdbBtn onclick="document.getElementById('bruh').style.display='block'" type="button" [ngStyle]="{'background-color': myTree.colorScheme}">Add Announcement</button>
         </mdb-card-title>
-    
+        <div *ngFor="let ann of announcements" class="card notificationCard" name="notificationAcceptReject">
+          <div *ngIf="ann.approved" class="row">
+            <div class="col-9">
+              <label style="float:left">{{ann.annoucement}}</label>
+            </div>
+            <div class="col-3">
+              <div class="row" style="width:100%;justify-content: end;">
+                <div class="spacer">
+                  <button (click)="removeAnnouncement(ann._id)"class="notificationBtn" type="button" color="success">Remove</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mdb-card-body>
+    </mdb-card>
+
+    <mdb-card id="PendingAnouncementsSection" class="invisible" borderColor="border-success">
+      <mdb-card-body>
+        <mdb-card-title>
+          <h3>Pending Anouncements</h3>
+        </mdb-card-title>
+        <div *ngFor="let ann of announcements" class="card notificationCard" name="notificationAcceptReject">
+          <div *ngIf="!ann.approved" class="row">
+            <div class="col-9">
+              <label style="float:left">{{ann.annoucement}}</label>
+            </div>
+            <div class="col-3">
+              <div class="row" style="width:100%;justify-content: end;">
+                <div class="spacer">
+                  <button (click)="approveAnnouncement(ann._id,true)"class="notificationBtn" type="button" color="success">Approve</button>
+                </div>
+                <div class="spacer">
+                  <button (click)="approveAnnouncement(ann._id,false)"class="notificationBtn" type="button" color="success">Reject</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </mdb-card-body>
     </mdb-card>
     
-    <mdb-card id="AboutSection" class="invisible" borderColor="border-success">
+    <mdb-card id="AboutSection" class="invisible" borderColor="">
         <mdb-card-body>
           <mdb-card-title>
-            <h3>About</h3>
+            <h3 [ngStyle]="{'color': myTree.colorScheme}">About</h3>
           </mdb-card-title>
     
         </mdb-card-body>
     </mdb-card>
     
-  <mdb-card id="RequestedUsersSection" class="invisible" borderColor="border-success">
+  <mdb-card id="RequestedUsersSection" class="invisible" borderColor="">
       <mdb-card-body>
         <mdb-card-title>
           <div  *ngFor="let ru of requestedUsersArray" class="w3-container col" >
 
             <div class="card notificationCard" name="notificationAcceptReject">
                 <div class="row">
-                    <div class="col-9" >
+                    <div class="col-9" [ngStyle]="{'color': myTree.colorScheme}"  >
                             {{ru}}
                     </div>
                     <div class="col-3">
                         <div class="row" style="width:100%;justify-content: end;"  >
                                 <div class="spacer">
-                                    <button class="notificationBtn"  type="button" color="success" (click)="acceptUserRequest(ru)" >Accept</button>
+                                    <button class="notificationBtn"  type="button" [ngStyle]="{'background-color': myTree.colorScheme}" (click)="acceptUserRequest(ru)" >Accept</button>
                                 </div>
                                 <div class="spacer">
-                                    <button class="notificationBtn"  type="button" color="success" (click)="rejectUserRequest(ru)">Reject</button>
+                                    <button class="notificationBtn"  type="button" [ngStyle]="{'background-color': myTree.colorScheme}" (click)="rejectUserRequest(ru)">Reject</button>
                                 </div>
                         </div>
                         
@@ -177,23 +219,23 @@
       </mdb-card-body>
   </mdb-card>
 
-  <mdb-card id="PendingUsersSection" class="invisible" borderColor="border-success">
+  <mdb-card id="PendingUsersSection" class="invisible" borderColor="">
     <mdb-card-body>
       <mdb-card-title>
         <div  *ngFor="let us of pendingUsersArray"  class="w3-container col" >
 
           <div class="card notificationCard" name="notificationAcceptReject">
               <div class="row">
-                  <div class="col-9" >
+                  <div class="col-9" [ngStyle]="{'color': myTree.colorScheme}" >
                           {{us}}
                   </div>
                   <div class="col-3">
                       <div class="row" style="width:100%;justify-content: end;"   >
                               <div class="spacer">
-                                  <button class="notificationBtn"  type="button" color="success" (click)="acceptUser(us)" >Accept</button>
+                                  <button class="notificationBtn"  type="button" [ngStyle]="{'background-color': myTree.colorScheme}" (click)="acceptUser(us)" >Accept</button>
                               </div>
                               <div class="spacer">
-                                  <button class="notificationBtn"  type="button" color="success" (click)="rejectUser(us)">Reject</button>
+                                  <button class="notificationBtn"  type="button" [ngStyle]="{'background-color': myTree.colorScheme}" (click)="rejectUser(us)">Reject</button>
                               </div>
                       </div>
                   </div>
@@ -207,18 +249,18 @@
     </mdb-card-body>
 </mdb-card>
 
-    <mdb-card id="PhotosSection" class="invisible" borderColor="border-success">
+    <mdb-card id="PhotosSection" class="invisible" borderColor="s">
         <mdb-card-body>
           <mdb-card-title>
-            <h3>Photos</h3>
+            <h3 [ngStyle]="{'color': myTree.colorScheme}">Photos</h3>
           </mdb-card-title>
     
         </mdb-card-body>
     </mdb-card>
-    <mdb-card id="MessagesSection" class="invisible" borderColor="border-success">
+    <mdb-card id="MessagesSection" class="invisible" borderColor="">
         <mdb-card-body>
           <mdb-card-title>
-            <h3>Anonymous Messages</h3>
+            <h3 [ngStyle]="{'color': myTree.colorScheme}">Anonymous Messages</h3>
           </mdb-card-title>
           <div *ngFor="let msg of messages" class="card notificationCard" name="notificationAcceptReject">
             <div class="row">
@@ -229,10 +271,10 @@
           </div>
         </mdb-card-body>
     </mdb-card>
-    <mdb-card id="UsersSection"  class="invisible" borderColor="border-success">
+    <mdb-card id="UsersSection"  class="invisible" borderColor="">
         <mdb-card-body>
           <mdb-card-title>
-            <h3>Users</h3>
+            <h3 [ngStyle]="{'color': myTree.colorScheme}">Users</h3>
           </mdb-card-title>
           <div *ngFor="let user of users" class="card notificationCard" name="notificationAcceptReject">
               <div class="row">
@@ -244,14 +286,14 @@
                     <!-- <div *ngIf="admins.includes(user); else elseAdmin"></div> -->
                     <!-- <ng-template #elseAdmin> -->
                     <div *ngIf="!admins.includes(user)" class="spacer">
-                      <button (click)="makeAdmin(user)" class="notificationBtn" type="button" color="success">Make Admin</button>
+                      <button (click)="makeAdmin(user)" class="notificationBtn" type="button" [ngStyle]="{'background-color': myTree.colorScheme}">Make Admin</button>
                     </div>
                     <!-- </ng-template> -->
                     <div *ngIf="!bannedUsers.includes(user)" class="spacer">
-                      <button (click)="banUser(user)" class="notificationBtn" type="button" color="success">Ban</button>
+                      <button (click)="banUser(user)" class="notificationBtn" type="button" [ngStyle]="{'background-color': myTree.colorScheme}">Ban</button>
                     </div>
                     <div class="spacer">
-                      <button (click)="removeUser(user)" class="notificationBtn" type="button" color="success">Kick</button>
+                      <button (click)="removeUser(user)" class="notificationBtn" type="button" [ngStyle]="{'background-color': myTree.colorScheme}">Kick</button>
                     </div>
                   </div>
                 </div>
@@ -259,10 +301,10 @@
             </div>
         </mdb-card-body>
       </mdb-card>
-    <mdb-card id="BannedUsersSection"  class="invisible" borderColor="border-success">
+    <mdb-card id="BannedUsersSection"  class="invisible" borderColor="">
       <mdb-card-body>
         <mdb-card-title>
-          <h3>BannedUsers</h3>
+          <h3 [ngStyle]="{'color': myTree.colorScheme}">BannedUsers</h3>
         </mdb-card-title>
         <div *ngFor="let user of bannedUsers" class="card notificationCard" name="notificationAcceptReject">
             <div class="row">
@@ -272,7 +314,7 @@
               <div class="col-3">
                 <div class="row" style="width:100%;justify-content: end;">
                   <div class="spacer">
-                    <button (click)="unbanUser(user)"class="notificationBtn" type="button" color="success">Unban</button>
+                    <button (click)="unbanUser(user)"class="notificationBtn" type="button" [ngStyle]="{'background-color': myTree.colorScheme}">Unban</button>
                   </div>
                 </div>
               </div>
@@ -282,4 +324,30 @@
     </mdb-card>
   </div>
 </div>
+
+<div id="bruh" class="w3-modal">
+    <div class="w3-modal-content">
+      <div class="w3-container">
+        <!-- Card Container and Body -->
+        <mdb-card>
+          <mdb-card-body>
+            <span onclick="document.getElementById('bruh').style.display='none'"
+              class="w3-button w3-display-topright">&times;</span>
+              <form (submit)="addAnnouncement(announcement)" class="text-center border border-light p-5" [formGroup]="announcementForm">
+
+                <p class="h4 mb-4">Add an Announcement</p>
+        
+                <!-- Message -->
+                <div class="form-group">
+                  <textarea class="form-control rounded-0" id="announcement" [(ngModel)]="announcement" formControlName="announcement" rows="3" placeholder="Announcement"></textarea>
+                </div>
+        
+                <!-- Send button -->
+                <button mdbBtn color="success" block="true" type="submit">Send</button>
+                </form>
+          </mdb-card-body>
+        </mdb-card>
+      </div>
+    </div>
+  </div>
   

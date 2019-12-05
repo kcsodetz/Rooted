@@ -416,8 +416,9 @@ export class TreeComponent implements OnInit {
     this.treeService.submitAnonMessage(this.myTree.ID,message).then(()=>{
       var confirm = window.alert('Message anonymously sent to mods');
       console.log(confirm);
-    });
+    })
     console.log("message: " + message + "submitted to mods");
+    window.location.replace('/tree/' + this.myTree.ID);
   }
 
   addAnnouncement(announcement: string){
@@ -425,6 +426,7 @@ export class TreeComponent implements OnInit {
       var confirm = window.alert('Announcement Requested');
       console.log(confirm);
     })
+    window.location.replace('/tree/' + this.myTree.ID);
   }
 
   editInvolvement(joinYear: string, exitYear: string){
@@ -440,5 +442,6 @@ export class TreeComponent implements OnInit {
       var confirm = window.alert('Your involvement has been updated');
       console.log(confirm);
     })
+    window.location.replace('/tree/' + this.myTree.ID);
   }
 }

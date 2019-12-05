@@ -1548,5 +1548,55 @@ router.get('/color-scheme', authenticate, (req, res) => {
     })
 })
 
+/**
+ * Edit involvement year
+ */
+router.post('/edit-involvement-year', authenticate, (req, res) => {
+    if (!req.body || !req.body.treeID) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+
+    Tree.findById({ _id: req.body.treeID}).then((tree) => {
+        if(!tree) {
+            res.status(400).send({ message: "Tree does not exist" })
+            return
+        }
+
+        if (!tree.members.includes(req.user.username)) {
+            res.status(400).send({ message: "User does not exist in the tree" })
+            return
+        }
+
+        var found = false;
+
+        tree.memberInvolvement.forEach(element => {
+            if (req.user.username == element.user) {
+                found = true;
+                var n = tree.memberInvolvement.indexOf(element);
+                if (req.body.yearStarted) {
+                    tree.memberInvolvement[n].yearStarted = req.body.yearStarted;
+                }
+                if (req.body.yearEnded) {
+                    tree.memberInvolvement[n].yearEnded = req.body.yearEnded;
+                }
+                tree.save();
+            }
+        })
+
+        if(found) {
+            res.status(200).send({ message: "Involvement years changed" });
+            return;
+        }
+        else {
+            res.status(200).send({ message: "Unable to find user." });
+            return;
+        }
+    }).catch((err) => {
+        res.status(400).send({ message: "An error has occured." });
+        return;
+    })
+})
+
 module.exports = router;
 

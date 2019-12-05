@@ -486,10 +486,29 @@ router.post('/join-tree', authenticate, (req, res) => {
 
             tre.numberOfPeople = tre.members.length;
 
+            var u = req.body.username;
+            var year = new Date();
+            var yearStr = year.getFullYear();
+
+
+            var obj = { "user": u , "yearStarted": yearStr, "yearEnded": yearStr};
+            tre.memberInvolvement.push(obj);
+
+            // Tree.findOneAndUpdate({ _id: req.body.treeID}, {
+            //     $push: {
+            //         memberInvolvement: {
+            //             user: req.body.username,
+            //             yearStarted: 2000,
+            //             yearEnded: 2001,
+            //         }
+            //     }
+            // })
+
             // Save new contents
             tre.save();
             usr.save();
 
+            
             res.status(200).send({ message: "Succesfully joined " + tre.treeName });
             return;
         })

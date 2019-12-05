@@ -64,15 +64,19 @@ export class SiteAdminPageComponent implements OnInit {
   }
 
   makeAdmin(username: string){
-    this.userService.swAddAdmin(username);
-    console.log(username + " made admin!");
-    window.location.replace("/site-admins");
+    if(confirm("Are you sure you want to make this user an admin?")){
+      this.userService.swAddAdmin(username);
+      console.log(username + " made admin!");
+      window.location.replace("/site-admins");
+    }
   }
 
   removeAdmin(username: string){
-    this.userService.swRemoveAdmin(username);
-    console.log(username + " removed as admin!");
-    window.location.replace("/site-admins");
+    if(confirm("Are you sure you want to remove this user from the admin list?")){
+      this.userService.swRemoveAdmin(username);
+      console.log(username + " removed as admin!");
+      window.location.replace("/site-admins");
+    }
   }
 
   banUser(username: string){

@@ -1,15 +1,17 @@
 <div class="col" style="display: flex; align-content: center; width:100%;">
   <div class="row">
     <h1 [ngStyle]="{'color': myTree.colorScheme}">{{myTree.treeName}} Admin Dashboard</h1>
-
-    <button mdbBtn type="button" [ngStyle]="{'background-color': myTree.colorScheme}"
-              (click)=renderEditTree()>Edit Tree <i class="fa fa-edit"> </i></button>
-
-
-
+    <div class="spacer" style="float: right; align-self: right;">
+      <button  type="button" [ngStyle]="{'background-color': myTree.colorScheme}"
+        (click)=backToTree()><i class="fa fa-arrow-left"></i> Back to your tree</button>
+    </div>
+    <div class="spacer" style="float: right; align-self: right;">
+      <button  type="button" [ngStyle]="{'background-color': myTree.colorScheme}"
+                (click)=renderEditTree()>Edit Tree <i class="fa fa-edit"> </i></button>
+    </div>
     <div class="spacer" style="float: right; align-self: right;">
       <button (click)="cancel()" [ngStyle]="{'background-color': myTree.colorScheme}" onclick="document.getElementById('userinfo').style.display='block'" type="button"
-      block="true">Delete This Tree</button>
+      >Delete This Tree</button>
     </div>
   </div>
 </div>
@@ -55,12 +57,6 @@
       </div>
       <div class="spacer">
         <button class="tab " id="PendingAnouncementsTab" (click)="toggle('PendingAnouncements')">Pending Anouncements</button>
-      </div>
-      <div class="spacer">
-        <button class="tab " id="AboutTab" (click)="toggle('About')">About</button>
-      </div>
-      <div class="spacer">
-        <button class="tab " id="PhotosTab" (click)="toggle('Photos')">Photos</button>
       </div>
       <div class="spacer">
           <button class="tab " id="UsersTab" (click)="toggle('Users')">Users</button>
@@ -182,15 +178,6 @@
       </mdb-card-body>
     </mdb-card>
     
-    <mdb-card id="AboutSection" class="invisible" borderColor="">
-        <mdb-card-body>
-          <mdb-card-title>
-            <h3 [ngStyle]="{'color': myTree.colorScheme}">About</h3>
-          </mdb-card-title>
-    
-        </mdb-card-body>
-    </mdb-card>
-    
   <mdb-card id="RequestedUsersSection" class="invisible" borderColor="">
       <mdb-card-body>
         <mdb-card-title>
@@ -283,14 +270,6 @@
     </mdb-card-body>
 </mdb-card>
 
-    <mdb-card id="PhotosSection" class="invisible" borderColor="s">
-        <mdb-card-body>
-          <mdb-card-title>
-            <h3 [ngStyle]="{'color': myTree.colorScheme}">Photos</h3>
-          </mdb-card-title>
-    
-        </mdb-card-body>
-    </mdb-card>
     <mdb-card id="MessagesSection" class="invisible" borderColor="">
         <mdb-card-body>
           <mdb-card-title>

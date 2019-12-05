@@ -23,6 +23,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 var Tree = require('../model/tree');
 var User = require('../model/user');
 var Admin = require('../model/admin');
+var InvitedUser = require('../model/invitedUser');
 
 
 /**
@@ -1392,17 +1393,26 @@ router.post("/request-non-rooted", authenticate, (req, res) => {
         return;
     }
 
-    // let email;
-    // if (req.body.email) {
-    //     email = req.body.email;
-    // }
-    // else {
-    //     email = null;
-    // }
+    // if email is included in the request bdy, set local variable email to the body email. Else, set to null
+    let email = (req.body.email) ? (req.body.email) : (null);
 
-    let email = (req.body.email) ? (req.body.email) : (null)
 
-    console.log(email);
+    if (email !== null) {
+        var newInvitedUser = new InvitedUser({
+            email: email,
+            name: req.body.name,
+            treeID: req.body.treeID
+        });
+
+        newInvitedUser.save().then(() => {
+            console.log("saved!")
+        }).catch((err) => {
+            console.log(err);
+            res.status(400).send({ message: "Fatal Error: Invited User" });
+            return;
+        })
+
+    }
 
     Tree.findOneAndUpdate({ _id: req.body.treeID }, {
         $push: {
@@ -1421,11 +1431,9 @@ router.post("/request-non-rooted", authenticate, (req, res) => {
             return;
         }
     }).catch((err) => {
-        console.log(err)
         res.status(400).send({ message: "Fatal Error" });
         return;
     })
-
 })
 
 

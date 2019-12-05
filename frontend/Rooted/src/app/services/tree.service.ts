@@ -290,4 +290,39 @@ export class TreeService {
     getColorScheme(){
         return this.http.get('http://localhost:5000/tree/display-banned-users').toPromise();
     }
+
+    addAnnouncement(treeID: string, announcement: string){
+        const payload = {
+            treeID: treeID,
+            annoucement: announcement
+        }
+        return this.http.post('http://localhost:5000/tree/add-annoucement',payload).toPromise();
+    }
+
+    removeAnnouncement(treeID: string, annoucementID: string){
+        console.log(annoucementID);
+        const payload = {
+            annoucementID: annoucementID,
+            treeID: treeID
+        }
+        return this.http.post('http://localhost:5000/tree/remove-annoucement',payload).toPromise();
+    }
+
+    approveAnnouncement(annoucementID: string, treeID: string, status: boolean){
+        const payload = {
+            annoucementID: annoucementID,
+            treeID: treeID,
+            status: status
+        }
+        return this.http.post('http://localhost:5000/tree/approve-annoucement',payload).toPromise();
+    }
+
+    getAnnouncements(treeID: string){
+        const info = {
+            headers: new HttpHeaders({
+                'treeid': treeID
+            })
+        };
+        return this.http.get<Array<Object>>('http://localhost:5000/tree/get-annoucements',info).toPromise();
+    }
 }

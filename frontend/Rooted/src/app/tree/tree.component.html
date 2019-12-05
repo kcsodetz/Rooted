@@ -131,8 +131,15 @@
             <mdb-card-body>
               <mdb-card-title>
                 <h3>Anouncements</h3>
+                <button mdbBtn onclick="document.getElementById('addAnn').style.display='block'" type="button" color="success">Request An Announcement</button>
               </mdb-card-title>
-
+              <div *ngFor="let ann of announcements" class="card notificationCard" name="notificationAcceptReject">
+                <div *ngIf="ann.approved" class="row">
+                  <div class="col-9">
+                    <label style="float:left">{{ann.annoucement}}</label>
+                  </div>
+                </div>
+              </div>
             </mdb-card-body>
           </mdb-card>
 
@@ -366,6 +373,32 @@
           
                   <!-- Send button -->
                   <button mdbBtn color="success" block="true" type="submit">Send</button>
+                </form>
+          </mdb-card-body>
+        </mdb-card>
+      </div>
+    </div>
+  </div>
+
+  <div id="addAnn" class="w3-modal">
+    <div class="w3-modal-content">
+      <div class="w3-container">
+        <!-- Card Container and Body -->
+        <mdb-card>
+          <mdb-card-body>
+            <span onclick="document.getElementById('addAnn').style.display='none'"
+              class="w3-button w3-display-topright">&times;</span>
+              <form (submit)="addAnnouncement(announcement)" class="text-center border border-light p-5" [formGroup]="announcementForm">
+
+                <p class="h4 mb-4">Request an Announcement</p>
+        
+                <!-- Message -->
+                <div class="form-group">
+                  <textarea class="form-control rounded-0" id="announcement" [(ngModel)]="announcement" formControlName="announcement" rows="3" placeholder="Announcement"></textarea>
+                </div>
+        
+                <!-- Send button -->
+                <button mdbBtn color="success" block="true" type="submit">Send</button>
                 </form>
           </mdb-card-body>
         </mdb-card>

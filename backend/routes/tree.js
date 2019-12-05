@@ -1318,7 +1318,7 @@ router.post("/remove-annoucement", authenticate, (req, res) => {
  * Approve annoucement of a tree
  */
 router.post("/approve-annoucement", authenticate, (req, res) => {
-    if (!req.body || !req.body.annoucementID || !req.body.treeID || !req.body.status) {
+    if (!req.body || !req.body.annoucementID || !req.body.treeID || req.body.status==null) {
         res.status(400).send({ message: "Bad request" });
         return;
     }
@@ -1390,12 +1390,12 @@ router.post("/approve-annoucement", authenticate, (req, res) => {
  * Get all annoucements of a tree
  */
 router.get("/get-annoucements", authenticate, (req, res) => {
-    if (!req.body || !req.body.treeID) {
+    if (!req.headers.treeid) {
         res.status(400).send({ message: "Bad request" });
         return;
     }
 
-    Tree.findById({ _id: req.body.treeID }).then((tree) => {
+    Tree.findById({ _id: req.headers.treeid }).then((tree) => {
         if(!tree) {
             res.status(400).send({ message: "Tree does not exist" });
             return;

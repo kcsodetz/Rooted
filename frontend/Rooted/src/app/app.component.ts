@@ -4,6 +4,7 @@ import { Router, UrlSerializer } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { Account } from './models/account.model';
 import { UserService } from './services/user.service';
+import { AdminService } from './services/admin.service';
 
 @Component({
   selector: 'app-root',
@@ -16,9 +17,10 @@ export class AppComponent {
   userAuthed: Boolean;
   account: Account;
   private loggedIn = new BehaviorSubject<boolean>(false); // {1}
+  admObj: Object;
+  admins: [string];
 
-
-  constructor(private router: Router, public authService: AuthService, public userService: UserService) { }
+  constructor(private adminService: AdminService, private router: Router, public authService: AuthService, public userService: UserService) { }
 
   get auth() { return (!localStorage.getItem('token')); }
 
@@ -29,6 +31,7 @@ export class AppComponent {
 
   // tslint:disable-next-line: use-life-cycle-interface
   ngOnInit() {
+    this.admins = [null];
     if (this.authService.autoAuthUser()) {
       this.userAuthed = true;
     }
@@ -36,6 +39,12 @@ export class AppComponent {
       this.account = new Account(res);
       this.username = this.account.username;
     });
-
+    this.adminService.getAllAdmins().then((res) => {
+      this.admObj = res;
+      let x = 0;
+      while(this.admObj[x]!=undefined){
+        this.admins[x] = this.admObj[x++];
+      }
+    });
   }
 }

@@ -51,6 +51,7 @@ import { ReportgroupComponent } from './reportgroup/reportgroup.component';
 import { AdminComponent } from './tree/admin/admin.component';
 import { SearchComponent } from './search/search.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SiteAdminPageComponent } from './site-admin-page/site-admin-page.component';
 
 
 
@@ -79,7 +80,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     TreeComponent,
     ReportgroupComponent,
     AdminComponent,
-    SearchComponent
+    SearchComponent,
+    SiteAdminPageComponent
 
   ],
   imports: [

@@ -1,0 +1,148 @@
+<div class="col" style="display: flex; align-content: center; width:100%;">
+  <div class="row">
+    <h1>Site Admin Dashboard</h1>
+  </div>
+</div>
+
+  <div id="userinfo" class="w3-modal">
+    <div class="w3-modal-content">
+      <div class="w3-container">
+          <mdb-card-body>
+                <span onclick="document.getElementById('userinfo').style.display='none'"
+                class="w3-button w3-display-topright">&times;</span>
+                <h3 class="ques">Are you sure you want to delete this tree?</h3>
+                <div class="ques" style=" align-self: center;">
+                  <button type="button" style="background-color: rgb(255, 28, 47);" color="danger" (click)="deleteTree()" >
+                    Delete
+                  </button>
+              </div>
+              
+          </mdb-card-body>
+      </div>
+    </div>
+  </div>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+
+<div class="mainDiv">
+  <div class="grid-item" style="padding: 3%;">
+    <nav class="nav green py-4 col">
+      <div class="spacer">
+        <button class="tab active" id="TreesTab" (click)="toggle('Trees')">Trees</button>
+      </div>
+      <div class="spacer">
+        <button class="tab" id="AdminsTab" (click)="toggle('Admins')">Admins</button>
+      </div>
+      <div class="spacer">
+          <button class="tab" id="UsersTab" (click)="toggle('Users')">Users</button>
+      </div>
+      <div class="spacer">
+        <button class="tab" id="BannedUsersTab" (click)="toggle('BannedUsers')">Banned Users</button>
+      </div>
+    
+    
+    </nav>
+    <mdb-card id="TreesSection"  borderColor="border-success">
+      <mdb-card-body>
+        <mdb-card-title>
+          <h3>Trees</h3>
+        </mdb-card-title>
+        <div *ngFor="let tree of trees" class="card notificationCard" name="notificationAcceptReject">
+          <div class="row">
+            <div class="col-9">
+              <label style="float:left">{{tree.treeName}}</label>
+            </div>
+            <div class="col-3">
+              <div class="row" style="width:100%;justify-content: end;">
+                <div class="spacer">
+                    <button (click)="deleteTree(tree._id)" class="notificationBtn" type="button" color="success">Delete Tree</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mdb-card-body>
+    </mdb-card>
+    
+    <mdb-card id="AdminsSection" class="invisible" borderColor="border-success">
+      <mdb-card-body>
+        <mdb-card-title>
+          <h3>Admins</h3>
+        </mdb-card-title>
+        <div *ngFor="let admin of admins" class="card notificationCard" name="notificationAcceptReject">
+          <div class="row">
+            <div class="col-9">
+              <label style="float:left">{{admin}}</label>
+            </div>
+            <div class="col-3">
+              <div class="row" style="width:100%;justify-content: end;">
+                <div class="spacer">
+                    <button (click)="removeAdmin(admin)" class="notificationBtn" type="button" color="success">Remove Admin</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mdb-card-body>
+    </mdb-card>
+
+    <mdb-card id="UsersSection"  class="invisible" borderColor="border-success">
+        <mdb-card-body>
+          <mdb-card-title>
+            <h3>Users</h3>
+          </mdb-card-title>
+          <div *ngFor="let user of users" class="card notificationCard" name="notificationAcceptReject">
+            <div *ngIf="!ban.includes(user.username)" class="row">
+              <div class="col-9">
+                <label style="float:left">{{user.username}}</label>
+              </div>
+              <div class="col-3">
+                <div class="row" style="width:100%;justify-content: end;">
+                  <!-- <div *ngIf="!admins.includes(user)" class="spacer">
+                    <button (click)="makeAdmin(user)" class="notificationBtn" type="button" color="success">Make Admin</button>
+                  </div>
+                  <div *ngIf="!bannedUsers.includes(user)" class="spacer">
+                    <button (click)="banUser(user)" class="notificationBtn" type="button" color="success">Ban</button>
+                  </div> -->
+                  <div *ngIf="!admins.includes(user.username)" class="spacer">
+                      <button (click)="makeAdmin(user.username)" class="notificationBtn" type="button" color="success">Make Admin</button>
+                  </div>
+                  <div class="spacer">
+                    <button (click)="banUser(user.username)" class="notificationBtn" type="button" color="success">Ban</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mdb-card-body>
+      </mdb-card>
+    <mdb-card id="BannedUsersSection"  class="invisible" borderColor="border-success">
+      <mdb-card-body>
+        <mdb-card-title>
+          <h3>BannedUsers</h3>
+        </mdb-card-title>
+        <div *ngFor="let user of bannedUsers" class="card notificationCard" name="notificationAcceptReject">
+          <div class="row">
+            <div class="col-9">
+              <label style="float:left">{{user}}</label>
+            </div>
+            <div class="col-3">
+              <!-- <div class="row" style="width:100%;justify-content: end;">
+                <div *ngIf="!admins.includes(user)" class="spacer">
+                  <button (click)="makeAdmin(user)" class="notificationBtn" type="button" color="success">Make Admin</button>
+                </div>
+                <div *ngIf="!bannedUsers.includes(user)" class="spacer">
+                  <button (click)="banUser(user)" class="notificationBtn" type="button" color="success">Ban</button>
+                </div> -->
+                <div *ngIf="ban.includes(user)"class="spacer">
+                  <button (click)="unbanUser(user)" class="notificationBtn" type="button" color="success">Unban</button>
+                </div>
+              <!-- </div> -->
+            </div>
+          </div>
+        </div>
+      </mdb-card-body>
+    </mdb-card>
+  </div>
+</div>
+  

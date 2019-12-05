@@ -38,6 +38,13 @@ export class TreeComponent implements OnInit {
   username: String;
   isMember: Boolean;
   notMember: Boolean;
+  photoID: string;
+  selectedIndex = 0;
+  messageForm: FormGroup;
+  annObj: Object;
+  announcements: [Object];
+  announcementForm: FormGroup;
+  involvementForm: FormGroup;
 
   /* variables used in editing tree name*/
   renderComponent: string;
@@ -83,10 +90,35 @@ export class TreeComponent implements OnInit {
       // this.treeMember();
     });
     this.addUserFormEmail = this.formBuilder.group({
-      email: ['', Validators.required]
+      email: ['', Validators.required],
+      name: [''],
+      sendEmail: [Boolean],
     });
+    
 
     this.displayImages();
+
+    this.messageForm = this.formBuilder.group({
+      message: ['']
+    })
+
+    this.announcementForm = this.formBuilder.group({
+      announcement: ['']
+    })
+    this.announcements = [null];
+    this.treeService.getAnnouncements(this.route.snapshot.params['id']).then((data) => {
+      this.annObj = data;
+      let x = 0;
+      while(this.annObj[x]!=undefined){
+        this.announcements[x] = this.annObj[x++];
+      }
+      console.log(this.announcements);
+    });
+
+    this.involvementForm = this.formBuilder.group({
+      joinYear: [''],
+      exitYear: ['']
+    })
 
   }
 
@@ -224,13 +256,18 @@ export class TreeComponent implements OnInit {
     this._router.navigate(['/admin/' + this.myTree.ID]);
   }
 
+  setRow(_index: number) {
+    this.selectedIndex = _index;
+    console.log(this.selectedIndex);
+  }
+
 
 
   leaveTree() {
     const username = localStorage.getItem('username');
     this.treeService.leaveTree(this.myTree.ID, username).then(() => {
       const confirm = window.confirm('Are you sure you want to leave this tree. To return, you must be added back by someone');
-      if (confirm === false) {
+      if (!confirm) {
         return;
       }
       this._router.navigate(['/home']);
@@ -304,6 +341,21 @@ export class TreeComponent implements OnInit {
     });
   }
 
+
+  selectPhoto(string: string){
+    this.photoID = string;
+    console.log(this.photoID);
+  }
+
+  deletePhoto(){
+    this.treeService.deletePhoto(this.myTree.ID, this.photoID).then(() => {
+      console.log('Deleting Photo');
+      // navigate back to page
+      window.location.replace('/tree/' + this.myTree.ID);
+    });
+  }
+
+
   sendJoinRequest() {
     this.treeService.requestAdminToJoinTree(this.myTree.ID, this.account.username).then((res) => {
   //    console.log(res);
@@ -334,7 +386,7 @@ export class TreeComponent implements OnInit {
               this.response = 'fatal_error';
 
             });
-            location.reload();
+            //location.reload();
 
     } else {
       this.treeService.requestAdminToJoinTree(this.myTree.ID, form.value.username).then((res) => {
@@ -351,12 +403,45 @@ export class TreeComponent implements OnInit {
               this.response = 'fatal_error';
 
             });
-            location.reload();
+            //location.reload();
 
     }
 
   }
   async sendAddRequestEmail(form: NgForm) {
+      
+  }
 
+  sendAnonMessage(message: string){
+    this.treeService.submitAnonMessage(this.myTree.ID,message).then(()=>{
+      var confirm = window.alert('Message anonymously sent to mods');
+      console.log(confirm);
+    })
+    console.log("message: " + message + "submitted to mods");
+    window.location.replace('/tree/' + this.myTree.ID);
+  }
+
+  addAnnouncement(announcement: string){
+    this.treeService.addAnnouncement(this.route.snapshot.params['id'],announcement).then(()=> {
+      var confirm = window.alert('Announcement Requested');
+      console.log(confirm);
+    })
+    window.location.replace('/tree/' + this.myTree.ID);
+  }
+
+  editInvolvement(joinYear: string, exitYear: string){
+    if(joinYear==''){
+      joinYear = null;
+    }
+    if(exitYear==''){
+      exitYear = null;
+    }
+    console.log("joinyear " + joinYear);
+    console.log("exityear " + exitYear);
+    this.treeService.editInvolvement(this.route.snapshot.params['id'],joinYear,exitYear).then(()=>{
+      var confirm = window.alert('Your involvement has been updated');
+      console.log(confirm);
+    })
+    window.location.replace('/tree/' + this.myTree.ID);
   }
 }

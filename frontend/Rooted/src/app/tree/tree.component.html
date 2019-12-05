@@ -153,9 +153,33 @@
                 
                 <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
                   <button type="button" class="btn btn-info" (click)="fileInput.click()">Upload picture <i class="fa fa-camera"></i> </button>
+                  <button type="button" class="btn btn-danger" onclick="document.getElementById('deleteconfirm').style.display='block'">Delete picture <i class="fa fa-trash"></i> </button>
+                  
+                  
+                  <div id="deleteconfirm" class="w3-modal">
+                    <div class="w3-modal-content">
+                      <div class="w3-container">
+                          <mdb-card-body>
+                                <span onclick="document.getElementById('deleteconfirm').style.display='none'"
+                                class="w3-button w3-display-topright">&times;</span>
+                                <h3 class="ques">Are you sure you want to delete this photo?</h3>
+                                <div class="ques" style=" align-self: center;">
+                                  <button type="button" class="btn btn-success" (click)="deletePhoto()"  >
+                                    Yes
+                                  </button>
+                                
+                              </div>
+                              
+                          </mdb-card-body>
+                      </div>
+                    </div>
+                  </div>
+                  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+
                 <div style="display: flex; flex-wrap: wrap; width: 100%; ">
-                  <div class="spacer" *ngFor="let i of treePhotoLibraryImages">
-                    <img [src]="i.url" />
+                  <div class="spacer" *ngFor="let i of treePhotoLibraryImages; let ind = index">
+                    <img [src]="i.url" (click)="selectPhoto(i._id)" (click)="setRow(ind)" [ngClass]="{'highlight': selectedIndex === ind}"/>
                   </div>
                 </div>
 

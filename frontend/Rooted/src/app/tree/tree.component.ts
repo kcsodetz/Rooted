@@ -38,6 +38,8 @@ export class TreeComponent implements OnInit {
   username: String;
   isMember: Boolean;
   notMember: Boolean;
+  photoID: string;
+  selectedIndex = 0;
 
   /* variables used in editing tree name*/
   renderComponent: string;
@@ -224,6 +226,11 @@ export class TreeComponent implements OnInit {
     this._router.navigate(['/admin/' + this.myTree.ID]);
   }
 
+  setRow(_index: number) {
+    this.selectedIndex = _index;
+    console.log(this.selectedIndex);
+  }
+
 
 
   leaveTree() {
@@ -303,6 +310,21 @@ export class TreeComponent implements OnInit {
       });
     });
   }
+
+
+  selectPhoto(string: string){
+    this.photoID = string;
+    console.log(this.photoID);
+  }
+
+  deletePhoto(){
+    this.treeService.deletePhoto(this.myTree.ID, this.photoID).then(() => {
+      console.log('Deleting Photo');
+      // navigate back to page
+      window.location.replace('/tree/' + this.myTree.ID);
+    });
+  }
+
 
   sendJoinRequest() {
     this.treeService.requestAdminToJoinTree(this.myTree.ID, this.account.username).then((res) => {

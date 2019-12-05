@@ -1207,41 +1207,59 @@ router.post("/remove-member", authenticate, (req, res) => {
  * Add annoucements to the tree
  */
 router.post("/add-annoucement", authenticate, (req, res) => {
-    if (!req.body || !req.body.username || !req.body.annoucement || !req.body.treeID) {
+    if (!req.body || !req.body.annoucement || !req.body.treeID) {
         res.status(400).send({ message: "Bad request" });
         return;
     }
+
     Tree.findById({ _id: req.body.treeID }).then((tree) => {
         if (!tree) {
             res.status(400).send({ message: "Tree does not exist" })
             return
         }
-        if (!tree.members.includes(req.body.username)) {
+        if (!tree.members.includes(req.user.username)) {
             res.status(400).send({ message: "User does not exist in the tree" })
             return
         }
-        if (!tree.admins.includes(req.body.username)) {
-            res.status(400).send({ message: "User must be an admin to add an annoucement to the tree" })
-            return
-        }
 
-        Tree.findByIdAndUpdate((req.body.treeID), {
-            $push: {
-                annoucements: {
-                    user: req.body.username,
-                    annoucement: req.body.annoucement,
-                    // datePosted: Date.now,
+        //if user is not an admin
+        if (!tree.admins.includes(req.user.username)) {
+            Tree.findByIdAndUpdate((req.body.treeID), {
+                $push: {
+                    annoucements: {
+                        user: req.user.username,
+                        annoucement: req.body.annoucement,
+                    }
                 }
-            }
-        }).then(() => {
-            res.status(200).send({ message: "The annoucement has been added." });
-            return;
-
-        }).catch((err) => {
-            console.log(err);
-            res.status(400).send({ message: "Can't find tree 1" });
-            return;
-        })
+            }).then(() => {
+                res.status(200).send({ message: "The annoucement has been added." });
+                return;
+    
+            }).catch((err) => {
+                console.log(err);
+                res.status(400).send({ message: "Can't find tree 1" });
+                return;
+            })
+        }
+        else {
+            Tree.findByIdAndUpdate((req.body.treeID), {
+                $push: {
+                    annoucements: {
+                        user: req.user.username,
+                        annoucement: req.body.annoucement,
+                        approved: true,
+                    }
+                }
+            }).then(() => {
+                res.status(200).send({ message: "The annoucement has been added." });
+                return;
+    
+            }).catch((err) => {
+                console.log(err);
+                res.status(400).send({ message: "Can't find tree 1" });
+                return;
+            })
+        }
     }).catch((err) => {
         res.status(400).send({ message: "Can't find tree 2" });
         return;
@@ -1284,12 +1302,83 @@ router.post("/remove-annoucement", authenticate, (req, res) => {
             return;
         }
 
-
     }).catch((err) => {
         res.status(400).send({ message: "Something went wrong." });
         return;
     })
 })
+
+/**
+ * Approve annoucement of a tree
+ */
+router.post("/approve-annoucement", authenticate, (req, res) => {
+    if (!req.body || !req.body.annoucementID || !req.body.treeID || !req.body.status) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
+
+    Tree.findById({ _id: req.body.treeID }).then((tree) => {
+        if(!tree) {
+            res.status(400).send({ message: "Tree does not exists" })
+            return
+        }
+
+        if(!tree.members.includes(req.user.username)) {
+            res.status(400).send({ message: "User does not exist in the tree" })
+            return
+        }
+
+        if(!tree.admins.includes(req.user.username)) {
+            res.status(400).send({ message: "User is not authorized to approve or reject annoucements" })
+            return
+        }
+        
+        var found = false;
+        var approved = false;
+
+        tree.annoucements.forEach(element => {
+            if(element._id == req.body.annoucementID) {
+                if (req.body.status == true) { //if approve state is true
+                    found = true;
+                    approved = true;
+                    var n = tree.annoucements.indexOf(element);
+                    tree.annoucements[n].approved = true;
+                    tree.save();
+                    
+                }
+                else{
+                    found = true;
+                    approved = false;
+                    var n = tree.annoucements.indexOf(element);
+                    tree.annoucements.splice(n, 1);         
+                    tree.save();
+                }
+            }
+        })
+
+        if (found && approved) {
+            res.status(200).send({ message: "Annoucement has been approved." });
+            return;
+        }
+        else if ((found) && approved == false) {
+            res.status(200).send({ message: "Annoucement has been rejected." });
+            return;
+        }
+        else {
+            console.log("big error");
+            res.status(400).send({ message: "Annoucement could not be found." });
+            return;
+        }
+
+    }).catch((err) => {
+        console.log(err);
+        res.status(400).send({ message: "Something went wrong." });
+        return;
+    })
+
+
+})
+
 
 /**
  * Get all annoucements of a tree

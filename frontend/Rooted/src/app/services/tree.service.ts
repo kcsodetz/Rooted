@@ -252,6 +252,23 @@ export class TreeService {
         return this.http.post('http://localhost:5000/tree/decline-user-requested-invite', payload).toPromise();
     }
 
+    submitAnonMessage(treeID: string, message: string){
+        const payload = {
+            treeID: treeID,
+            anonymousMessage: message
+        }
+        return this.http.post('http://localhost:5000/tree/submit-anonymous-message',payload).toPromise();
+    }
+
+    getAnonMessages(treeID: string){
+        const info = {
+            headers: new HttpHeaders({
+                'treeid': treeID
+            })
+        };
+        return this.http.get<Array<Object>>('http://localhost:5000/tree/get-anonymous-messages',info).toPromise();
+    }
+  
     setColorScheme(treeID: string, newColor: string) {
         const color = {
             newColor: newColor,

@@ -38,6 +38,7 @@ export class TreeComponent implements OnInit {
   username: String;
   isMember: Boolean;
   notMember: Boolean;
+  messageForm: FormGroup;
 
   /* variables used in editing tree name*/
   renderComponent: string;
@@ -87,6 +88,10 @@ export class TreeComponent implements OnInit {
     });
 
     this.displayImages();
+
+    this.messageForm = this.formBuilder.group({
+      message: ['']
+    })
 
   }
 
@@ -358,5 +363,13 @@ export class TreeComponent implements OnInit {
   }
   async sendAddRequestEmail(form: NgForm) {
 
+  }
+
+  sendAnonMessage(message: string){
+    this.treeService.submitAnonMessage(this.myTree.ID,message).then(()=>{
+      var confirm = window.alert('Message anonymously sent to mods');
+      console.log(confirm);
+    });
+    console.log("message: " + message + "submitted to mods");
   }
 }

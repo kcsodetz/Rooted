@@ -21,6 +21,8 @@ export class AdminComponent implements OnInit {
   privateStatus: Boolean;
   editTreeForm: FormGroup;
   admins = [];
+  msgObj: Object;
+  messages: [Object];
  
   activeTabSection = 'Tree';
   submitted = false;
@@ -31,7 +33,7 @@ export class AdminComponent implements OnInit {
 
   ngOnInit() {
     const id = this.route.snapshot.params['id'];
-
+    this.messages = [null];
 
     this.treeService.getAllTreeInfo(id).then((data) => {
       this.myTree = new Tree(data);
@@ -45,7 +47,14 @@ export class AdminComponent implements OnInit {
       console.log("this tree's private status: " + this.myTree.privateStatus);
     });
 
-
+    this.treeService.getAnonMessages(id).then((data) => {
+      this.msgObj = data;
+      let x = 0;
+      while(this.msgObj[x]!=undefined){
+        this.messages[x] = this.msgObj[x++];
+      }
+      console.log(this.messages);
+    });
 
   }
   get tree() { return this.myTree; }
@@ -190,4 +199,5 @@ export class AdminComponent implements OnInit {
 
     //need to delete user from array
   }
+
 }

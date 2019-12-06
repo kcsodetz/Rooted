@@ -12,6 +12,7 @@ import { Router } from '@angular/router'
 })
 export class SearchComponent implements OnInit {
   searchTrees: Tree[];
+  response: string = null;
 
   constructor(private userService: UserService,  private treeService: TreeService, private formBuilder: FormBuilder, private _router: Router) {}
   searchInputForm: FormGroup;
@@ -24,7 +25,8 @@ export class SearchComponent implements OnInit {
   }
 
   onSubmitSearch(form: NgForm) {
-    console.log(form.value.searchInput);
+
+    this.response = null;
 
     this.treeService.getSearchTrees(form.value.searchInput).then((data) => {
 
@@ -34,6 +36,7 @@ export class SearchComponent implements OnInit {
       let response = [];
       response.push(data);
 
+      console.log(data);
 
       this.searchTrees = new Array(response[0].length)
 
@@ -46,7 +49,13 @@ export class SearchComponent implements OnInit {
       }
 
       console.log(this.searchTrees);
-    });
+    }).catch((err) => {
+        this.response = err.error.message;
+    })
+  }
+
+  get ResponseMessage(){
+    return this.response;
   }
   /**
    * Navigates to a tree 

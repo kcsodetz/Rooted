@@ -27,9 +27,9 @@ mocha test/tree/test_invite_user.js --exit
 mocha test/tree/test_add_and_remove_admin.js --exit
 mocha test/tree/test_search.js --exit
 mocha test/tree/test_upload_and_remove_photo.js --exit
-mocha test/tree/test_add_and_remove_annoucements.js --exit
-mocha test/tree/test_anonymous_messages.js --exit
-mocha test/tree/test_approve_and_reject_annoucements.js --exit
+mocha test/tree/test_add_and_remove_announcement.js --exit
+ mocha test/tree/test_anonymous_message.js --exit
+mocha test/tree/test_approve_and_reject_announcement.js --exit
 mocha test/tree/test_change_color_scheme.js --exit
 mocha test/tree/test_kick_user.js --exit
 

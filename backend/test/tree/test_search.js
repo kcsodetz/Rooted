@@ -125,7 +125,6 @@ describe('Test Search', function() {
                     .set('token', token)
                     .set('treename', testTreeName)
                     .end((err, res) => {
-                        console.log(res.body)
                         res.should.have.status(200)
                         done()
                     })

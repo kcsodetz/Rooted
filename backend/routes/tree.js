@@ -1517,64 +1517,115 @@ router.post("/request-non-rooted", authenticate, async (req, res) => {
     // if email is included in the request bdy, set local variable email to the body email. Else, set to null
     let email = (req.body.email) ? (req.body.email) : (null);
 
-    Tree.findOneAndUpdate({ _id: req.body.treeID }, {
-        $push: {
-            nonRootedMembers: {
-                name: req.body.name,
-                email: email,
-                yearJoined: 2019
-            }
-        }
-    }).then((tre) => {
-        if (!tre) {
+    Tree.findOne({ _id: req.body.treeID }).then((t) => {
+
+
+        if (!t) {
             res.status(400).send({ message: "Tree does not exist" });
-            return;
+            return
         }
 
-        // res.status(200).send({ message: "User has been successfully invited" });
-        // return;
-    }).catch((err) => {
-        console.log(err)
-        res.status(400).send({ message: "Fatal Error" });
-        return;
-    })
-
-    if (email !== null) {
-        var newInvitedUser = new InvitedUser({
-            email: email,
+        let nrm = {
             name: req.body.name,
-            treeID: req.body.treeID
-        });
+            email: email,
+            yearJoined: 2019,
+            approved: false
+        };
 
-        try {
-            await newInvitedUser.save();
-        } catch (err) {
-            if (err.code === 11000) {
-                res.status(400).send({ message: "Duplicate Person" })
+        if (t.admins.includes(req.user.username)) {
+            nrm.approved = true;
+        }
+        else {
+            let admins = t.admins;
+            admins.forEach(admin => {
+                User.findOneAndUpdate({ username: admin }, {
+                    $push: {
+                        notifications: {
+                            sender: req.user.username,
+                            nType: "nonRooted",
+                            body: "Request to add " + req.body.name + " to " + t.treeName,
+                            meta: t._id + ":" + req.body.name
+                        }
+                    }
+                }).then((ad) => {
+                    console.log("sent")
+                }).catch((err) => {
+                    console.log(err)
+                });
+            })
+        }
+
+        t.nonRootedMembers.push(nrm);
+
+        t.save(function (err) {
+            if (err) {
+                res.status(400).send({ message: "Fatal Error" });
                 return;
             }
             else {
-                res.status(400).send({ message: "Fatal Error: Invite User" })
+                res.status(200).send({ message: "User Succesfully Requested" });
                 return;
             }
-        }
+        })
+    });
 
-        var newMemberInvite = "Dear " + req.body.name +
-            ",\n\nOne of your friends has invited you to join Roooted! If you join using this email address, then you will automatically be added to "
-            + " their group. We look forward to having you with us!\n\nSincerely, \nThe Rooted Team";
-        var newMemberEmailSubject = "One of your friends has invited you to Rooted!";
 
-        try {
-            mailer(email, newMemberEmailSubject, newMemberInvite);
-        } catch (err) {
-            res.status(400).send({ message: "Fatal Error: Mailer" })
-            return;
-        }
-    }
+    // Tree.findOneAndUpdate({ _id: req.body.treeID }, {
+    //     $push: {
+    //         nonRootedMembers: {
+    //             name: req.body.name,
+    //             email: email,
+    //             yearJoined: 2019,
+    //             approved: false
+    //         }
+    //     }
+    // }).then((tre) => {
+    //     if (!tre) {
+    //         res.status(400).send({ message: "Tree does not exist" });
+    //         return;
+    //     }
 
-    res.status(200).send({ message: "User Succesfully Requested" });
-    return;
 
+    //     res.status(200).send({ message: "User has been successfully invited" });
+    //     return;
+    // }).catch((err) => {
+    //     console.log(err)
+    //     res.status(400).send({ message: "Fatal Error" });
+    //     return;
+    // })
+
+    // if (email !== null) {
+    //     var newInvitedUser = new InvitedUser({
+    //         email: email,
+    //         name: req.body.name,
+    //         treeID: req.body.treeID
+    //     });
+
+    //     try {
+    //         await newInvitedUser.save();
+    //     } catch (err) {
+    //         if (err.code === 11000) {
+    //             res.status(400).send({ message: "Duplicate Person" })
+    //             return;
+    //         }
+    //         else {
+    //             res.status(400).send({ message: "Fatal Error: Invite User" })
+    //             return;
+    //         }
+    //     }
+
+    //     var newMemberInvite = "Dear " + req.body.name +
+    //         ",\n\nOne of your friends has invited you to join Roooted! If you join using this email address, then you will automatically be added to "
+    //         + " their group. We look forward to having you with us!\n\nSincerely, \nThe Rooted Team";
+    //     var newMemberEmailSubject = "One of your friends has invited you to Rooted!";
+
+    //     try {
+    //         mailer(email, newMemberEmailSubject, newMemberInvite);
+    //     } catch (err) {
+    //         res.status(400).send({ message: "Fatal Error: Mailer" })
+    //         return;
+    //     }
+    // }
 })
 
 

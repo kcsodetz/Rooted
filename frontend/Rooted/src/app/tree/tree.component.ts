@@ -343,13 +343,13 @@ export class TreeComponent implements OnInit {
   }
   async sendAddRequestEmail(form: NgForm) {
     this.treeService.requestNonRootedUser(this.myTree.ID, form.value.name, form.value.email).then(() => {
-      const confirm = window.alert('sucess');
+      const confirm = window.alert('Successfully requested a new member.');
       console.log(confirm);
     });
   }
   sendAnonMessage(message: string) {
     this.treeService.submitAnonMessage(this.myTree.ID, message).then(() => {
-      const confirm = window.alert('Message anonymously sent to mods');
+      const confirm = window.alert('Message anonymously sent to moderators.');
       console.log(confirm);
     });
     console.log('message: ' + message + 'submitted to mods');

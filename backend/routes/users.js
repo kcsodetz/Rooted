@@ -894,7 +894,6 @@ router.post('/sw-admin-ban-user', authenticate, (req, res) => {
 /**
  * Get all banned users - sitewide admin
  */
-
 router.get('/all-banned-users', authenticate, (req, res) => {
 
     Admin.find({}, function (err, docs) {
@@ -921,7 +920,6 @@ router.get('/all-banned-users', authenticate, (req, res) => {
 /**
  * Unban user - sitewide admin
  */
-
 router.post('/sw-admin-unban-user', authenticate, (req, res) => {
     if(!req.body || !req.body.userToUnban) {
         res.status(400).send({ message: "Bad request" });
@@ -968,9 +966,69 @@ router.post('/sw-admin-unban-user', authenticate, (req, res) => {
         res.status(400).send({ message: "FATAL" });
         return;
     })
+})
+
+/**
+ * Accept a non rooted individual in a tree
+ */
+router.post('/accept-non-rooted', authenticate, (req, res) => {
+    if (!req.body.meta || !req.body.notifID) {
+        res.status(400).send({ message: "Bad request" });
+        return;
+    }
 
 
+    let treeID = req.body.meta.split(":")[0];
+    let name = req.body.meta.split(":")[1];
 
+    User.findOne({ username: req.user.username }).then((usr) => {
+        if (!usr) {
+            res.status(400).send({ message: "User does not exist" });
+            return;
+        }
+
+        // For each notification, check the ID against the given ID
+        usr.notifications.forEach(element => {
+            if (element._id == req.body.notifID) {
+                var n = usr.notifications.indexOf(element)
+                usr.notifications.splice(n, 1)
+                return;
+            }
+        });
+
+        Tree.findOne({ _id: treeID }).then((tre) => {
+            // Check if tree is null
+            if (!tre) {
+                usr.save();
+                res.status(400).send({ message: "The tree cannot be found" });
+                return;
+            }
+
+            let nrm = tre.nonRootedMembers;
+            let id;
+            nrm.forEach(member => {
+               if (member.name === name)  {
+                    member.approved = true;
+                    id = member._id;
+               }
+            });
+
+            // var m = nrm.indexOf(id);
+            // nrm.splice(m, 1);
+
+            tre.nonRootedMembers = nrm;
+
+            // Save new contents
+            tre.save();
+            usr.save();
+            res.status(200).send({ message: "Succesfully approved " + name });
+            return;
+        })
+
+    }).catch((err) => {
+        res.status(400).send({ message: "Fatal Error" });
+
+    })
 })
 
 

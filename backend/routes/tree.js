@@ -1544,7 +1544,7 @@ router.post("/request-non-rooted", authenticate, async (req, res) => {
                             sender: req.user.username,
                             nType: "nonRooted",
                             body: "Request to add " + req.body.name + " to " + t.treeName,
-                            meta: t._id
+                            meta: t._id + ":" + req.body.name
                         }
                     }
                 }).then((ad) => {

@@ -233,8 +233,9 @@ export class AdminComponent implements OnInit {
     this.treeService.addAnnouncement(this.route.snapshot.params['id'],announcement).then(()=> {
       var confirm = window.alert('Announcement Added');
       console.log(confirm);
+      window.location.replace("/admin/" + this.route.snapshot.params['id']);
     })
-    window.location.replace("/admin/" + this.route.snapshot.params['id']);
+    
   }
 
   removeAnnouncement(announcementID: string){

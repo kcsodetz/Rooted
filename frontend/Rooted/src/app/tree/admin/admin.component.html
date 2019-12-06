@@ -196,8 +196,9 @@
         <mdb-card-title>
           <h3 [ngStyle]="{'color': myTree.colorScheme}">Pending Anouncements</h3>
         </mdb-card-title>
-        <div *ngFor="let ann of announcements" class="card notificationCard" name="notificationAcceptReject">
-          <div *ngIf="!ann.approved" class="row">
+        <div *ngFor="let ann of announcements"name="notificationAcceptReject" >
+         <div *ngIf="!ann.approved" class="card notificationCard">
+          <div  class="row">
             <div class="col-9">
               <label style="float:left">{{ann.annoucement}}</label>
             </div>
@@ -212,6 +213,8 @@
               </div>
             </div>
           </div>
+         </div>
+         
         </div>
       </mdb-card-body>
     </mdb-card>

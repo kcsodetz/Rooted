@@ -353,12 +353,14 @@ export class TreeComponent implements OnInit {
       console.log(confirm);
     });
     console.log('message: ' + message + 'submitted to mods');
+    window.location.replace('/tree/' + this.myTree.ID);
   }
   addAnnouncement(announcement: string) {
     this.treeService.addAnnouncement(this.route.snapshot.params['id'], announcement).then(() => {
       const confirm = window.alert('Announcement Requested');
       console.log(confirm);
     });
+    window.location.replace('/tree/' + this.myTree.ID);
   }
   editInvolvement(joinYear: string, exitYear: string) {
     if (joinYear == '') {
@@ -373,6 +375,7 @@ export class TreeComponent implements OnInit {
       const confirm = window.alert('Your involvement has been updated');
       console.log(confirm);
     });
+    window.location.replace('/tree/' + this.myTree.ID);
   }
 }
 

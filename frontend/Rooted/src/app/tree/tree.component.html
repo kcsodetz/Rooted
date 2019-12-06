@@ -141,7 +141,7 @@
                 <h3 [ngStyle]="{'color': myTree.colorScheme}">Anouncements</h3>
                 <button mdbBtn onclick="document.getElementById('addAnn').style.display='block'" type="button" [ngStyle]="{'background-color': myTree.colorScheme}">Request An Announcement</button>
               </mdb-card-title>
-              <div *ngFor="let ann of announcements" name="notificationAcceptReject">
+              <div *ngFor="let ann of announcements | async" name="notificationAcceptReject">
                 <div *ngIf="ann.approved" class="card notificationCard" >
                   <div  class="row">
                     <div class="col-9">
@@ -197,7 +197,7 @@
 
 
                 <div style="display: flex; flex-wrap: wrap; width: 100%; ">
-                  <div class="spacer" *ngFor="let i of treePhotoLibraryImages; let ind = index">
+                  <div class="spacer" *ngFor="let i of treePhotoLibraryImages | async; let ind = index">
                     <img [src]="i.url" (click)="selectPhoto(i._id)" (click)="setRow(ind)" [ngClass]="{'highlight': selectedIndex === ind}"/>
                   </div>
                 </div>
@@ -215,7 +215,7 @@
                       
 
                       <div class="overflowTest" *ngIf="show">
-                        <div *ngFor="let m of messages">
+                        <div *ngFor="let m of messages | async">
                           <b>{{m.user}}</b>:
                           {{m.message}}
                         </div>

@@ -5,6 +5,7 @@ import { Tree } from '../models/tree.model';
 import { Router, ActivatedRoute, Params, Data } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { Account } from '../models/account.model';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-tree',
   templateUrl: './tree.component.html',
@@ -22,11 +23,11 @@ export class TreeComponent implements OnInit {
   // Add user to tree form
   addUserForm: FormGroup;
   addUserFormEmail: FormGroup;
-  treePhotoLibraryImages: Array<Object>;
+  treePhotoLibraryImages: Promise<Array<Object>>;
   submitted = false;
   show = false;
   response = 'NULL';
-  messages: Array<Object>;
+  messages: Promise<Array<Object>>;
   activeTabSection = 'Tree';
   isPrivate: Boolean;
   isAdmin: Boolean;
@@ -38,7 +39,7 @@ export class TreeComponent implements OnInit {
   selectedIndex = 0;
   messageForm: FormGroup;
   annObj: Object;
-  announcements: [Object];
+  announcements: Promise<Array<Object>>;
   announcementForm: FormGroup;
   involvementForm: FormGroup;
   /* variables used in editing tree name*/
@@ -47,8 +48,8 @@ export class TreeComponent implements OnInit {
   years: [number];
   constructor(private route: ActivatedRoute, public userService: UserService,
     private treeService: TreeService, private formBuilder: FormBuilder, private _router: Router) {
-    this.messages = [];
-    this.treePhotoLibraryImages = [];
+    // this.messages = [];
+    // this.treePhotoLibraryImages = [];
   }
   /**
    * Init function
@@ -75,6 +76,7 @@ export class TreeComponent implements OnInit {
       // console.log("current username: " + this.username);
       this.getTreeInfo();
       this.isUserAdmin();
+      this.getAnnouncements();
       // this.treeMember();
     });
     this.addUserFormEmail = this.formBuilder.group({
@@ -83,21 +85,24 @@ export class TreeComponent implements OnInit {
       sendEmail: [Boolean],
     });
     this.displayImages();
+    console.log('photolib');
+    console.log(this.treePhotoLibraryImages);
+
     this.messageForm = this.formBuilder.group({
       message: ['']
     });
     this.announcementForm = this.formBuilder.group({
       announcement: ['']
     });
-    this.announcements = [null];
-    this.treeService.getAnnouncements(this.route.snapshot.params['id']).then((data) => {
-      this.annObj = data;
-      let x = 0;
-      while (this.annObj[x] != undefined) {
-        this.announcements[x] = this.annObj[x++];
-      }
-      console.log(this.announcements);
-    });
+    // this.announcements = [null];
+    // this.treeService.getAnnouncements(this.route.snapshot.params['id']).then((data) => {
+    //   this.annObj = data;
+    //   let x = 0;
+    //   while (this.annObj[x] != undefined) {
+    //     this.announcements[x] = this.annObj[x++];
+    //   }
+    //   console.log(this.announcements);
+    // });
     this.involvementForm = this.formBuilder.group({
       joinYear: [''],
       exitYear: ['']
@@ -113,20 +118,20 @@ export class TreeComponent implements OnInit {
       this.isPrivate = this.myTree.privateStatus;
       const len = this.myTree.members.length;
       let x = 0;
-      for(x=0;x<this.myTree.memberInvolvement.length;x++){
-        if(!this.years.includes(this.myTree.memberInvolvement[x].yearStarted)){
+      for (x = 0; x < this.myTree.memberInvolvement.length; x++) {
+        if (!this.years.includes(this.myTree.memberInvolvement[x].yearStarted)) {
           this.years[x] = this.myTree.memberInvolvement[x].yearStarted;
         }
       }
       let y = 0;
-      for(y=0;y<this.myTree.nonRootedMembers.length;y++){
-        if(!this.years.includes(this.myTree.nonRootedMembers[y].yearJoined)){
-          if(this.myTree.nonRootedMembers[y].approved){
+      for (y = 0; y < this.myTree.nonRootedMembers.length; y++) {
+        if (!this.years.includes(this.myTree.nonRootedMembers[y].yearJoined)) {
+          if (this.myTree.nonRootedMembers[y].approved) {
             this.years[x++] = this.myTree.nonRootedMembers[y].yearJoined;
           }
         }
       }
-      this.years.sort(function(a, b){return b-a});
+      this.years.sort(function(a, b) {return b - a;});
       let i = 0;
       for (i; i < len; i++) {
         if (this.username === this.myTree.members[i]) {
@@ -153,17 +158,12 @@ export class TreeComponent implements OnInit {
    * Get all messages for a tree
    */
   getMessages() {
-    this.treeService.getMessages(this.myTree.ID).then((messages) => {
-      // this.messages = messages;
-      console.log(messages);
-      let i = 0;
-      messages.forEach(element => {
-        //   console.log(element)
-        this.messages[i] = element;
-        i++;
-      });
-      // console.log(this.messages)
-    });
+    return this.messages = this.treeService.getMessages(this.myTree.ID);
+  }
+
+  getAnnouncements() {
+    // this.treeService.getAnnouncements(this.route.snapshot.params['id']).then((data) => {
+    return this.announcements = this.treeService.getAnnouncements(this.route.snapshot.params['id']);
   }
   isUserAdmin() {
     // console.log("in isUserAdmin");
@@ -294,14 +294,7 @@ export class TreeComponent implements OnInit {
   }
   displayImages() {
     const id = this.route.snapshot.params['id'];
-    //    console.log(id);
-    this.treeService.getPhotos(id).then((res) => {
-      let i = 0;
-      res.forEach(element => {
-        this.treePhotoLibraryImages[i] = element;
-        i++;
-      });
-    });
+    return this.treePhotoLibraryImages = this.treeService.getPhotos(id);
   }
   selectPhoto(string: string) {
     this.photoID = string;

@@ -44,6 +44,7 @@ export class TreeComponent implements OnInit {
   /* variables used in editing tree name*/
   renderComponent: string;
   chosenTree: Tree;
+  years: [number];
   constructor(private route: ActivatedRoute, public userService: UserService,
     private treeService: TreeService, private formBuilder: FormBuilder, private _router: Router) {
     this.messages = [];
@@ -63,6 +64,7 @@ export class TreeComponent implements OnInit {
     // this.treeService.getAllUsersInTree(id).then((data) => {
     // });
     // Form values and validators for create new
+    this.years = [0];
     this.addUserForm = this.formBuilder.group({
       username: ['', Validators.required]
     });
@@ -110,6 +112,19 @@ export class TreeComponent implements OnInit {
       this.myTree = new Tree(data);
       this.isPrivate = this.myTree.privateStatus;
       const len = this.myTree.members.length;
+      let x = 0;
+      for(x=0;x<this.myTree.memberInvolvement.length;x++){
+        if(!this.years.includes(this.myTree.memberInvolvement[x].yearStarted)){
+          this.years[x] = this.myTree.memberInvolvement[x].yearStarted;
+        }
+      }
+      let y = 0;
+      for(y=0;y<this.myTree.nonRootedMembers.length;y++){
+        if(!this.years.includes(this.myTree.nonRootedMembers[y].yearJoined)){
+          this.years[x++] = this.myTree.nonRootedMembers[y].yearJoined;
+        }
+      }
+      this.years.sort(function(a, b){return b-a});
       let i = 0;
       for (i; i < len; i++) {
         if (this.username === this.myTree.members[i]) {

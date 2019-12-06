@@ -85,6 +85,18 @@ export class UserService {
         return this.http.post('http://localhost:5000/user/join-tree', userAndNotif).toPromise();
     }
 
+    acceptNonRooted(username: string, notif: Object) {
+       const notifID = notif['_id'];
+        const treeID = notif['meta'];
+        const userAndNotif = {
+            'username' : username,
+            'treeID' : treeID,
+            'notifID' : notifID
+        };
+        return this.http.post('http://localhost:5000/user/accept-non-rooted', userAndNotif).toPromise();
+    }
+
+
     /*
     *   Decline invitation to join a group
     */
@@ -97,6 +109,18 @@ export class UserService {
             'notifID' : notifID
         };
         return this.http.post('http://localhost:5000/user/decline-invite', userAndNotif).toPromise();
+    }
+
+
+    declineNonRooted(username: string, notif: Object) {
+        const notifID = notif['_id'];
+        const treeID = notif['meta'];
+        const userAndNotif = {
+            'username' : username,
+            'treeID' : treeID,
+            'notifID' : notifID
+        };
+        return this.http.post('http://localhost:5000/user/decline-non-rooted', userAndNotif).toPromise();
     }
 
     /*

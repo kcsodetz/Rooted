@@ -230,6 +230,18 @@ export class ProfileComponent implements OnInit {
 
   accept(n) {
 
+    if(n.type=="nonRooted")
+    {
+      this.userService.acceptNonRooted(this.username, n).then((response) => {
+        console.log(response);
+        this.response = 'complete';
+      },
+        (err) => {
+          console.log(err);
+          this.response = 'fatalError';
+        });
+    }
+    else{
       this.userService.acceptInvitation(this.username, n).then((response) => {
         console.log(response);
         this.response = 'complete';
@@ -238,12 +250,26 @@ export class ProfileComponent implements OnInit {
           console.log(err);
           this.response = 'fatalError';
         });
+    }
+     
 
        // location.reload();
 
   }
 
   reject(n) {
+    if(n.type=="nonRooted")
+    {
+      this.userService.declineNonRooted(this.username, n).then((response) => {
+        console.log(response);
+        this.response = 'complete';
+      },
+        (err) => {
+          console.log(err);
+          this.response = 'fatalError';
+        });
+    }
+    else{
       this.userService.declineInvitation(this.username, n).then((response) => {
         console.log(response);
         this.response = 'complete';
@@ -253,6 +279,8 @@ export class ProfileComponent implements OnInit {
           this.response = 'fatalError';
         });
     //location.reload();
+    }
+    
   }
 
   deleteNotif(n) {

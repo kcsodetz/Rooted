@@ -268,7 +268,7 @@
           </mdb-card>
 
           <div class="adjustLeftMargin">
-            <h4>Members of {{myTree.treeName}}</h4>
+           <!-- <h4>Members of {{myTree.treeName}}</h4>-->
             <button style="float: right;" mdbBtn type="button" [ngStyle]="{'background-color': myTree.colorScheme}" mdbWavesEffect
               onclick="document.getElementById('id02').style.display='block'">Add Member <i class="fa fa-user">
               </i></button>
@@ -302,6 +302,7 @@
                         <div *ngIf="response === 'fatalError'" class="alert alert-danger" role="alert">
                           A Fatal Error has occured. Please try again at another time.
                         </div>
+                        <br>
                         <button color="success" block="true" type="submit" prevent-default  
                         style="align-self: start;" [ngStyle]="{'background-color': myTree.colorScheme}">Add User</button>
                       </div>
@@ -314,10 +315,8 @@
                         <label style="float:left">Non-Rooted Member</label>
                         <input type="text" placeholder="Name" class="form-control" formControlName="name"/>
                         <br>
-                        <label>Invite User to Join Rooted?</label><mdb-checkbox [checked]="false" [default]="false" formControlName="sendEmail"></mdb-checkbox><br> 
                         <input type="text" placeholder="Email" class="form-control" formControlName="email"/>
-                        
-                        <br>
+                    
                         
                         <br>
                       </div>
@@ -345,8 +344,8 @@
                 </div>
               </div>
             </div>
-            <h5>Founder: {{myTree.founder}}</h5>
-            <h5>Members: {{myTree.members}} </h5>
+           <!-- <h5>Founder: {{myTree.founder}}</h5>
+            <h5>Members: {{myTree.members}} </h5>-->
           </div>
 
           <html>

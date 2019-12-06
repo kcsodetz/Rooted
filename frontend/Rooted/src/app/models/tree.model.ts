@@ -19,6 +19,11 @@ export class Tree{
     memberRequestedUsers: [String];
     pendingUsers: [String];
     colorScheme: [String];
+    nonRootedMembers:  [{
+        id: number,
+        name: string,
+        email: string,
+    }];
     
     
     constructor(response: any) {
@@ -38,5 +43,6 @@ export class Tree{
         this.memberRequestedUsers=response.memberRequestedUsers;
         this.pendingUsers=response.pendingUsers;
         this.colorScheme=response.colorScheme;
+        this.nonRootedMembers=response.nonRootedMembers;
     }
 }

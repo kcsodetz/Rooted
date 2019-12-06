@@ -165,6 +165,25 @@ export class TreeService {
         return this.http.post('http://localhost:5000/tree/add-user', info).toPromise();
     }
 
+    requestNonRootedUser(treeID: string, username: string, email: string) {
+        
+        const info = {
+            treeID: treeID,
+            name: username,
+        };
+        if(email!=null)
+        {
+            const info = {
+                treeID: treeID,
+                name: username,
+                email: email
+            };
+                
+        }
+        
+        return this.http.post('http://localhost:5000/tree/request-non-rooted', info).toPromise();
+    }
+
     addAdmin(treeID: string, username: string) {
         const info = {
             treeID: treeID,

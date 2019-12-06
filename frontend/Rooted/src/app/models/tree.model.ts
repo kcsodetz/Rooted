@@ -23,7 +23,13 @@ export class Tree{
         id: number,
         name: string,
         email: string,
+        yearJoined: number
     }];
+    memberInvolvement: [{
+        user: String,
+        yearStarted: number,
+        yearEnded: number
+    }]
     
     
     constructor(response: any) {
@@ -44,5 +50,6 @@ export class Tree{
         this.pendingUsers=response.pendingUsers;
         this.colorScheme=response.colorScheme;
         this.nonRootedMembers=response.nonRootedMembers;
+        this.memberInvolvement = response.memberInvolvement;
     }
 }

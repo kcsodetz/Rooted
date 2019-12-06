@@ -1177,6 +1177,15 @@ router.post("/remove-member", authenticate, (req, res) => {
             return;
         }
 
+        tre.memberInvolvement.forEach(element => {
+            if(element.user == req.body.username){
+                var n = tre.memberInvolvement.indexOf(element);
+                tre.memberInvolvement.splice(n,1);
+                tre.save();
+                return;
+            }
+        });
+
         User.findOne({ username: req.body.username }).then((user) => {
             if (!user) {
                 res.status(400).send({ message: "Username does not exist." })

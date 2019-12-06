@@ -14,7 +14,7 @@ export class EditNameComponent implements OnInit {
 
 
 
-  myTree: Tree = { memberRequestedUsers:null, pendingUsers:null ,founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null, chat: null, imageUrl: null, ID: null, description: null, admins: null, privateStatus: false, bannedUsers: null, aboutBio: null, colorScheme: null};
+  myTree: Tree = { nonRootedMembers:null ,memberRequestedUsers:null, pendingUsers:null ,founder: null, treeName: null, members: null, dateCreated: null, numberOfPeople: null, chat: null, imageUrl: null, ID: null, description: null, admins: null, privateStatus: false, bannedUsers: null, aboutBio: null, colorScheme: null};
   constructor(private route: ActivatedRoute, private treeService: TreeService, private _router: Router, private formBuilder: FormBuilder) { }
   editTreeForm: FormGroup;
   submitted = false;

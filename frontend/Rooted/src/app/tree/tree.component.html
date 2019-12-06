@@ -104,8 +104,50 @@
                     </div>
                   </div>
                 </div>
-                <span><a (click)="userProfile(member)">
+                <span style="text-align: center; padding: 0;"><a (click)="userProfile(member)" >
                     {{member}}</a></span>
+                  <!-- <div id="userinfo" class="w3-modal">
+                      <div class="w3-modal-content">
+                        <div class="w3-container">
+                          <mdb-card>
+                            <mdb-card-body>
+                                <span onclick="document.getElementById('userinfo').style.display='none'"
+                                class="w3-button w3-display-topright">&times;</span>
+                                <button mdbBtn href="#" routerLink="/profile" color="success" block="true" class="my-4">
+                                  View {{member}}'s' Profile!</button>
+                                <button mdbBtn type="button" color="danger" class="report my-4">
+                                    <a href="#" routerLink="/report-user" [state]="{ data: {treeID: myTree.ID, userToReport: member}}">
+                                    Report This User</a>
+                                </button>
+                            </mdb-card-body>
+                          </mdb-card>
+                        </div>
+                      </div>
+                  </div> -->
+              </div>
+
+              <h3 [ngStyle]="{'color': myTree.colorScheme}">Non-Rooted Members</h3>
+              <div class="usericon" *ngFor="let memb of myTree.nonRootedMembers">
+                <i class="fas fa-user-circle fa-5x  pr-3 ml-3" style="color:black"></i>
+                <!--<span><a onclick="document.getElementById('userinfo').style.display='block'">
+                    {{member}}</a></span>-->
+                <div id="userinfo" class="w3-modal">
+                  <div class="w3-modal-content">
+                    <div class="w3-container">
+                      <!-- Card Container and Body -->
+                      <mdb-card>
+                        <mdb-card-body>
+                          <span onclick="document.getElementById('userinfo').style.display='none'"
+                            class="w3-button w3-display-topright">&times;</span>
+                      
+                        </mdb-card-body>
+                      </mdb-card>
+                    </div>
+                  </div>
+                </div>
+                <span style="text-align: center; padding: 0;">
+                    <p>{{memb.name}}</p>
+                </span>
                   <!-- <div id="userinfo" class="w3-modal">
                       <div class="w3-modal-content">
                         <div class="w3-container">

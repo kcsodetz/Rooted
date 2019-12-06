@@ -1,4 +1,20 @@
 
+  <h4 class="pageHeader">Search</h4>
+
+<div>
+  
+        <form (submit)="onSubmitSearch(h)" #h=ngForm [formGroup]="searchInputForm">
+          <div class="form-group">
+            <input autocomplete= "off" formControlName="searchInput" class="form-control flex" [(ngModel)]="searchInput" id="searchinput" type="text" style="border: 0px; background: transparent; min-width:600; outline: none; -webkit-box-shadow:none; -moz-box-shadow:none; box-shadow: none; cursor: default; " placeholder="Type to input search..."/>
+            <button mdbBtn color="success"  type="button" (click)="onSubmitSearch(h)"><i class="fa fa-search"></i></button>
+
+          </div>
+        </form>
+
+  </div>
+
+
+ 
  <div class="grid-container" id="treeObject">
    <div *ngFor="let t of searchTrees">
      <h2 class="center">{{t.treeName}}</h2>
@@ -7,3 +23,4 @@
      </div>
    </div>
  </div>
+

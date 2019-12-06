@@ -1135,7 +1135,9 @@ router.get("/search-tree", authenticate, (req, res) => {
         return;
     }
 
-    Tree.find({ treeName: req.headers.treename }).then((tree) => {
+    console.log(req.headers.treename);
+
+    Tree.find({ treeName: {"$regex": req.headers.treename, "$options":"i" }} ).then((tree) => {
         if (!tree[0]) {
             res.status(400).send({ message: "Could not find tree" });
             return;

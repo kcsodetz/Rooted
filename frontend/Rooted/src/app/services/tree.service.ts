@@ -44,6 +44,15 @@ export class TreeService {
 
     }
 
+    getSearchTrees(treename: string) {
+        const info = {
+            headers: new HttpHeaders({
+                'treename': treename
+            })
+        };
+        return this.http.get<Object>('http://localhost:5000/tree/search-tree', info).toPromise();
+    }
+
     removeUser(treeID: string, username: string) {
         const info = {
             treeID: treeID,
@@ -154,6 +163,25 @@ export class TreeService {
             username: username
         };
         return this.http.post('http://localhost:5000/tree/add-user', info).toPromise();
+    }
+
+    requestNonRootedUser(treeID: string, username: string, email: string) {
+        
+        const info = {
+            treeID: treeID,
+            name: username,
+        };
+        if(email!=null)
+        {
+            const info = {
+                treeID: treeID,
+                name: username,
+                email: email
+            };
+                
+        }
+        
+        return this.http.post('http://localhost:5000/tree/request-non-rooted', info).toPromise();
     }
 
     addAdmin(treeID: string, username: string) {

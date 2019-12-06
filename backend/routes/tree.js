@@ -1535,6 +1535,25 @@ router.post("/request-non-rooted", authenticate, async (req, res) => {
         if (t.admins.includes(req.user.username)) {
             nrm.approved = true;
         }
+        else {
+            let admins = t.admins;
+            admins.forEach(admin => {
+                User.findOneAndUpdate({ username: admin }, {
+                    $push: {
+                        notifications: {
+                            sender: req.user.username,
+                            nType: "nonRooted",
+                            body: "Request to add " + req.body.name + " to " + t.treeName,
+                            meta: t._id
+                        }
+                    }
+                }).then((ad) => {
+                    console.log("sent")
+                }).catch((err) => {
+                    console.log(err)
+                });
+            })
+        }
 
         t.nonRootedMembers.push(nrm);
 

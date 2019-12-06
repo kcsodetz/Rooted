@@ -1139,7 +1139,7 @@ router.get("/search-tree", authenticate, (req, res) => {
 
     Tree.find({ treeName: {"$regex": req.headers.treename, "$options":"i" }} ).then((tree) => {
         if (!tree[0]) {
-            res.status(400).send({ message: "Could not find tree" });
+            res.status(400).send({ message: "No tree contains this phrase" });
             return;
         }
 

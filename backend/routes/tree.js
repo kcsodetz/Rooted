@@ -1137,7 +1137,7 @@ router.get("/search-tree", authenticate, (req, res) => {
 
     console.log(req.headers.treename);
 
-    Tree.find({ treeName: {"$regex": req.headers.treename, "$options":"i" }} ).then((tree) => {
+    Tree.find({ treeName: { "$regex": req.headers.treename, "$options": "i" } }).then((tree) => {
         if (!tree[0]) {
             res.status(400).send({ message: "No tree contains this phrase" });
             return;
@@ -1453,7 +1453,9 @@ router.post("/submit-anonymous-message", authenticate, (req, res) => {
         res.status(400).send({ message: "Bad request" });
         return;
     }
-    Tree.findById({ _id: req.body.treeID }).then((tree) => {
+
+    Tree.findOne({ _id: req.body.treeID }).then((tree) => {
+
         if (!tree) {
             res.status(400).send({ message: "Tree does not exist" });
             return
@@ -1463,6 +1465,25 @@ router.post("/submit-anonymous-message", authenticate, (req, res) => {
             res.status(400).send({ message: "User does not exist in the tree" })
             return;
         }
+
+        let admins = tree.admins;
+
+        admins.forEach(admin => {
+            User.findOneAndUpdate({ username: admin }, {
+                $push: {
+                    notifications: {
+                        sender: tree.treeName,
+                        nType: "Message",
+                        body: req.body.anonymousMessage,
+                        meta: tree._id
+                    }
+                }
+            }).then((ad) => {
+                console.log("sent")
+            }).catch((err) => {
+                console.log(err)
+            });
+        })
 
         Tree.findByIdAndUpdate((req.body.treeID), {
             $push: {
@@ -1478,7 +1499,8 @@ router.post("/submit-anonymous-message", authenticate, (req, res) => {
             return;
         })
     }).catch((err) => {
-        res.status(400).send({ message: "Tree does not exist" });
+        console.log(err)
+        res.status(400).send({ message: "Fatal Error" });
         return;
     })
 })

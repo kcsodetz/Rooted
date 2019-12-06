@@ -234,6 +234,7 @@ export class ProfileComponent implements OnInit {
       this.userService.acceptNonRooted(this.username, n).then((response) => {
         console.log(response);
         this.response = 'complete';
+        window.location.replace('/profile');
       },
         (err) => {
           console.log(err);
@@ -243,6 +244,7 @@ export class ProfileComponent implements OnInit {
       this.userService.acceptInvitation(this.username, n).then((response) => {
         console.log(response);
         this.response = 'complete';
+        window.location.replace('/profile');
       },
         (err) => {
           console.log(err);
@@ -260,6 +262,7 @@ export class ProfileComponent implements OnInit {
       this.userService.declineNonRooted(this.username, n).then((response) => {
         console.log(response);
         this.response = 'complete';
+        window.location.replace('/profile');
       },
         (err) => {
           console.log(err);
@@ -269,6 +272,7 @@ export class ProfileComponent implements OnInit {
       this.userService.declineInvitation(this.username, n).then((response) => {
         console.log(response);
         this.response = 'complete';
+        window.location.replace('/profile');
       },
         (err) => {
           console.log(err);

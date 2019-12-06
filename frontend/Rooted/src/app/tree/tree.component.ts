@@ -121,7 +121,9 @@ export class TreeComponent implements OnInit {
       let y = 0;
       for(y=0;y<this.myTree.nonRootedMembers.length;y++){
         if(!this.years.includes(this.myTree.nonRootedMembers[y].yearJoined)){
-          this.years[x++] = this.myTree.nonRootedMembers[y].yearJoined;
+          if(this.myTree.nonRootedMembers[y].approved){
+            this.years[x++] = this.myTree.nonRootedMembers[y].yearJoined;
+          }
         }
       }
       this.years.sort(function(a, b){return b-a});

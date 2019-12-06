@@ -14,8 +14,10 @@ var mail = process.env.TEST_EMAIL
 
 var treeID;
 
-describe('Test Delete Tree', function() {
-    this.timeout(5000)
+
+
+describe('Test Delete Tree', () => {
+
     before((done) => {
         var info = {
             username: uname,

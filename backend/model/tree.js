@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 let treeSchema = new mongoose.Schema({
     founder: { type: String },
-    members: { type: [String]},
+    members: { type: [String], unique: true},
     treeName: { type: String, required: true},
     dateCreated: { type: Date, default: Date.now },
     numberOfPeople: { type: Number, default: 1 },

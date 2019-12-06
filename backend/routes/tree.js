@@ -33,10 +33,6 @@ router.get("/", function (req, res) {
     res.send('This router is for all tree related tasks');
 });
 
-
-/**
- * Add / create a tree
- */
 router.post("/add", authenticate, function (req, res) {
 
     if (!req.body || !req.body.treeName) {
@@ -57,9 +53,7 @@ router.post("/add", authenticate, function (req, res) {
         founder: req.user.username,
         treeName: req.body.treeName,
         description: desc,
-        imageUrl: url,
-        members: [req.user.username],
-        admins: [req.user.username]
+        imageUrl: url
     });
 
     var year = new Date();
@@ -78,14 +72,14 @@ router.post("/add", authenticate, function (req, res) {
             res.status(200).send(tree);
             return;
         }
-    });
+        }).catch((err) => {
+            console.log(err);
+            res.status(400).send({ message: "Error: Could not create tree" });
+            return
+        })
 
 });
 
-
-/**
- * Add a photo to a tree
- */
 router.post('/add-photo', authenticate, upload.single("image"), (req, res) => {
     if (!req.file || !req.headers.treeid) {
         res.status(400).send({ message: "Bad request" });
@@ -154,10 +148,6 @@ router.post('/remove-photo', authenticate, (req, res) => {
     })
 })
 
-
-/**
- * Get all photos
- */
 router.get('/all-photos', authenticate, (req, res) => {
     if (!req.headers.treeid) {
         res.status(400).send({ message: "Bad request" });
@@ -177,14 +167,6 @@ router.get('/all-photos', authenticate, (req, res) => {
     })
 })
 
-
-/**
- * DEPRICATED
-
- * Add a user to a tree 
- * 
- * NOTE: DEPRECATED, DO NOT USE
- */
 router.post('/add-user', authenticate, (req, res) => {
 
     if (!req.body || !req.body.username || !req.body.treeID) {
@@ -200,14 +182,14 @@ router.post('/add-user', authenticate, (req, res) => {
         }
 
         if (tre.members.includes(req.body.username)) {
-            res.status(400).send({ message: req.body.username + " is already in tree" })
+            res.status(400).send({ message: "User is already in tree" })
             return
         }
 
         User.findOne({ username: req.body.username }).then((user) => {
 
             if (!user) {
-                res.status(400).send({ message: req.body.username + " does not exist" });
+                res.status(400).send({ message: "Username does not exist" });
                 return;
             }
 
@@ -251,15 +233,13 @@ router.post('/add-user', authenticate, (req, res) => {
 })
 
 
-/**
- * Add an admin to a tree
- */
 router.post('/add-admin', authenticate, (req, res) => {
 
     if (!req.body || !req.body.username || !req.body.treeID) {
         res.status(400).send("Bad request")
         return
     }
+
 
     Tree.findById(req.body.treeID, (err, tre) => {
 
@@ -273,13 +253,8 @@ router.post('/add-admin', authenticate, (req, res) => {
             return;
         }
 
-        if (!tre.members.includes(req.body.username)) {
-            res.status(400).send({ message: req.body.username + " is not in the tree. The user must be a member of the tree in order to be promoted to admin." });
-            return;
-        }
-
         if (tre.admins.includes(req.body.username)) {
-            res.status(400).send({ message: req.body.username + " is already an admin" });
+            res.status(400).send({ message: "User is already an admin" });
             return;
         }
 
@@ -381,12 +356,12 @@ router.post('/remove-admin', authenticate, (req, res) => {
             res.send(err);
             return;
         })
+
     })
 })
 
-
-/**
- * Delete chosen tree
+/*
+*   Delete chosen tree
 */
 router.post('/delete', authenticate, (req, res) => {
 
@@ -415,9 +390,8 @@ router.post('/delete', authenticate, (req, res) => {
     })
 })
 
-
-/**
-* Edit existing tree name
+/*
+*   Edit existing tree name
 */
 router.post("/edit-name", authenticate, (req, res) => {
     if (!req.body.treeName || !req.body.treeID) {
@@ -445,9 +419,10 @@ router.post("/edit-name", authenticate, (req, res) => {
 })
 
 
-/**
- * Edit about bio
- */
+/*
+*   Edit tree about bio
+*/
+
 router.post("/edit-about-bio", authenticate, (req, res) => {
     if (!req.body.aboutBio || !req.body.treeID) {
         res.status(400).send({ message: "Tree bio is incomplete" })
@@ -474,9 +449,11 @@ router.post("/edit-about-bio", authenticate, (req, res) => {
 
 })
 
-/**
- * Send message to tree
- */
+
+/*
+*   Send messages
+*/
+
 router.post('/add-message', authenticate, (req, res) => {
     if (!req.body || !req.body.message || !req.body.treeID) {
         res.status(400).send({ message: "Bad request" });
@@ -506,8 +483,8 @@ router.post('/add-message', authenticate, (req, res) => {
 })
 
 
-/**
-* Edit existing tree description
+/*
+*   Edit existing tree description
 */
 router.post("/edit-tree-description", authenticate, (req, res) => {
     if (!req.body.treeDescription || !req.body.treeID) {
@@ -528,10 +505,6 @@ router.post("/edit-tree-description", authenticate, (req, res) => {
         })
 })
 
-
-/**
- * Edit group photo
- */
 router.post('/edit-photo', authenticate, upload.single("image"), function (req, res) {
 
     if (!req.body || !req.body.treeID || !req.body.imageUrl) {
@@ -567,10 +540,6 @@ router.post('/edit-photo', authenticate, upload.single("image"), function (req, 
     })
 });
 
-
-/**
- * Leave a group
- */
 router.post('/leave', authenticate, (req, res) => {
     if (!req.body.treeID) {
         res.status(400).json({ message: "Tree description change is incomplete" });
@@ -599,8 +568,8 @@ router.post('/leave', authenticate, (req, res) => {
 })
 
 
-/**
-* Get all members in a tree
+/*
+*   Get all members in a tree
 */
 router.get('/all-members', authenticate, (req, res) => {
     if (!req.body || !req.body.treeid) {
@@ -616,10 +585,6 @@ router.get('/all-members', authenticate, (req, res) => {
     })
 })
 
-
-/**
- * Get all chat messages
- */
 router.get('/chat', authenticate, (req, res) => {
     if (!req.headers.treeid) {
         // console.log(req.headers)
@@ -638,9 +603,8 @@ router.get('/chat', authenticate, (req, res) => {
     })
 })
 
-
-/**
-* Get tree info
+/*
+*   Get tree info
 */
 router.get('/info', authenticate, (req, res) => {
 
@@ -670,9 +634,8 @@ router.get('/info', authenticate, (req, res) => {
     // make sure ID
 })
 
-
-/**
-* Ban a user
+/*
+*   Ban a user
 */
 router.post('/ban-user', authenticate, (req, res) => {
 
@@ -680,6 +643,7 @@ router.post('/ban-user', authenticate, (req, res) => {
         res.status(400).send("Bad request")
         return
     }
+
 
     Tree.findById(req.body.treeID, (err, tre) => {
 
@@ -744,9 +708,8 @@ router.post('/ban-user', authenticate, (req, res) => {
     })
 })
 
-
-/**
-* Unban a user
+/*
+*   Unban a user
 */
 router.post('/unban-user', authenticate, (req, res) => {
 
@@ -818,8 +781,9 @@ router.post('/unban-user', authenticate, (req, res) => {
 })
 
 
-/**
-* Display banned users
+
+/*
+*   Display banned users
 */
 router.get("/display-banned-users", authenticate, (req, res) => {
     if (!req.body || !req.headers.treeID) {
@@ -838,7 +802,7 @@ router.get("/display-banned-users", authenticate, (req, res) => {
 })
 
 
-/**
+/*
 *   Get report a user
 */
 router.post('/report-user', authenticate, (req, res) => {
@@ -873,9 +837,8 @@ router.post('/report-user', authenticate, (req, res) => {
         })
 })
 
-
-/**
-* Get report a tree/group
+/*
+*   Get report a tree/group
 */
 router.post('/report-tree', authenticate, (req, res) => {
     //ensure that request has body and has treeID
@@ -911,7 +874,6 @@ router.post('/report-tree', authenticate, (req, res) => {
     });
 })
 
-
 /**
  * Get all trees
  */
@@ -922,7 +884,6 @@ router.get("/get-all-trees", authenticate, (req, res) => {
         res.status(400).send(err);
     })
 })
-
 
 /**
  * Set tree to be private or public
@@ -946,7 +907,6 @@ router.post("/set-private-status", authenticate, (req, res) => {
             return;
         })
 })
-
 
 /**
  * Invites a user to a tree
@@ -1056,7 +1016,6 @@ router.post("/decline-user-requested-invite", authenticate, (req, res) => {
     })
 })
 
-
 /**
  * Member requests an admin to add a user
  */
@@ -1123,7 +1082,6 @@ router.post("/request-admin-to-add-user", authenticate, (req, res) => {
         return;
     })
 })
-
 
 /**
  * Get array of searched trees

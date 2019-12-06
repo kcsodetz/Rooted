@@ -44,6 +44,15 @@ export class TreeService {
 
     }
 
+    getSearchTrees(treename: string) {
+        const info = {
+            headers: new HttpHeaders({
+                'treename': treename
+            })
+        };
+        return this.http.get<Object>('http://localhost:5000/tree/search-tree', info).toPromise();
+    }
+
     removeUser(treeID: string, username: string) {
         const info = {
             treeID: treeID,

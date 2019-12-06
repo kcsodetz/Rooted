@@ -12,29 +12,28 @@ import { Router } from '@angular/router'
 })
 export class SearchComponent implements OnInit {
   searchTrees: Tree[];
-  fileForm: FormGroup;
-  image: string;
-  submitted = false;
 
   constructor(private userService: UserService,  private treeService: TreeService, private formBuilder: FormBuilder, private _router: Router) {}
+  searchInputForm: FormGroup;
 
   ngOnInit() {
-    this.displayTrees();
-
-    // Form inputs and validators
-    this.fileForm = this.formBuilder.group({
-      imageUrl: [''],
-      treeDesc: ['', Validators.required],
-      treeName: ['', Validators.required],
-    })
+    this.searchInputForm = this.formBuilder.group({
+      searchInput: ['']
+    });
+    
   }
-  displayTrees() {
-    this.userService.getUserTrees().then((data) => {
+
+  onSubmitSearch(form: NgForm) {
+    console.log(form.value.searchInput);
+
+    this.treeService.getSearchTrees(form.value.searchInput).then((data) => {
+
 
       let i: number;
 
       let response = [];
       response.push(data);
+
 
       this.searchTrees = new Array(response[0].length)
 
@@ -45,6 +44,8 @@ export class SearchComponent implements OnInit {
         }
         this.searchTrees[i] = tree;
       }
+
+      console.log(this.searchTrees);
     });
   }
   /**

@@ -111,7 +111,7 @@
                   </div>
                 </ng-container>
                   <ng-container *ngFor="let memb of myTree.nonRootedMembers">
-                    <div class="usericon" *ngIf="year==memb.yearJoined">
+                    <div class="usericon" *ngIf="year==memb.yearJoined && memb.approved">
                       <i class="fas fa-user-circle fa-5x  pr-3 ml-3" style="color:black"></i>
                       <div id="userinfo" class="w3-modal">
                         <div class="w3-modal-content">

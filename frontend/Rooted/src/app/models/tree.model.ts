@@ -23,7 +23,8 @@ export class Tree{
         id: number,
         name: string,
         email: string,
-        yearJoined: number
+        yearJoined: number,
+        approved: Boolean
     }];
     memberInvolvement: [{
         user: String,

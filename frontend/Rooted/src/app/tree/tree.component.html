@@ -177,12 +177,15 @@
                 <h3 [ngStyle]="{'color': myTree.colorScheme}">Anouncements</h3>
                 <button mdbBtn onclick="document.getElementById('addAnn').style.display='block'" type="button" [ngStyle]="{'background-color': myTree.colorScheme}">Request An Announcement</button>
               </mdb-card-title>
-              <div *ngFor="let ann of announcements" class="card notificationCard" name="notificationAcceptReject">
-                <div *ngIf="ann.approved" class="row">
-                  <div class="col-9">
-                    <label style="float:left">{{ann.annoucement}}</label>
+              <div *ngFor="let ann of announcements" name="notificationAcceptReject">
+                <div *ngIf="ann.approved" class="card notificationCard" >
+                  <div  class="row">
+                    <div class="col-9">
+                      <label style="float:left">{{ann.annoucement}}</label>
+                    </div>
                   </div>
                 </div>
+                
               </div>
             </mdb-card-body>
           </mdb-card>

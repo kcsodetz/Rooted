@@ -87,9 +87,9 @@ export class UserService {
 
     acceptNonRooted(username: string, notif: Object) {
        const notifID = notif['_id'];
-        const treeID = notif['meta'];
+        const meta = notif['meta'];
         const userAndNotif = {
-            'meta' : treeID,
+            'meta' : meta,
             'notifID' : notifID
         };
         return this.http.post('http://localhost:5000/user/accept-non-rooted', userAndNotif).toPromise();
@@ -113,9 +113,9 @@ export class UserService {
 
     declineNonRooted(username: string, notif: Object) {
         const notifID = notif['_id'];
-        const treeID = notif['meta'];
+        const meta = notif['meta'];
         const userAndNotif = {
-            'meta' : treeID,
+            'meta' : meta,
             'notifID' : notifID
         };
         return this.http.post('http://localhost:5000/user/decline-non-rooted', userAndNotif).toPromise();

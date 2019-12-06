@@ -254,8 +254,9 @@ export class ProfileComponent implements OnInit {
         });
     //location.reload();
   }
+
   deleteNotif(n) {
-      this.userService.removeNotification(this.username, n).then((response) => {
+      this.userService.removeNotification(this.username, n._id).then((response) => {
         console.log(response);
         this.response = 'complete';
       },

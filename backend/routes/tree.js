@@ -1521,7 +1521,8 @@ router.post("/request-non-rooted", authenticate, async (req, res) => {
         $push: {
             nonRootedMembers: {
                 name: req.body.name,
-                email: email
+                email: email,
+                yearJoined: 2019
             }
         }
     }).then((tre) => {

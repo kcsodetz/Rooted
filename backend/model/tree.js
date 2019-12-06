@@ -36,7 +36,8 @@ let treeSchema = new mongoose.Schema({
     }],
     nonRootedMembers: [{
         name: String,
-        email: {type: String, unique: true, required: false}
+        email: {type: String, unique: true, required: false},
+        yearJoined: {type: Number, default: 2019}
     }],
     anonymousMessages: [{
         message: String,

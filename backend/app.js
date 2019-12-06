@@ -9,6 +9,7 @@ require('dotenv').config();
 /* Routes */
 let user = require('./routes/users.js'); 
 let tree = require('./routes/tree.js');  
+let admin = require('./routes/admin.js'); 
 
 const app = express(cors());
 
@@ -20,7 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 /* Access Headers */
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Authorization, token, Origin, X-Requested-With, Content-Type, Accept, treeid, treeID, username, profilePictureURL");
+    res.header("Access-Control-Allow-Headers", "Authorization, token, Origin, X-Requested-With, Content-Type, Accept, treeid, treeID, username, profilePictureURL, treename");
 
     res.header("Access-Control-Expose-Headers", "token");
     res.header('Access-Control-Allow-Credentials', 'true');
@@ -29,7 +30,8 @@ app.use((req, res, next) => {
 
 /* Routes */
 app.use('/user', user);
-app.use('/tree', tree)
+app.use('/tree', tree);
+app.use('/admin', admin);
 
 
 app.get('/', (res, req) => {

@@ -222,7 +222,7 @@
                                 {{n.body}}
                         </div>
                         <div class="col-3">
-                            <div class="row" style="width:100%;justify-content: end;" *ngIf="n.nType=='Invitation'"  >
+                            <div class="row" style="width:100%;justify-content: end;" *ngIf="n.nType=='Invitation'|| n.nType=='nonRooted'"  >
                                     <div class="spacer">
                                         <button class="notificationBtn"  type="button" color="success" (click)="accept(n)" >Accept</button>
                                     </div>
@@ -230,9 +230,9 @@
                                         <button class="notificationBtn"  type="button" color="success" (click)="reject(n)">Reject</button>
                                     </div>
                             </div>
-                            <div class="row" style="width:100%;justify-content: end;" *ngIf="n.nType!='Invitation'"  >
+                            <div class="row" style="width:100%;justify-content: end;" *ngIf="n.nType!='Invitation' && n.nType!='nonRooted'"  >
                                 <div class="spacer">
-                                    <button class="notificationBtn" type="button" color="success" (click)="deleteNotif(n)" >x</button>
+                                    <button class="notificationBtn" type="button" color="success" (click)="deleteNotif(n)" >Dismiss</button>
                                 </div>
                             </div>
                         </div>

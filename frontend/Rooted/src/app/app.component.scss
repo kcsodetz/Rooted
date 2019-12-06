@@ -4,9 +4,8 @@
 
 .rootedTitle{
     color: white;
-    font-size: 50px;
-    margin-right: 100px;
-    transform: translateX(-100%);
+    font-size: 40px;
+  
 }
 
 .main-container {
@@ -76,6 +75,7 @@ button{
   background-color: rgb(27, 172, 59);
   color:white;
   border:none;
+  pointer-events: none;
 } 
 .invisible{
   display: none;

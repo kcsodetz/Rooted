@@ -230,32 +230,61 @@ export class ProfileComponent implements OnInit {
 
   accept(n) {
 
-      this.userService.acceptInvitation(this.username, n.meta).then((response) => {
+    if (n.nType === 'nonRooted') {
+      this.userService.acceptNonRooted(this.username, n).then((response) => {
         console.log(response);
         this.response = 'complete';
+        window.location.replace('/profile');
       },
         (err) => {
           console.log(err);
           this.response = 'fatalError';
         });
+    } else {
+      this.userService.acceptInvitation(this.username, n).then((response) => {
+        console.log(response);
+        this.response = 'complete';
+        window.location.replace('/profile');
+      },
+        (err) => {
+          console.log(err);
+          this.response = 'fatalError';
+        });
+    }
 
-        location.reload();
+
+       // location.reload();
 
   }
 
   reject(n) {
-      this.userService.declineInvitation(this.username, n.meta).then((response) => {
+    if (n.nType === 'nonRooted') {
+      this.userService.declineNonRooted(this.username, n).then((response) => {
         console.log(response);
         this.response = 'complete';
+        window.location.replace('/profile');
       },
         (err) => {
           console.log(err);
           this.response = 'fatalError';
         });
-    location.reload();
+    } else {
+      this.userService.declineInvitation(this.username, n).then((response) => {
+        console.log(response);
+        this.response = 'complete';
+        window.location.replace('/profile');
+      },
+        (err) => {
+          console.log(err);
+          this.response = 'fatalError';
+        });
+    // location.reload();
+    }
+
   }
+
   deleteNotif(n) {
-      this.userService.removeNotification(this.username, n.meta).then((response) => {
+      this.userService.removeNotification(this.username, n._id).then((response) => {
         console.log(response);
         this.response = 'complete';
       },

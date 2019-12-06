@@ -1,8 +1,10 @@
+
+
 <div>
   <div *ngIf="isPrivate; else elseStatus">
     <div *ngIf="notMember; else elseStatus">
       <div class="profileInfo col-8">
-          <h1 class="treeTitle">{{myTree.treeName}}</h1>
+          <h1 [ngStyle]="{'color': myTree.colorScheme}">{{myTree.treeName}}</h1>
           <h3>Sorry, this group is invite only</h3>
           <button mdbBtn type="button" color="success" mdbWavesEffect (click)=sendJoinRequest() >Request
             to Join </button>
@@ -15,28 +17,29 @@
       <div class="profileInfo col-8">
         <h1 *ngIf="this.isPrivate; else elsePriv" class="treeTitle">{{myTree.treeName}} - Private</h1>
         <ng-template #elsePriv>
-          <h1 class="treeTitle">{{myTree.treeName}} - Public</h1>
+          <h1 class="treeTitle" [ngStyle]="{'color': myTree.colorScheme}">{{myTree.treeName}} - Public</h1>
         </ng-template>
       </div>
       <div class="profileInfo col">
         <div class="row" style="justify-content: right;">
-          <button mdbBtn type="button" color="success" mdbWavesEffect (click)=back()><i class="fa fa-arrow-left"> </i>
+          <button mdbBtn type="button" [ngStyle]="{'background-color': myTree.colorScheme}" mdbWavesEffect (click)=back()><i class="fa fa-arrow-left"> </i>
             Back
             to Your Trees </button>
-          <button *ngIf="isAdmin" mdbBtn type="button" color="success">
+          <button *ngIf="isAdmin" mdbBtn [ngStyle]="{'background-color': myTree.colorScheme}" >
             <a (click)=renderAdminDashboard()> Admin Dashboard <i class="fa fa-shield"> </i></a>
           </button>
           <div *ngIf="isMember; else elseMember"></div>
           <ng-template #elseMember>
-            <button mdbBtn type="button" color="success" mdbWavesEffect (click)=sendJoinRequest() >Request
+            <button mdbBtn type="button" [ngStyle]="{'background-color': myTree.colorScheme}" mdbWavesEffect (click)=sendJoinRequest() >Request
               to Join </button>
           </ng-template>
-         <button mdbBtn type="button" color="success">
+         <button mdbBtn type="button" [ngStyle]="{'background-color': myTree.colorScheme}">
             <a href="#" routerLink="/report-group"
               [state]="{ data: {treeID: myTree.ID, treeName: myTree.treeName, reporter: username}}" class="my-4"> Report
               Group </a>
           </button>
-
+          <button mdbBtn onclick="document.getElementById('bruh').style.display='block'" type="button" [ngStyle]="{'background-color': myTree.colorScheme}">Message the Admins</button>
+          <button mdbBtn onclick="document.getElementById('editInv').style.display='block'" type="button" [ngStyle]="{'background-color': myTree.colorScheme}">Edit Your Involvement</button>
         </div>
       </div>
 
@@ -52,7 +55,7 @@
           
 
         <div class="grid-item">
-          <nav class="nav green py-4 row">
+          <nav class="nav py-4 row" [ngStyle]="{'background-color': myTree.colorScheme}">
             <div class="spacer">
               <button class="tab active" id="TreeTab" (click)="toggle('Tree')" (click)="show = !show">Tree</button>
             </div>
@@ -72,107 +75,147 @@
 
 
           </nav>
-          <mdb-card id="TreeSection"  borderColor="border-success">
+          <mdb-card id="TreeSection"  borderColor="">
             <mdb-card-body>
               <mdb-card-title>
-                <h3>2019</h3>
+                <h1 [ngStyle]="{'color': myTree.colorScheme}">Tree Members</h1>
               </mdb-card-title>
-              <div class="usericon" *ngFor="let member of myTree.members">
-                <i class="fas fa-user-circle fa-5x fa-green-text green-text pr-3 ml-3"></i>
-                <!--<span><a onclick="document.getElementById('userinfo').style.display='block'">
-                    {{member}}</a></span>-->
-                <div id="userinfo" class="w3-modal">
-                  <div class="w3-modal-content">
-                    <div class="w3-container">
-                      <!-- Card Container and Body -->
-                      <mdb-card>
-                        <mdb-card-body>
-                          <span onclick="document.getElementById('userinfo').style.display='none'"
-                            class="w3-button w3-display-topright">&times;</span>
-                          <button mdbBtn href="#" routerLink="/profile" color="success" block="true" class="my-4">
-                            View {{member}}'s' Profile!</button>
-                          <button mdbBtn type="button" color="danger" class="report my-4">
-                            <a href="#" routerLink="/report-user"
-                              [state]="{ data: {treeID: myTree.ID, userToReport: member}}">
-                              Report This User</a>
-                          </button>
-                        </mdb-card-body>
-                      </mdb-card>
-                    </div>
-                  </div>
-                </div>
-                <span><a (click)="userProfile(member)">
-                    {{member}}</a></span>
-                  <!-- <div id="userinfo" class="w3-modal">
-                      <div class="w3-modal-content">
-                        <div class="w3-container">
-                          <mdb-card>
-                            <mdb-card-body>
+              <ng-container *ngFor="let year of years">
+                <h3 [ngStyle]="{'color': myTree.colorScheme}">{{year}}</h3>
+                <ng-container *ngFor="let memin of myTree.memberInvolvement" >
+                  <div class="usericon" *ngFor="let member of myTree.members">
+                    <ng-container *ngIf="member==memin.user && year==memin.yearStarted">  
+                      <i class="fas fa-user-circle fa-5x  pr-3 ml-3" [ngStyle]="{'color': myTree.colorScheme}"></i>
+                      <div id="userinfo" class="w3-modal">
+                        <div class="w3-modal-content">
+                          <div class="w3-container">
+                            <mdb-card>
+                              <mdb-card-body>
                                 <span onclick="document.getElementById('userinfo').style.display='none'"
-                                class="w3-button w3-display-topright">&times;</span>
+                                  class="w3-button w3-display-topright">&times;</span>
                                 <button mdbBtn href="#" routerLink="/profile" color="success" block="true" class="my-4">
                                   View {{member}}'s' Profile!</button>
                                 <button mdbBtn type="button" color="danger" class="report my-4">
-                                    <a href="#" routerLink="/report-user" [state]="{ data: {treeID: myTree.ID, userToReport: member}}">
+                                  <a href="#" routerLink="/report-user"
+                                    [state]="{ data: {treeID: myTree.ID, userToReport: member}}">
                                     Report This User</a>
                                 </button>
-                            </mdb-card-body>
-                          </mdb-card>
+                              </mdb-card-body>
+                            </mdb-card>
+                          </div>
                         </div>
                       </div>
-                  </div> -->
+                      <span style="text-align: center; padding: 0;"><a (click)="userProfile(member)" >
+                          {{member}}</a></span>
+                    </ng-container>
+                  </div>
+                </ng-container>
+                  <ng-container *ngFor="let memb of myTree.nonRootedMembers">
+                    <div class="usericon" *ngIf="year==memb.yearJoined && memb.approved">
+                      <i class="fas fa-user-circle fa-5x  pr-3 ml-3" style="color:black"></i>
+                      <div id="userinfo" class="w3-modal">
+                        <div class="w3-modal-content">
+                          <div class="w3-container">
+                            <mdb-card>
+                              <mdb-card-body>
+                                <span onclick="document.getElementById('userinfo').style.display='none'"
+                                  class="w3-button w3-display-topright">&times;</span>
+                              </mdb-card-body>
+                            </mdb-card>
+                          </div>
+                        </div>
+                      </div>
+                      <span style="text-align: center; padding: 0;">
+                          <p>{{memb.name}}</p>
+                      </span>
+                    </div>
+                  </ng-container>
+              </ng-container>
+            </mdb-card-body>
+          </mdb-card>
 
+          <mdb-card id="AnouncementsSection" class="invisible" >
+            <mdb-card-body>
+              <mdb-card-title>
+
+                <h3 [ngStyle]="{'color': myTree.colorScheme}">Anouncements</h3>
+                <button mdbBtn onclick="document.getElementById('addAnn').style.display='block'" type="button" [ngStyle]="{'background-color': myTree.colorScheme}">Request An Announcement</button>
+              </mdb-card-title>
+              <div *ngFor="let ann of announcements | async" name="notificationAcceptReject">
+                <div *ngIf="ann.approved" class="card notificationCard" >
+                  <div  class="row">
+                    <div class="col-9">
+                      <label style="float:left">{{ann.annoucement}}</label>
+                    </div>
+                  </div>
+                </div>
+                
               </div>
             </mdb-card-body>
           </mdb-card>
 
-          <mdb-card id="AnouncementsSection" class="invisible" borderColor="border-success">
-            <mdb-card-body>
-              <mdb-card-title>
-                <h3>Anouncements</h3>
-              </mdb-card-title>
-
-            </mdb-card-body>
-          </mdb-card>
-
-          <mdb-card id="AboutSection" class="invisible" borderColor="border-success">
+          <mdb-card id="AboutSection" class="invisible" >
               <mdb-card-body>
                 <mdb-card-title>
-                  <h3>About</h3>
+                  <h3 [ngStyle]="{'color': myTree.colorScheme}">About</h3>
                   <h4>{{myTree.aboutBio}}</h4>
                 </mdb-card-title>
   
               </mdb-card-body>
           </mdb-card>
 
-          <mdb-card id="PhotosSection" class="invisible" borderColor="border-success">
+          <mdb-card id="PhotosSection" class="invisible" >
               <mdb-card-body>
                 <mdb-card-title>
-                  <h3>Photos</h3>
+                  <h3 [ngStyle]="{'color': myTree.colorScheme}">Photos</h3>
                 </mdb-card-title>
                 
                 <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
                   <button type="button" class="btn btn-info" (click)="fileInput.click()">Upload picture <i class="fa fa-camera"></i> </button>
+                  <button *ngIf="isAdmin" type="button" class="btn btn-danger" onclick="document.getElementById('deleteconfirm').style.display='block'">Delete picture <i class="fa fa-trash"></i> </button>
+                  
+                  
+                  <div id="deleteconfirm" class="w3-modal">
+                    <div class="w3-modal-content">
+                      <div class="w3-container">
+                          <mdb-card-body>
+                                <span onclick="document.getElementById('deleteconfirm').style.display='none'"
+                                class="w3-button w3-display-topright">&times;</span>
+                                <h3 class="ques">Are you sure you want to delete this photo?</h3>
+                                <div class="ques" style=" align-self: center;">
+                                  <button type="button" class="btn btn-success" (click)="deletePhoto()"  >
+                                    Yes
+                                  </button>
+                                
+                              </div>
+                              
+                          </mdb-card-body>
+                      </div>
+                    </div>
+                  </div>
+                  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+
                 <div style="display: flex; flex-wrap: wrap; width: 100%; ">
-                  <div class="spacer" *ngFor="let i of treePhotoLibraryImages">
-                    <img [src]="i.url" />
+                  <div class="spacer" *ngFor="let i of treePhotoLibraryImages | async; let ind = index">
+                    <img [src]="i.url" (click)="selectPhoto(i._id)" (click)="setRow(ind)" [ngClass]="{'highlight': selectedIndex === ind}"/>
                   </div>
                 </div>
 
               </mdb-card-body>
           </mdb-card>
 
-          <mdb-card id="MessagesSection"  class="invisible" borderColor="border-success">
+          <mdb-card id="MessagesSection"  class="invisible" >
               <mdb-card-body>
                 <mdb-card-title>
-                    <h3>Messages</h3>
+                    <h3 [ngStyle]="{'color': myTree.colorScheme}">Messages</h3>
                 </mdb-card-title>
                 <div class="card notificationCard" name="notificationAcceptReject">
                     <div class="row">
                       
 
                       <div class="overflowTest" *ngIf="show">
-                        <div *ngFor="let m of messages">
+                        <div *ngFor="let m of messages | async">
                           <b>{{m.user}}</b>:
                           {{m.message}}
                         </div>
@@ -192,8 +235,8 @@
           </mdb-card>
 
           <div class="adjustLeftMargin">
-            <h4>Members of {{myTree.treeName}}</h4>
-            <button style="float: right;" mdbBtn type="button" color="success" mdbWavesEffect
+           <!-- <h4>Members of {{myTree.treeName}}</h4>-->
+            <button style="float: right;" mdbBtn type="button" [ngStyle]="{'background-color': myTree.colorScheme}" mdbWavesEffect
               onclick="document.getElementById('id02').style.display='block'">Add Member <i class="fa fa-user">
               </i></button>
             <div id="id02" class="w3-modal">
@@ -226,8 +269,9 @@
                         <div *ngIf="response === 'fatalError'" class="alert alert-danger" role="alert">
                           A Fatal Error has occured. Please try again at another time.
                         </div>
+                        <br>
                         <button color="success" block="true" type="submit" prevent-default  
-                        style="align-self: start;">Add User</button>
+                        style="align-self: start;" [ngStyle]="{'background-color': myTree.colorScheme}">Add User</button>
                       </div>
                       </form>
 
@@ -235,15 +279,16 @@
                       <form (submit)="sendAddRequestEmail(f)" #f="ngForm" class="text-center border border-light p-5"
                       [formGroup]="addUserFormEmail">
                       <div class="form-group">
-                        <label style="float:left">By Email:</label>
-                        <input type="text" placeholder="Email" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': submitted_email  }" />
-                        
+                        <label style="float:left">Non-Rooted Member</label>
+                        <input type="text" placeholder="Name" class="form-control" formControlName="name"/>
                         <br>
+                        <input type="text" placeholder="Email" class="form-control" formControlName="email"/>
+                    
                         
                         <br>
                       </div>
                       <button color="success" block="true" type="submit" prevent-default  
-                        style="align-self: start;">Add
+                        style="align-self: start;" [ngStyle]="{'background-color': myTree.colorScheme}">Add
                         User</button>
                     </form>
                       <div class="form-group">
@@ -254,7 +299,7 @@
                           </div>
                           <div class="spacer" style="width:50%; display: flex; justify-content: end;">
                             <button (click)="cancel()" type="button"
-                              onclick="document.getElementById('id02').style.display='none'" color="success"
+                              onclick="document.getElementById('id02').style.display='none'" [ngStyle]="{'background-color': myTree.colorScheme}"
                               block="true">Cancel</button>
                           </div>
                         </div>
@@ -266,8 +311,8 @@
                 </div>
               </div>
             </div>
-            <h5>Founder: {{myTree.founder}}</h5>
-            <h5>Members: {{myTree.members}} </h5>
+           <!-- <h5>Founder: {{myTree.founder}}</h5>
+            <h5>Members: {{myTree.members}} </h5>-->
           </div>
 
           <html>
@@ -321,3 +366,85 @@
   </div>
   </ng-template>
 </div>
+
+<div id="bruh" class="w3-modal">
+    <div class="w3-modal-content">
+      <div class="w3-container">
+        <!-- Card Container and Body -->
+        <mdb-card>
+          <mdb-card-body>
+            <span onclick="document.getElementById('bruh').style.display='none'"
+              class="w3-button w3-display-topright">&times;</span>
+              <form (submit)="sendAnonMessage(message)" class="text-center border border-light p-5" [formGroup]="messageForm">
+
+                  <p class="h4 mb-4">Anonymously Message the Admins</p>
+          
+                  <!-- Message -->
+                  <div class="form-group">
+                    <textarea class="form-control rounded-0" id="message" [(ngModel)]="message" formControlName="message" rows="3" placeholder="Message"></textarea>
+                  </div>
+          
+                  <!-- Send button -->
+                  <button mdbBtn color="success" block="true" type="submit">Send</button>
+                </form>
+          </mdb-card-body>
+        </mdb-card>
+      </div>
+    </div>
+  </div>
+
+  <div id="addAnn" class="w3-modal">
+    <div class="w3-modal-content">
+      <div class="w3-container">
+        <!-- Card Container and Body -->
+        <mdb-card>
+          <mdb-card-body>
+            <span onclick="document.getElementById('addAnn').style.display='none'"
+              class="w3-button w3-display-topright">&times;</span>
+              <form (submit)="addAnnouncement(announcement)" class="text-center border border-light p-5" [formGroup]="announcementForm">
+
+                <p class="h4 mb-4">Request an Announcement</p>
+        
+                <!-- Message -->
+                <div class="form-group">
+                  <textarea class="form-control rounded-0" id="announcement" [(ngModel)]="announcement" formControlName="announcement" rows="3" placeholder="Announcement"></textarea>
+                </div>
+        
+                <!-- Send button -->
+                <button mdbBtn color="success" block="true" type="submit">Send</button>
+                </form>
+          </mdb-card-body>
+        </mdb-card>
+      </div>
+    </div>
+  </div>
+
+  <div id="editInv" class="w3-modal">
+    <div class="w3-modal-content">
+      <div class="w3-container">
+        <!-- Card Container and Body -->
+        <mdb-card>
+          <mdb-card-body>
+            <span onclick="document.getElementById('editInv').style.display='none'"
+              class="w3-button w3-display-topright">&times;</span>
+              <form (submit)="editInvolvement(joinYear,exitYear)" class="text-center border border-light p-5" [formGroup]="involvementForm">
+
+                <p class="h4 mb-4">Edit Your Involvement</p>
+        
+                <!-- year joined and left -->
+                <div class="form-group">
+                  <input type="text" id="joinYear" formControlName="joinYear" class="form-control"
+                  placeholder="Year you joined the group" [(ngModel)]="joinYear">
+                </div>
+                <div class="form-group">
+                  <input type="text" id="exitYear" formControlName="exitYear" class="form-control"
+                  placeholder="Year you left the group (if applicable)" [(ngModel)]="exitYear">
+                </div>
+                <!-- Send button -->
+                <button mdbBtn color="success" block="true" type="submit">Send</button>
+                </form>
+          </mdb-card-body>
+        </mdb-card>
+      </div>
+    </div>
+  </div>

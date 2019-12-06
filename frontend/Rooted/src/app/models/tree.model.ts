@@ -18,6 +18,19 @@ export class Tree{
     aboutBio: string;
     memberRequestedUsers: [String];
     pendingUsers: [String];
+    colorScheme: [String];
+    nonRootedMembers:  [{
+        id: number,
+        name: string,
+        email: string,
+        yearJoined: number,
+        approved: Boolean
+    }];
+    memberInvolvement: [{
+        user: String,
+        yearStarted: number,
+        yearEnded: number
+    }]
     
     
     constructor(response: any) {
@@ -36,6 +49,8 @@ export class Tree{
         this.aboutBio = response.aboutBio;
         this.memberRequestedUsers=response.memberRequestedUsers;
         this.pendingUsers=response.pendingUsers;
-        
+        this.colorScheme=response.colorScheme;
+        this.nonRootedMembers=response.nonRootedMembers;
+        this.memberInvolvement = response.memberInvolvement;
     }
 }

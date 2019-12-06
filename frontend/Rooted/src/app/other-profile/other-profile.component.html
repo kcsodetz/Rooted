@@ -13,12 +13,14 @@
             </div>
     </div>
     <div class="profileInfo col">
-            <button data-toggle="modal" data-target="#photoModal">View Photo Library</button>
-            <br>
-            <button type="button" color="danger">
+        <button data-toggle="modal" data-target="#photoModal">View Photo Library</button>
+        <br>
+        <button type="button">
             <a href="#" routerLink="/report-user" [state]="{ data: {treeID: '5d959a7a1aa9f8004e028ecf', userToReport: username}}">Report This User!</a>
-            </button>
-        </div>
+        </button>
+        <br>
+        <button *ngIf="isAdmin" (click)="banUser(username)">Ban User</button>
+    </div>
 
 </div>
 

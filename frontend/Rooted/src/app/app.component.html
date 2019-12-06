@@ -2,63 +2,55 @@
 
 <div class="main-container">
     <!--Navbar-->
-    <mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark tableColor">
+    <mdb-navbar SideClass="navbar navbar-expand-lg tableColor" style="padding:0;">
 
         <!-- Navbar brand -->
         <mdb-navbar-brand><a href="#">
                 <h4 class="rootedTitle"><i class="fa fa-leaf"> </i>Rooted</h4>
             </a></mdb-navbar-brand>
         <!-- Collapsible content -->
-        <links>
-            <ul class="navbar-nav">
-                    <div class="searchSec flex-center">
-                            <div class="inner-form" >
-                              <div class="input-field" >
-                                <div class="form-control round" style="overflow:auto; width:fixed;">
-                                  <input autocomplete= "off" class="form-control flex-center" id="searchinput" type="text" style="border: 0px; background: transparent; min-width:800; outline: none; -webkit-box-shadow:none; -moz-box-shadow:none; box-shadow: none; cursor: default; " placeholder="Type to input search..."/>
-                                      <div id="contain" ></div>
-                                </div>
-                              </div>
+        <links style="width: 100%; padding: 0;">
+           <div class="col"   >
+               
+           </div>
+                <ul class="navbar-nav" style=" justify-content: center; width: auto; padding: 0;">
+                        <li class="nav-item active">
+                            <a class="nav-link waves-light" routerLink='/home' mdbWavesEffect>Home<span
+                                    class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link waves-light" routerLink='/about' mdbWavesEffect>About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link waves-light" routerLink='/search' mdbWavesEffect>Search</a>
+                        </li>
+                        <li *ngIf="admins.includes(username)" class="nav-item">
+                            <a class="nav-link waves-light" routerLink='/site-admins' mdbWavesEffect>Admin Page</a>
+                        </li>
+                        <!-- Dropdown -->
+                        <!-- <li *ngIf="userAuthed == true" class="nav-item dropdown" dropdown> -->
+                        <li *ngIf="userAuthed" class="nav-item dropdown" dropdown>
+                            <a dropdownToggle mdbWavesEffect type="none "
+                                class="nav-link dropdown-toggle waves-light tableColor" mdbWavesEffect>
+                                {{username}}<span class="caret"></span></a>
+                            <div *dropdownMenu class="dropdown-menu dropdown dropdown-primary" role="menu">
+                                <a class="dropdown-item waves-light" mdbWavesEffect href="#" routerLink="/profile">Go to Profile</a>
+                                <a class="dropdown-item waves-light" mdbWavesEffect href="#" routerLink="/change-email">Change
+                                    Email</a>
+                                <a class="dropdown-item waves-light" mdbWavesEffect href="#"
+                                    routerLink="/change-password">Change
+                                    Password</a>
+                                <!-- <a class="dropdown-item waves-light" mdbWavesEffect href="#">Something else here</a> -->
+                                <div class="divider dropdown-divider"></div>
+                                <a (click)="logout()" routerlinkactive="active" class="dropdown-item waves-light" mdbWavesEffect
+                                    href="#">Logout</a>
                             </div>
-                    </div>
-                    <div class="col-xs-1">
-                         <button class="btn btn-sm" type="submit" style="border:none" routerLink="/search"><i class="fa fa-search"></i></button>
-                    </div>
-            </ul>
+                        </li>
+        
+                    </ul>
+                    
             <!-- Links -->
-            <ul class="navbar-nav ml-auto">
-                
-                <li class="nav-item active">
-                    <a class="nav-link waves-light" routerLink='/home' mdbWavesEffect>Home<span
-                            class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link waves-light" routerLink='/about' mdbWavesEffect>About</a>
-                </li>
-
-                <!-- Dropdown -->
-                <!-- <li *ngIf="userAuthed == true" class="nav-item dropdown" dropdown> -->
-                <li *ngIf="userAuthed" class="nav-item dropdown" dropdown>
-                    <a dropdownToggle mdbWavesEffect type="none "
-                        class="nav-link dropdown-toggle waves-light tableColor" mdbWavesEffect>
-                        {{username}}<span class="caret"></span></a>
-                    <div *dropdownMenu class="dropdown-menu dropdown dropdown-primary" role="menu">
-                        <a class="dropdown-item waves-light" mdbWavesEffect href="#" routerLink="/profile">Go to Profile</a>
-
-
-                        <a class="dropdown-item waves-light" mdbWavesEffect href="#" routerLink="/change-email">Change
-                            Email</a>
-                        <a class="dropdown-item waves-light" mdbWavesEffect href="#"
-                            routerLink="/change-password">Change
-                            Password</a>
-                        <!-- <a class="dropdown-item waves-light" mdbWavesEffect href="#">Something else here</a> -->
-                        <div class="divider dropdown-divider"></div>
-                        <a (click)="logout()" routerlinkactive="active" class="dropdown-item waves-light" mdbWavesEffect
-                            href="#">Logout</a>
-                    </div>
-                </li>
-
-            </ul>
+            
             <!-- Links -->
         </links>
         <!-- Collapsible content -->

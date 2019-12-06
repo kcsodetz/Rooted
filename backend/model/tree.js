@@ -37,7 +37,8 @@ let treeSchema = new mongoose.Schema({
     nonRootedMembers: [{
         name: String,
         email: {type: String, unique: true, required: false},
-        yearJoined: {type: Number, default: 2019}
+        yearJoined: {type: Number, default: 2019},
+        approved: {type: Boolean, default: false}
     }],
     anonymousMessages: [{
         message: String,
@@ -45,7 +46,7 @@ let treeSchema = new mongoose.Schema({
         unread: {type: Boolean, default: true}
     }],
 
-    colorScheme: {type: String, default: '#083815'},
+    colorScheme: {type: String, default: '#28a745'},
     memberInvolvement: [{
         user: String,
         yearStarted: {type: Number, default: Date.now },

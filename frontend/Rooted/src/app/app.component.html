@@ -14,15 +14,15 @@
                
            </div>
                 <ul class="navbar-nav" style=" justify-content: center; width: auto; padding: 0;">
-                        <li class="nav-item active">
-                            <a class="nav-link waves-light" routerLink='/home' mdbWavesEffect>Home<span
+                        <li class="nav-item">
+                            <a class="nav-link waves-light text-white" routerLink='/home' mdbWavesEffect>Home<span
                                     class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link waves-light" routerLink='/about' mdbWavesEffect>About</a>
+                            <a class="nav-link waves-light text-white" routerLink='/about' mdbWavesEffect>About</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link waves-light" routerLink='/search' mdbWavesEffect>Search</a>
+                        <li *ngIf="userAuthed" class="nav-item">
+                            <a class="nav-link waves-light text-white" routerLink='/search' mdbWavesEffect>Search</a>
                         </li>
                         <li *ngIf="admins.includes(username)" class="nav-item">
                             <a class="nav-link waves-light" routerLink='/site-admins' mdbWavesEffect>Admin Page</a>
@@ -31,7 +31,7 @@
                         <!-- <li *ngIf="userAuthed == true" class="nav-item dropdown" dropdown> -->
                         <li *ngIf="userAuthed" class="nav-item dropdown" dropdown>
                             <a dropdownToggle mdbWavesEffect type="none "
-                                class="nav-link dropdown-toggle waves-light tableColor" mdbWavesEffect>
+                                class="nav-link dropdown-toggle waves-light text-white" mdbWavesEffect>
                                 {{username}}<span class="caret"></span></a>
                             <div *dropdownMenu class="dropdown-menu dropdown dropdown-primary" role="menu">
                                 <a class="dropdown-item waves-light" mdbWavesEffect href="#" routerLink="/profile">Go to Profile</a>

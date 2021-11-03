@@ -25,7 +25,7 @@
     "multer-storage-cloudinary": "^2.2.1",
     "nodemailer": "^4.7.0",
     "nodemon": "^2.0.4",
-    "validator": "^10.11.0",
+    "validator": "^13.7.0",
     "xmlhttprequest": "^1.8.0"
   }
 }
